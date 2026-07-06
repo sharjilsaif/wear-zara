@@ -22,22 +22,6 @@ export default function About() {
       return () => clearTimeout(timer);
     }, []);
   
-  // useEffect(() => {
-  //   const hasShown = sessionStorage.getItem(shimmerKey);
-
-  //   if (hasShown) {
-  //     setShimmer(false);
-  //     return;
-  //   }
-
-  //   const timer = setTimeout(() => {
-  //     setShimmer(false);
-  //     sessionStorage.setItem(shimmerKey, "true");
-  //   }, 1800);
-
-  //   return () => clearTimeout(timer);
-  // }, []);
-
   const aboutItems = [
     {
       icon: AiOutlineShop,

@@ -186,16 +186,6 @@ export default function Navbar() {
             </Link>
           </div>
           <div className="flex items-center gap-3 sm:gap-5 lg:gap-6">
-            {/* <span className="border shadow focus-within:border-black transition-all duration-500 rounded-full flex items-center px-3 py-2 sm:w-64 gap-3 bg-[#F5F5F5] border-[#e5e7eb]">
-              <input
-                className="outline-none bg-transparent w-full px-1 text-sm"
-                type="text"
-                placeholder="What are you looking for?"
-              />
-              <span className="w-6 h-6">
-                <FiSearch className="text-xl active:text-lg transition-all duration-500 cursor-pointer" />
-              </span>
-            </span> */}
             <div className="relative sm:w-64">
               <input
                 type="text"

@@ -134,9 +134,6 @@ export default function BestSelling() {
               </div>
 
               <div className="mt-4 flex h-20 flex-col justify-around">
-                {/* <div className="mb-1 flex items-center justify-between">
-                  <span className="rounded-full bg-[#f5f5f5] px-2 py-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-[#6b7280]">{item.category}</span>
-                </div> */}
                 <h1 className="text-sm font-semibold text-[#111111]">{item.title}</h1>
                 <div className="flex gap-2">
                   <p className="text-sm font-semibold text-[#DB4444]">
