@@ -5,12 +5,12 @@ import "./globals.css";
 
 export const metadata = {
   title: "Wear Zara",
-}
+};
 
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className="">
+      <body className="min-h-screen overflow-x-hidden bg-white text-black">
         <Navbar />
         {children}
         <Footer />

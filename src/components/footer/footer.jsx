@@ -62,7 +62,7 @@ export default function Footer() {
     <>
      <section className="bg-black py-18 px-10">
 
-       <div className="text-white flex gap-5 justify-evenly">
+       <div className="text-white flex gap-5 justify-evenly flex-col md:flex-row w-full">
 
             <div className="flex flex-col gap-5">
                 { shimmer ? (<>

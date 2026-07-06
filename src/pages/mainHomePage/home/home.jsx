@@ -21,11 +21,11 @@ export default function HomePage() {
   }, []);
 
   return (
-    <section className="mb-24 lg:mb-30">
-      <div className="flex h-auto flex-col gap-6 px-4 py-6 sm:px-6 lg:h-112 lg:flex-row lg:px-30 lg:py-0">
+    <section className="mb-16 px-4 py-6 sm:px-6 lg:mb-30 lg:px-30 lg:py-0">
+      <div className="flex h-auto flex-col gap-6 lg:h-112 lg:flex-row">
         <div className="flex w-full flex-col justify-between gap-3 rounded-lg border border-[#ececec] bg-[#fafafa] p-5 shadow-sm select-none lg:w-[25%] lg:gap-0 lg:rounded-none lg:rounded-b-lg lg:border lg:border-t-transparent lg:border-[#e5e7eb] lg:bg-transparent lg:p-0 lg:pr-4 lg:pl-2 lg:pb-2 lg:pt-8">
           {shimmer ? (
-            <div className="flex h-full w-full flex-col justify-between">
+            <div className="flex h-full w-full flex-col justify-between gap-4 md:gap-0">
               <Skeleton className="h-4 w-[90%] rounded-sm bg-[#e4e4e4]" />
               <Skeleton className="h-4 w-[80%] rounded-sm bg-[#e4e4e4]" />
               <Skeleton className="h-4 w-[50%] rounded-sm bg-[#e4e4e4]" />
@@ -97,7 +97,7 @@ export default function HomePage() {
         </div>
 
         <div className="relative flex w-full select-none overflow-hidden rounded-lg bg-black p-6 sm:p-8 lg:ml-6 lg:mt-8 lg:p-10">
-          <div className="flex w-full flex-col gap-5 justify-center lg:w-[50%] lg:pl-8">
+          <div className="flex w-full flex-col gap-5 justify-center lg:w-[50%] lg:pl-8 mb-7 md:mb-0">
             {shimmer ? (
               <div className="flex flex-col gap-4 pt-6">
                 <Skeleton className="h-10 w-40 rounded-md bg-[#414141]" />

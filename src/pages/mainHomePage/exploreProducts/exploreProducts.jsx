@@ -10,7 +10,6 @@ import { FiArrowRight, FiArrowLeft } from "react-icons/fi";
 import { FaRegHeart, FaHeart, FaStar } from "react-icons/fa6";
 
 export default function ExploreProducts() {
-  
   const [shimmer, setShimmer] = useState(true);
   const [redHeart, setRedHeart] = useState(null);
   const [addedCart, setAddedCart] = useState(null);
@@ -96,14 +95,16 @@ export default function ExploreProducts() {
 
   return (
     <>
-      <section className="mx-30">
+      <section className="mx-4 sm:mx-6 lg:mx-30">
         <div className="flex items-center gap-2 mb-4">
           <div className="w-4 h-8 rounded-sm bg-[#DB4444]"></div>
           <p className="font-semibold text-sm text-[#DB4444]">Our Products</p>
         </div>
 
-        <div className="flex items-center justify-between">
-          <p className="font-semibold text-3xl">Explore Our Products</p>
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+          <p className="text-2xl font-semibold sm:text-3xl">
+            Explore Our Products
+          </p>
 
           <div className="flex gap-3">
             <span className="cursor-pointer bg-[#f1f0f0] hover:bg-[#e6e5e5] active:bg-[#d1cdcd] transition-all duration-300 w-9 h-9 rounded-full flex items-center justify-center">
@@ -118,7 +119,7 @@ export default function ExploreProducts() {
         <div className="">
           {shimmer ? (
             <>
-              <div className="flex flex-wrap justify-between gap-6 pt-15 pb-12">
+              <div className="flex flex-wrap justify-center gap-6 pt-15 pb-12 sm:justify-between">
                 {[...Array(10)].map((_, index) => (
                   <div key={index} className="h-70 w-55">
                     <Skeleton className="h-[75%] w-full rounded-2xl bg-[#e4e4e4]" />
@@ -131,9 +132,12 @@ export default function ExploreProducts() {
             </>
           ) : (
             <>
-              <div className="flex flex-wrap justify-between gap-8 pt-15 pb-12 select-none">
+              <div className="flex flex-wrap justify-center gap-20 md:gap-4 pt-15 pb-12 select-none sm:justify-between sm:gap-6 lg:gap-8">
                 {ourProducts.map((item, index) => (
-                  <div key={index} className="h-70 w-55 mb-7">
+                  <div
+                    key={index}
+                    className="mb-7 h-70 w-full min-w-55 sm:w-[calc(50%-0.75rem)] lg:w-55"
+                  >
                     <div className="group relative h-56 w-full cursor-pointer overflow-hidden rounded-2xl border border-[#f0f0f0] bg-[#f7f7f7] shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
                       <div className="absolute inset-0 flex items-center justify-center p-4">
                         <img
