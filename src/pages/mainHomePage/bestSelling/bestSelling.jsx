@@ -12,6 +12,7 @@ export default function BestSelling() {
   const [shimmer, setShimmer] = useState(true);
   const [redHeart, setRedHeart] = useState(null);
   const [addedCart, setAddedCart] = useState(null);
+  const [previewImage, setPreviewImage] = useState(null)
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -80,7 +81,7 @@ export default function BestSelling() {
             Best Selling Products
           </p>
 
-          <div className="">
+          <div className="hidden md:block">
             <Link
               href="/shopNow?title=Best%20Selling"
               className="bg-[#DB4444] hover:bg-[#d14444] active:bg-[#bb3d3d] transition-all duration-300 cursor-pointer px-9 py-3 text-sm text-white rounded-md"
@@ -95,10 +96,10 @@ export default function BestSelling() {
             <>
               {[...Array(5)].map((_, index) => (
                 <div key={index} className="h-70 w-55">
-                  <Skeleton className="h-[75%] w-full rounded-2xl bg-[#e4e4e4]" />
-                  <Skeleton className="mt-2 h-[6%] w-[70%] rounded-full bg-[#e4e4e4]" />
-                  <Skeleton className="mt-3 h-[6%] w-[30%] rounded-full bg-[#e4e4e4]" />
-                  <Skeleton className="mt-2 h-[6%] w-[50%] rounded-full bg-[#e4e4e4]" />
+                  <Skeleton className="h-[75%] w-full rounded-2xl" />
+                  <Skeleton className="mt-2 h-[6%] w-[70%] rounded-full" />
+                  <Skeleton className="mt-3 h-[6%] w-[30%] rounded-full" />
+                  <Skeleton className="mt-2 h-[6%] w-[50%] rounded-full" />
                 </div>
               ))}
             </>
@@ -109,48 +110,49 @@ export default function BestSelling() {
                   key={index}
                   className="h-70 w-full min-w-55 sm:w-[calc(50%-0.5rem)] lg:w-[calc(25%-0.75rem)] xl:min-w-55 xl:w-55"
                 >
-                  <div className="group relative h-56 w-full overflow-hidden rounded-2xl border border-[#f0f0f0] bg-[#f7f7f7] p-0 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg cursor-pointer">
+                  <div className="group relative h-56 w-full overflow-hidden rounded-2xl border border-[#f0f0f0] dark:border-[#525252] bg-[#f7f7f7] dark:bg-[#202020] p-0 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg cursor-pointer">
                     <div className="absolute inset-0 flex items-center justify-center p-4">
                       <img
                         className="h-auto max-h-[75%] w-auto max-w-[80%] object-contain transition-all duration-300 group-hover:scale-105"
                         src={item.imgURL}
-                        alt=""
+                        alt={item.title}
+                        onClick={() => {setPreviewImage(item.imgURL)}}
                       />
                     </div>
 
                     <div className="absolute right-2 top-2 flex flex-col gap-2">
                       <div
                         onClick={() => handleRedHeart(index)}
-                        className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-full bg-white shadow-sm transition-all duration-300 hover:scale-105 hover:bg-[#fff5f5] active:bg-[#ebebeb]"
+                        className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-full bg-white dark:bg-[#b9b9b9] shadow-sm transition-all duration-300 hover:scale-105 hover:bg-[#fff5f5] dark:hover:bg-[#b9b9b9] active:bg-[#ebebeb]"
                       >
                         {redHeart === index ? (
                           <FaHeart className="text-md text-[#DB4444]" />
                         ) : (
-                          <FaRegHeart className="text-md" />
+                          <FaRegHeart className="text-md dark:text-black" />
                         )}
                       </div>
-                      <div className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-full bg-white shadow-sm transition-all duration-300 hover:scale-105 hover:bg-[#f7f7f7] active:bg-[#ebebeb]">
-                        <IoEyeOutline className="text-md" />
+                      <div className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-full bg-white dark:bg-[#b9b9b9] shadow-sm transition-all duration-300 hover:scale-105 hover:bg-[#f7f7f7] dark:hover:bg-[#b9b9b9] active:bg-[#ebebeb]">
+                        <IoEyeOutline className="text-md dark:text-black" />
                       </div>
                     </div>
 
                     <div
                       onClick={() => handleCard(index)}
-                      className="absolute bottom-0 w-full bg-[#111111] py-2.5 text-center text-sm text-white opacity-0 translate-y-2 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100 active:text-[#e3e3e3]"
+                      className="absolute bottom-0 w-full bg-[#111111] dark:bg-[#b9b9b9] dark:text-black py-2.5 text-center text-sm text-white opacity-0 translate-y-2 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100 active:text-[#e3e3e3]"
                     >
                       {addedCart === index ? "Added to Card" : "Add to Cart"}
                     </div>
                   </div>
 
                   <div className="mt-4 flex h-20 flex-col justify-around">
-                    <h1 className="text-sm font-semibold text-[#111111]">
+                    <h1 className="text-sm font-semibold text-[#111111] dark:text-white">
                       {item.title}
                     </h1>
                     <div className="flex gap-2">
                       <p className="text-sm font-semibold text-[#DB4444]">
                         ${item.priceNow}
                       </p>
-                      <p className="text-sm text-[#676666] line-through">
+                      <p className="text-sm text-[#676666] dark:text-[#676666] line-through">
                         ${item.priceWas}
                       </p>
                     </div>
@@ -171,6 +173,24 @@ export default function BestSelling() {
             </>
           )}
         </div>
+
+        <div className="mt-7 flex justify-center md:hidden">
+            <Link
+              href="/shopNow?title=Best%20Selling"
+              className="bg-[#DB4444] hover:bg-[#d14444] active:bg-[#bb3d3d] transition-all duration-300 cursor-pointer px-9 py-3 text-sm text-white rounded-md"
+            >
+              View All
+            </Link>
+          </div>
+
+        {previewImage && (<div onClick={() => setPreviewImage(null)} className="fixed inset-0 cursor-pointer z-50 flex items-center justify-center bg-black/60 p-5">
+
+          <div className="relative h-[40vh] w-[30vw] bg-white cursor-default flex items-center justify-center" onClick={(e) => e.stopPropagation()}>
+            <img src={previewImage} alt="Preview" className="max-h-[80%] max-w-[80%] object-contain"/>
+          </div>
+
+        </div>)}    
+          
       </section>
     </>
   );

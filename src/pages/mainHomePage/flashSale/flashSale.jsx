@@ -18,6 +18,7 @@ export default function FlashSale() {
   const [viewAll, setViewAll] = useState(false);
   const [redHeart, setRedHeart] = useState(null);
   const [addedCart, setAddedCart] = useState(null);
+  const [previewImage, setPreviewImage] = useState(null)
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -176,7 +177,7 @@ export default function FlashSale() {
 
   return (
     <>
-      <section className="ml-4 border-b border-[#ccc9c9] pb-15 pl-0 pr-4 sm:ml-6 sm:pr-6 lg:ml-30 lg:pl-20 lg:pr-20">
+      <section className="ml-4 border-b border-[#ccc9c9] dark:border-[#525252] pb-15 pl-0 pr-4 sm:ml-6 sm:pr-6 lg:ml-30 lg:pl-20 lg:pr-0">
         <div className="flex items-center gap-2 mb-4 ">
           <div className="w-4 h-8 rounded-sm bg-[#DB4444]"></div>
           <p className="font-semibold text-sm text-[#DB4444]">Today's</p>
@@ -186,16 +187,16 @@ export default function FlashSale() {
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:gap-6 lg:gap-20">
             <p className="text-2xl font-semibold sm:text-3xl">Flash Sales</p>
 
-            <div className="bg-white select-none">
+            <div className="bg-white dark:bg-black select-none">
               <div className="flex items-end justify-center">
                 <div className="flex flex-col items-center w-14">
-                  <span className="text-xs font-medium text-gray-900 mb-1 tracking-wide">
+                  <span className="text-xs font-medium text-gray-900 dark:text-white mb-1 tracking-wide">
                     Days
                   </span>
                   {shimmer ? (
-                    <Skeleton className="w-[70%] h-8 mt-1 bg-[#e4e4e4] rounded-sm" />
+                    <Skeleton className="w-[70%] h-8 mt-1 rounded-sm" />
                   ) : (
-                    <span className="text-3xl font-semibold text-black tracking-tight">
+                    <span className="text-3xl font-semibold text-black dark:text-white tracking-tight">
                       {days}
                     </span>
                   )}
@@ -206,13 +207,13 @@ export default function FlashSale() {
                 </div>
 
                 <div className="flex flex-col items-center w-14">
-                  <span className="text-xs font-medium text-gray-900 mb-1 tracking-wide">
+                  <span className="text-xs font-medium text-gray-900 dark:text-white mb-1 tracking-wide">
                     Hours
                   </span>
                   {shimmer ? (
-                    <Skeleton className="w-[70%] h-8 mt-1 bg-[#e4e4e4] rounded-sm" />
+                    <Skeleton className="w-[70%] h-8 mt-1 rounded-sm" />
                   ) : (
-                    <span className="text-3xl font-semibold text-black tracking-tight">
+                    <span className="text-3xl font-semibold text-black dark:text-white tracking-tight">
                       {hours}
                     </span>
                   )}
@@ -223,13 +224,13 @@ export default function FlashSale() {
                 </div>
 
                 <div className="flex flex-col items-center w-14">
-                  <span className="text-xs font-medium text-gray-900 mb-1 tracking-wide">
+                  <span className="text-xs font-medium text-gray-900 dark:text-white mb-1 tracking-wide">
                     Minutes
                   </span>
                   {shimmer ? (
-                    <Skeleton className="w-[70%] h-8 mt-1 bg-[#e4e4e4] rounded-sm" />
+                    <Skeleton className="w-[70%] h-8 mt-1 rounded-sm" />
                   ) : (
-                    <span className="text-3xl font-semibold text-black tracking-tight">
+                    <span className="text-3xl font-semibold text-black dark:text-white tracking-tight">
                       {minutes}
                     </span>
                   )}
@@ -240,13 +241,13 @@ export default function FlashSale() {
                 </div>
 
                 <div className="flex flex-col items-center w-14">
-                  <span className="text-xs font-medium text-gray-900 mb-1 tracking-wide">
+                  <span className="text-xs font-medium text-gray-900 mb-1 dark:text-white tracking-wide">
                     Seconds
                   </span>
                   {shimmer ? (
-                    <Skeleton className="w-[70%] h-8 mt-1 bg-[#e4e4e4] rounded-sm" />
+                    <Skeleton className="w-[70%] h-8 mt-1 rounded-sm" />
                   ) : (
-                    <span className="text-3xl font-semibold text-black tracking-tight">
+                    <span className="text-3xl font-semibold text-black dark:text-white tracking-tight">
                       {seconds}
                     </span>
                   )}
@@ -259,13 +260,13 @@ export default function FlashSale() {
             <div className="flex gap-3">
               <span
                 onClick={scrollLeft}
-                className="cursor-pointer bg-[#f1f0f0] hover:bg-[#e6e5e5] active:bg-[#d1cdcd] transition-all duration-300 w-9 h-9 rounded-full flex items-center justify-center"
+                className="cursor-pointer dark:bg-[#2d2d2d] dark:hover:bg-[#444444] dark:active:bg-[#616161] bg-[#f1f0f0] hover:bg-[#e6e5e5] active:bg-[#d1cdcd] transition-all duration-300 w-9 h-9 rounded-full flex items-center justify-center"
               >
                 <FiArrowLeft className="text-xl" />
               </span>
               <span
                 onClick={scrollRight}
-                className="cursor-pointer bg-[#f1f0f0] hover:bg-[#e6e5e5] active:bg-[#d1cdcd] transition-all duration-300 w-9 h-9 rounded-full flex items-center justify-center"
+                className="cursor-pointer dark:bg-[#2d2d2d] dark:hover:bg-[#444444] dark:active:bg-[#616161] bg-[#f1f0f0] hover:bg-[#e6e5e5] active:bg-[#d1cdcd] transition-all duration-300 w-9 h-9 rounded-full flex items-center justify-center"
               >
                 <FiArrowRight className="text-xl" />
               </span>
@@ -278,10 +279,10 @@ export default function FlashSale() {
             <div className="flex mt-10 mb-16 pb-2 pr-2 gap-9 overflow-x-auto">
               {[...Array(8)].map((_, index) => (
                 <div key={index} className="h-70 min-w-55">
-                  <Skeleton className="h-[73%] w-full rounded-2xl bg-[#e4e4e4]" />
-                  <Skeleton className="mt-2 h-[5%] w-[70%] rounded-full bg-[#e4e4e4]" />
-                  <Skeleton className="mt-3 h-[5%] w-[30%] rounded-full bg-[#e4e4e4]" />
-                  <Skeleton className="mt-2 h-[5%] w-[50%] rounded-full bg-[#e4e4e4]" />
+                  <Skeleton className="h-[73%] w-full rounded-2xl" />
+                  <Skeleton className="mt-2 h-[5%] w-[70%] rounded-full" />
+                  <Skeleton className="mt-3 h-[5%] w-[30%] rounded-full" />
+                  <Skeleton className="mt-2 h-[5%] w-[50%] rounded-full" />
                 </div>
               ))}
             </div>
@@ -290,19 +291,20 @@ export default function FlashSale() {
           <>
             <div
               ref={sliderRef}
-              className={`mt-10 mb-7 select-none flex ${viewAll ? "flex-wrap justify-start gap-4 sm:gap-6 lg:gap-10" : "gap-4 overflow-x-auto pb-2 pr-2 sm:gap-6 lg:gap-8"}`}
+              className={`mt-10 mb-7 select-none flex ${viewAll ? "flex-wrap justify-start gap-4 sm:gap-6 lg:gap-10" : "gap-4 overflow-x-auto pb-2 pr-2 sm:gap-6 lg:gap-8 xxl:justify-between"}`}
             >
               {sale.map((item, index) => (
                 <div
                   key={index}
-                  className={`h-80 shrink-0 ${viewAll ? "mb-7 w-full min-w-[220px] sm:w-[calc(50%-0.75rem)] lg:w-[220px]" : "min-w-[220px] sm:min-w-[230px] lg:min-w-[220px]"}`}
+                  className={`h-80 shrink-0 ${viewAll ? "mb-7 w-full min-w-55 sm:w-[calc(50%-0.75rem)] lg:w-55" : "min-w-55 sm:min-w-57.5 lg:min-w-55"}`}
                 >
-                  <div className="group relative h-56 w-full overflow-hidden rounded-2xl border border-[#f0f0f0] bg-[#f7f7f7] p-0 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg cursor-pointer">
+                  <div className="group relative h-56 w-full dark:bg-[#202020] overflow-hidden rounded-2xl border dark:border-[#525252] border-[#f0f0f0] bg-[#f7f7f7] p-0 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg cursor-pointer">
                     <div className="absolute inset-0 flex items-center justify-center p-4">
                       <img
                         className="h-auto max-h-[75%] w-auto max-w-[80%] object-contain transition-all duration-300 group-hover:scale-105"
                         src={item.imgURL}
-                        alt=""
+                        alt={item.title}
+                        onClick={() => setPreviewImage(item.imgURL)}
                       />
                     </div>
 
@@ -313,23 +315,23 @@ export default function FlashSale() {
                       <div className="flex flex-col gap-2">
                         <div
                           onClick={() => handleRedHeart(index)}
-                          className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-full bg-white shadow-sm transition-all duration-300 hover:scale-105 hover:bg-[#fff5f5] active:bg-[#ebebeb]"
+                          className="flex h-8 w-8 cursor-pointer dark:hover:bg-[#b9b9b9] items-center justify-center rounded-full dark:bg-[#b9b9b9] bg-white shadow-sm transition-all duration-300 hover:scale-105 hover:bg-[#fff5f5] active:bg-[#ebebeb]"
                         >
                           {redHeart === index ? (
                             <FaHeart className="text-md text-[#DB4444]" />
                           ) : (
-                            <FaRegHeart className="text-md" />
+                            <FaRegHeart className="text-md dark:text-black" />
                           )}
                         </div>
-                        <div className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-full bg-white shadow-sm transition-all duration-300 hover:scale-105 hover:bg-[#f7f7f7] active:bg-[#ebebeb]">
-                          <IoEyeOutline className="text-md" />
+                        <div className="flex h-8 w-8 cursor-pointer items-center dark:hover:bg-[#b9b9b9] justify-center rounded-full dark:bg-[#b9b9b9] bg-white shadow-sm transition-all duration-300 hover:scale-105 hover:bg-[#f7f7f7] active:bg-[#ebebeb]">
+                          <IoEyeOutline className="text-md dark:text-black" />
                         </div>
                       </div>
                     </div>
 
                     <div
                       onClick={() => handleCard(index)}
-                      className="absolute bottom-0 w-full bg-[#111111] py-2.5 text-center text-sm text-white opacity-0 translate-y-2 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100 active:text-[#e3e3e3]"
+                      className="absolute bottom-0 w-full bg-[#111111] dark:bg-[#b9b9b9] dark:text-black py-2.5 text-center text-sm text-white opacity-0 translate-y-2 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100 active:text-[#e3e3e3]"
                     >
                       {addedCart === index ? "Added to Card" : "Add to Cart"}
                     </div>
@@ -373,6 +375,15 @@ export default function FlashSale() {
             {viewAll ? "View less Products" : "View All Products"}
           </button>
         </div>
+
+        {previewImage && (<div onClick={() => setPreviewImage(null)} className="fixed inset-0 cursor-pointer z-50 flex items-center justify-center bg-black/60 p-5">
+
+          <div className="relative h-[40vh] w-[30vw] bg-white cursor-default flex items-center justify-center" onClick={(e) => e.stopPropagation()}>
+            <img src={previewImage} alt="Preview" className="max-h-[80%] max-w-[80%] object-contain"/>
+          </div>
+
+        </div>)}  
+        
       </section>
     </>
   );

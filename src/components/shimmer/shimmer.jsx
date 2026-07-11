@@ -8,7 +8,7 @@ export default function Skeleton({ className }) {
         }
       `}</style>
 
-      <div className={`relative overflow-hidden ${className}`}>
+      <div className={`relative overflow-hidden bg-[#e4e4e4] dark:bg-[#4a4a4a] ${className}`}>
         <div
           className="absolute inset-0"
           style={{

@@ -26,7 +26,7 @@ export default function Description() {
           <div className="flex flex-col items-center gap-4">
             {shimmer ? (
               <>
-                <Skeleton className="w-11 h-11 rounded-full bg-[#e4e4e4]" />
+                <Skeleton className="w-11 h-11 rounded-full" />
               </>
             ) : (
               <>
@@ -40,8 +40,8 @@ export default function Description() {
             {shimmer ? (
               <>
                 <div className="flex flex-col gap-2 items-center">
-                  <Skeleton className="w-50 h-5 bg-[#e4e4e4] rounded-lg" />
-                  <Skeleton className="w-30 h-3 bg-[#e4e4e4] rounded-lg" />
+                  <Skeleton className="w-50 h-5 rounded-lg" />
+                  <Skeleton className="w-30 h-3 rounded-lg" />
                 </div>
               </>
             ) : (
@@ -59,7 +59,7 @@ export default function Description() {
           <div className="flex flex-col items-center gap-4">
             {shimmer ? (
               <>
-                <Skeleton className="w-11 h-11 rounded-full bg-[#e4e4e4]" />
+                <Skeleton className="w-11 h-11 rounded-full" />
               </>
             ) : (
               <>
@@ -73,8 +73,8 @@ export default function Description() {
             {shimmer ? (
               <>
                 <div className="flex flex-col gap-2 items-center">
-                  <Skeleton className="w-50 h-5 bg-[#e4e4e4] rounded-lg" />
-                  <Skeleton className="w-30 h-3 bg-[#e4e4e4] rounded-lg" />
+                  <Skeleton className="w-50 h-5 rounded-lg" />
+                  <Skeleton className="w-30 h-3 rounded-lg" />
                 </div>
               </>
             ) : (
@@ -92,7 +92,7 @@ export default function Description() {
           <div className="flex flex-col items-center gap-4">
             {shimmer ? (
               <>
-                <Skeleton className="w-11 h-11 rounded-full bg-[#e4e4e4]" />
+                <Skeleton className="w-11 h-11 rounded-full" />
               </>
             ) : (
               <>
@@ -106,8 +106,8 @@ export default function Description() {
             {shimmer ? (
               <>
                 <div className="flex flex-col gap-2 items-center">
-                  <Skeleton className="w-50 h-5 bg-[#e4e4e4] rounded-lg" />
-                  <Skeleton className="w-30 h-3 bg-[#e4e4e4] rounded-lg" />
+                  <Skeleton className="w-50 h-5 rounded-lg" />
+                  <Skeleton className="w-30 h-3 rounded-lg" />
                 </div>
               </>
             ) : (
