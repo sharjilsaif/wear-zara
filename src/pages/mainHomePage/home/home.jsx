@@ -23,7 +23,8 @@ export default function HomePage() {
   return (
     <section className="mb-16 px-4 py-6 sm:px-6 lg:mb-30 lg:px-30 lg:py-0">
       <div className="flex h-auto flex-col-reverse gap-6 lg:h-112 lg:flex-row">
-        <div className="flex w-full flex-col justify-between gap-3 rounded-lg border dark:border-[#525252] border-[#ececec] bg-[#fafafa] p-5  select-none lg:w-[25%] lg:gap-0 lg:rounded-none lg:rounded-b-lg lg:border lg:border-t-transparent lg:border-[#e5e7eb] lg:bg-transparent dark:border-t-transparent lg:p-0 lg:pr-4 lg:pl-2 lg:pb-2 lg:pt-8">
+        <div className="w-full lg:w-[25%] flex flex-col justify-between gap-3 lg:gap-0 rounded-lg border border-[#e5e7eb] lg:border-t-transparent dark:border-t-transparent text-black bg-white dark:text-white dark:bg-black dark:border-[#525252] select-none lg:rounded-none lg:rounded-b-lg  p-5 lg:p-0 lg:pr-4 lg:pl-2 lg:pb-2 lg:pt-8">
+        {/* <div className="nav-bar-icons w-full lg:w-[25%] flex flex-col justify-between gap-3 lg:gap-0 rounded-lg border border-[#ececec] lg:border lg:border-t-transparent lg:border-[#e5e7eb] dark:text-white dark:bg-black dark:border-[#525252] bg-[#fafafa] p-5  select-none   lg:rounded-none lg:rounded-b-lg  lg:bg-transparent dark:border-t-transparent lg:p-0 lg:pr-4 lg:pl-2 lg:pb-2 lg:pt-8"> */}
           {shimmer ? (
             <div className="flex h-full w-full flex-col justify-between gap-4 md:gap-0 lg:pl-2 lg:pt-3 lg:pb-2">
               {[...Array(9)].map((_, index) => (
