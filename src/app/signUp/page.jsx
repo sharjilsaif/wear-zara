@@ -24,32 +24,82 @@ export default function SignUp() {
     return () => clearTimeout(timer);
   }, []);
 
-  useEffect(() => {
-    if (error || success) {
-      const timer = setTimeout(() => { setError(false); setSuccess(false); }, 4000);
-      return () => clearTimeout(timer);
+  const clearError = () => {
+    if(error){
+      setError("")
     }
-  }, [error, success]);
+  }
 
-  const formatName = (value) =>
-    value.toLowerCase().split(" ").map((w) => (w ? w.charAt(0).toUpperCase() + w.slice(1) : "")).join(" ");
-
-  useEffect(() => { router.prefetch("/login"); }, [router]);
-
-  const handleSignup = (e) => {
-    e.preventDefault();
-    if (!name.trim() || !email.trim() || !password) { setError("Please fill all the inputs*"); return; }
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { setError("Please enter a valid email address*"); return; }
-    if (password.length < 8) { setError("Password must be at least 8 characters long*"); return; }
-    setLoading(true);
-    setTimeout(() => {
-      const user = { name: name.trim(), email: email.trim().toLowerCase(), password: password.replace(/\s/g, "") };
-      localStorage.setItem("user", JSON.stringify(user));
-      setError(false); setSuccess(true); setName(""); setEmail(""); setPassword("");
-      router.push("/login");
-      setLoading(false);
-    }, 2000);
+  const formatName = (value) => {
+    return value
+      .toLowerCase()
+      .replace(/\b\w/g, (char) => char.toUpperCase());
   };
+
+  const handleSignup = async (e) => {
+    e.preventDefault();
+
+    if (!name.trim() || !email.trim() || !password) {
+      setError("Please fill all the inputs*");
+      return;
+    }
+
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      setError("Please enter a valid email address*");
+      return;
+    }
+
+    if (password.length < 8 || !/\d.*\d/.test(password)) {
+      setError("Password must be at least 8 characters and contain at least two numbers*");
+      return;
+    }
+
+    setLoading(true);
+    setError("");
+
+    try {
+      const response = await fetch("/api/auth/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: name.trim(),
+          email: email.trim().toLowerCase(),
+          password: password.replace(/\s/g, ""),
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        if (response.status === 409) {
+          setError("This email is already registered.");
+        } else {
+          setError("Data already existed");
+        }
+
+        return;
+      }
+
+      setSuccess(true);
+      setName("");
+      setEmail("");
+      setPassword("");
+
+      setTimeout(() => {
+        router.push("/login");
+      }, 2000);
+
+    } catch (error) {
+      console.error("Signup error:", error);
+      setError("Unable to create account. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => { router.prefetch("/login"); }, []);
 
   return (
     <section className="px-4 py-8 sm:px-6 lg:px-8 bg-white dark:bg-[#0f0f0f] transition-colors duration-300">
@@ -78,6 +128,7 @@ export default function SignUp() {
                     className={`w-full rounded-2xl border bg-[#f9fafb] dark:bg-[#1a1a1a] text-[#111] dark:text-white placeholder:text-[#9ca3af] dark:placeholder:text-[#555] px-4 py-3 text-sm outline-none transition-all duration-300 focus:border-[#bfbaba] dark:focus:border-[#444] focus:bg-white dark:focus:bg-[#1f1f1f] ${error ? "border-red-400" : "border-[#e5e7eb] dark:border-[#2a2a2a]"}`}
                     placeholder="Name" type="text" value={name}
                     onChange={(e) => setName(formatName(e.target.value))}
+                    onFocus={clearError}
                   />
                 </div>
                 <div>
@@ -86,6 +137,7 @@ export default function SignUp() {
                     className={`w-full rounded-2xl border bg-[#f9fafb] dark:bg-[#1a1a1a] text-[#111] dark:text-white placeholder:text-[#9ca3af] dark:placeholder:text-[#555] px-4 py-3 text-sm outline-none transition-all duration-300 focus:border-[#bfbaba] dark:focus:border-[#444] focus:bg-white dark:focus:bg-[#1f1f1f] ${error ? "border-red-400" : "border-[#e5e7eb] dark:border-[#2a2a2a]"}`}
                     placeholder="Email or Phone Number" type="email" value={email}
                     onChange={(e) => setEmail(e.target.value)}
+                    onFocus={clearError}
                   />
                 </div>
                 <div className="relative">
@@ -95,6 +147,7 @@ export default function SignUp() {
                     placeholder="Password" type={showPassword ? "text" : "password"} value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     onKeyDown={(e) => { if (e.key === " ") e.preventDefault(); }}
+                    onFocus={clearError}
                   />
                   <div className="absolute right-3 top-[2.7rem] cursor-pointer text-[#6b7280] dark:text-[#888]" onClick={() => setShowPassword(!showPassword)}>
                     {showPassword ? <BiHide /> : <BiShow />}

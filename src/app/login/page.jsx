@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { signIn } from "next-auth/react";
 
 import Skeleton from "@/components/shimmer/shimmer";
 
@@ -24,38 +25,65 @@ export default function LogIn() {
     return () => clearTimeout(timer);
   }, []);
 
-  useEffect(() => {
-    if (error || success) {
-      const timer = setTimeout(() => { setError(false); setSuccess(false); }, 3000);
-      return () => clearTimeout(timer);
+  const clearError = () => {
+    if(error){
+      setError("")
     }
-  }, [error, success]);
-
-  useEffect(() => { router.prefetch("/login"); }, [router]);
-
-  const handleLogin = (e) => {
+  }
+  
+  const handleLogin = async (e) => {
     e.preventDefault();
-    const storedUser = JSON.parse(localStorage.getItem("user"));
-    if (!storedUser) { setError("No account found. Please sign up first."); setSignUp(true); return; }
-    if (!email.trim() || !password.trim()) { setError("Please fill the details"); return; }
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { setError("Please enter a valid email address*"); return; }
-    if (email !== storedUser.email && password !== storedUser.password) {
-      setError("Details does not match.");
-    } else if (email !== storedUser.email) {
-      setError("Email address does not match.");
-    } else if (password !== storedUser.password) {
-      setError("Password does not match.");
-    } else {
-      setLoading(true);
+
+    if (!email.trim() || !password.trim()) {
+      setError("Please fill the details");
+      return;
+    }
+
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      setError("Please enter a valid email address*");
+      return;
+    }
+
+    setLoading(true);
+    setError("");
+
+    try {
+      const result = await signIn("credentials", {
+        email: email.trim().toLowerCase(),
+        password,
+        redirect: false,
+      });
+
+      if (result?.error) {
+        if (result.error.includes("EMAIL_NOT_FOUND")) {
+          setError("This email is not registered.");
+          setSignUp(true);
+        } else if (result.error.includes("WRONG_PASSWORD")) {
+          setError("Incorrect password.");
+        } else {
+          setError("Invalid email or password.");
+        }
+        return;
+      }
+
+      setSuccess(true);
+      setEmail("");
+      setPassword("");
+
+      window.dispatchEvent(new Event("auth:change"));
+
       setTimeout(() => {
-        localStorage.setItem("currentUser", JSON.stringify(storedUser));
-        window.dispatchEvent(new Event("auth:change"));
-        setError(""); setSuccess(true); setEmail(""); setPassword("");
         router.push("/");
-        setLoading(false);
-      }, 2000);
+      }, 1000);
+    } catch (error) {
+      console.error("Login error:", error);
+      setError("Something went wrong. Please try again.");
+    } finally {
+      setLoading(false);
     }
   };
+
+  useEffect(() => { router.prefetch("/"); }, []);
 
   return (
     <section className="px-4 py-8 sm:px-6 lg:px-8 bg-white dark:bg-[#0f0f0f] transition-colors duration-300">
@@ -85,6 +113,7 @@ export default function LogIn() {
                     type="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
+                    onFocus={clearError}
                   />
                 </div>
                 <div className="relative">
@@ -96,6 +125,7 @@ export default function LogIn() {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     onKeyDown={(e) => { if (e.key === " ") e.preventDefault(); }}
+                    onFocus={clearError}
                   />
                   <div className="absolute right-3 top-[2.7rem] cursor-pointer text-[#6b7280] dark:text-[#888]" onClick={() => setShowPassword(!showPassword)}>
                     {showPassword ? <BiHide /> : <BiShow />}

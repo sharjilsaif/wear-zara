@@ -43,7 +43,7 @@ export default function HomePage() {
                 href="/shopNow?title=Men's%20Fashion"
                 className="flex items-center justify-between rounded-md px-2 py-2 hover:bg-[#f3f4f6] dark:hover:bg-[#222] active:scale-97 transition-all duration-300"
               >
-                <span>Mens's Fashion</span>
+                <span>Men's Fashion</span>
                 <FaAngleRight />
               </Link>
               <Link

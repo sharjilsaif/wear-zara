@@ -1,6 +1,7 @@
 import Navbar from "@/components/navbar/navbar";
 import Footer from "@/components/footer/footer";
 import ThemeProvider from "@/components/themeProvider/themeProvider";
+import Providers from "@/components/providers/providers";
 
 import "./globals.css";
 
@@ -12,11 +13,13 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en" suppressHydrationWarning>
       <body className="min-h-screen overflow-x-hidden">
-        <ThemeProvider>
-            <Navbar />
-            {children}
-            <Footer />
-        </ThemeProvider>
+        <Providers>
+          <ThemeProvider>
+              <Navbar />
+                {children}
+              <Footer />
+          </ThemeProvider>
+        </Providers>
       </body>
     </html>
   );

@@ -90,7 +90,7 @@ export default function ProductDetails() {
                 <img
                   className="relative max-w-[320px] cursor-pointer object-contain sm:max-w-105"
                   src="product.png"
-                  alt=""
+                  alt="Headphone product"
                 />
               </>
             )}

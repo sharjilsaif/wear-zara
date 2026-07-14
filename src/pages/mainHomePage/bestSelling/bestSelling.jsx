@@ -10,8 +10,8 @@ import { FaRegHeart, FaHeart, FaStar } from "react-icons/fa6";
 
 export default function BestSelling() {
   const [shimmer, setShimmer] = useState(true);
-  const [redHeart, setRedHeart] = useState(null);
-  const [addedCart, setAddedCart] = useState(null);
+  const [redHeart, setRedHeart] = useState([]);
+  const [addedCart, setAddedCart] = useState([]);
   const [previewImage, setPreviewImage] = useState(null)
 
   useEffect(() => {
@@ -22,12 +22,69 @@ export default function BestSelling() {
     return () => clearTimeout(timer);
   }, []);
 
-  const handleRedHeart = (id) => {
-    setRedHeart(redHeart === id ? null : id);
+  const handleRedHeart = (product) => {
+    const currentWishlist = JSON.parse(localStorage.getItem("wishlist")) || [];
+    const isAlreadySaved = currentWishlist.some((item) => item.title === product.title);
+
+    let updatedWishlist;
+
+    if (isAlreadySaved) {
+      updatedWishlist = currentWishlist.filter((item) => item.title !== product.title);
+      setRedHeart((prev) => prev.filter((title) => title !== product.title));
+    } else {
+      updatedWishlist = [...currentWishlist, product];
+      setRedHeart((prev) => [...prev, product.title]);
+    }
+
+    localStorage.setItem("wishlist", JSON.stringify(updatedWishlist));
+
+    window.dispatchEvent(new Event("wishlist-updated"));
   };
 
-  const handleCard = (index) => {
-    setAddedCart(index);
+  useEffect(() => {
+      const syncStates = () => {
+        const savedWishlist = JSON.parse(localStorage.getItem("wishlist")) || [];
+        setRedHeart(savedWishlist.map((item) => item.title));
+  
+        const savedCart = JSON.parse(localStorage.getItem("cart")) || [];
+        setAddedCart(savedCart.map((item) => item.title));
+      };
+  
+      syncStates();
+  
+      window.addEventListener("wishlist-updated", syncStates);
+      window.addEventListener("cart-updated", syncStates);
+      window.addEventListener("storage", syncStates);
+  
+      return () => {
+        window.removeEventListener("wishlist-updated", syncStates);
+        window.removeEventListener("cart-updated", syncStates);
+        window.removeEventListener("storage", syncStates);
+      };
+    }, []);
+
+  const handleCartToggle = (product) => {
+    const currentCart = JSON.parse(localStorage.getItem("cart")) || [];
+    const isAlreadyInCart = currentCart.some((item) => item.title === product.title);
+
+    let updatedCart;
+
+    if (isAlreadyInCart) {
+      updatedCart = currentCart.filter((item) => item.title !== product.title);
+      setAddedCart((prev) => prev.filter((title) => title !== product.title));
+    } else {
+      const cartProduct = {
+        ...product,
+        id: product.id || Date.now() + Math.random(),
+        qty: 1,
+        price: Number(product.priceNow)
+      };
+      updatedCart = [...currentCart, cartProduct];
+      setAddedCart((prev) => [...prev, product.title]);
+    }
+
+    localStorage.setItem("cart", JSON.stringify(updatedCart));
+    window.dispatchEvent(new Event("cart-updated"));
   };
 
   const bestSelling = [
@@ -122,10 +179,10 @@ export default function BestSelling() {
 
                     <div className="absolute right-2 top-2 flex flex-col gap-2">
                       <div
-                        onClick={() => handleRedHeart(index)}
+                        onClick={() => handleRedHeart(item)}
                         className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-full bg-white dark:bg-[#b9b9b9] shadow-sm transition-all duration-300 hover:scale-105 hover:bg-[#fff5f5] dark:hover:bg-[#b9b9b9] active:bg-[#ebebeb]"
                       >
-                        {redHeart === index ? (
+                        {redHeart.includes(item.title) ? (
                           <FaHeart className="text-md text-[#DB4444]" />
                         ) : (
                           <FaRegHeart className="text-md dark:text-black" />
@@ -137,10 +194,10 @@ export default function BestSelling() {
                     </div>
 
                     <div
-                      onClick={() => handleCard(index)}
+                      onClick={() => handleCartToggle(item)}
                       className="absolute bottom-0 w-full bg-[#111111] dark:bg-[#b9b9b9] dark:text-black py-2.5 text-center text-sm text-white opacity-0 translate-y-2 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100 active:text-[#e3e3e3]"
                     >
-                      {addedCart === index ? "Added to Card" : "Add to Cart"}
+                      {addedCart.includes(item.title) ? "Added to Card" : "Add to Cart"}
                     </div>
                   </div>
 
@@ -185,7 +242,7 @@ export default function BestSelling() {
 
         {previewImage && (<div onClick={() => setPreviewImage(null)} className="fixed inset-0 cursor-pointer z-50 flex items-center justify-center bg-black/60 p-5">
 
-          <div className="relative h-[40vh] w-[30vw] bg-white cursor-default flex items-center justify-center" onClick={(e) => e.stopPropagation()}>
+          <div className="relative h-[40vh] w-[30vw] bg-white dark:bg-[#202020] cursor-default flex items-center justify-center" onClick={(e) => e.stopPropagation()}>
             <img src={previewImage} alt="Preview" className="max-h-[80%] max-w-[80%] object-contain"/>
           </div>
 

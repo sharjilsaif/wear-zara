@@ -31,7 +31,7 @@ export default function Description() {
             ) : (
               <>
                 <div className="w-13 h-13 rounded-full bg-[#b9b8b8] flex items-center justify-center cursor-pointer">
-                  <div className="w-10 h-10 rounded-full bg-black flex items-center justify-center">
+                  <div className="w-10 h-10 rounded-full bg-black dark:bg-[#1a1a1a] flex items-center justify-center">
                     <TbTruckDelivery className="text-white text-3xl" />
                   </div>
                 </div>
@@ -64,7 +64,7 @@ export default function Description() {
             ) : (
               <>
                 <div className="w-13 h-13 rounded-full bg-[#b9b8b8] flex items-center justify-center cursor-pointer">
-                  <div className="w-10 h-10 rounded-full bg-black flex items-center justify-center">
+                  <div className="w-10 h-10 rounded-full bg-black dark:bg-[#1a1a1a] flex items-center justify-center">
                     <RiCustomerServiceLine className="text-white text-3xl" />
                   </div>
                 </div>
@@ -97,7 +97,7 @@ export default function Description() {
             ) : (
               <>
                 <div className="w-13 h-13 rounded-full bg-[#b9b8b8] flex items-center justify-center cursor-pointer">
-                  <div className="w-10 h-10 rounded-full bg-black flex items-center justify-center">
+                  <div className="w-10 h-10 rounded-full bg-black dark:bg-[#1a1a1a] flex items-center justify-center">
                     <MdOutlineVerifiedUser className="text-white text-3xl" />
                   </div>
                 </div>
