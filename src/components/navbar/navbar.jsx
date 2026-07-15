@@ -86,16 +86,12 @@ export default function Navbar() {
       <header className="sticky top-0 z-50 bg-white dark:bg-[#0f0f0f] shadow-sm dark:shadow-[0_1px_0_rgba(255,255,255,0.06)] transition-colors duration-300">
 
         <div className="relative flex h-10 items-center justify-center bg-black dark:bg-white px-4 text-sm text-white dark:text-black sm:px-6 lg:px-10 transition-colors duration-300">
-          {shimmer ? (
-            <Skeleton className="h-5 w-[70%] rounded-md sm:w-[35%]" />
-          ) : (
             <span className="flex flex-wrap items-center justify-center gap-1 text-center text-xs sm:text-sm">
               <p>Summer Sale for All Swim Suits With Free Delivery - OFF 50%</p>
               <Link href="/shopNow?title=Summer%20Sale" className="font-semibold dark:hover:text-[#4e4d4d] underline transition-all duration-300 hover:text-[#d7d7d7] active:text-[#b4b3b3]">
                 ShopNow
               </Link>
             </span>
-          )}
 
           <div className="hidden md:flex absolute right-2 top-1/2 -translate-y-1/2 items-center gap-3 sm:right-6 lg:right-30">
 

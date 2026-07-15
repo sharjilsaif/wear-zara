@@ -137,7 +137,7 @@ export default function BestSelling() {
                   <div className="group relative h-56 w-full overflow-hidden rounded-2xl border border-[#f0f0f0] dark:border-[#525252] bg-[#f7f7f7] dark:bg-[#202020] p-0 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg cursor-pointer">
                     <div className="absolute inset-0 flex items-center justify-center p-0">
                       <img
-                        className="max-h-full max-w-full object-contain transition-all duration-300 group-hover:scale-105"
+                        className="w-full h-full object-cover transition-all duration-300 group-hover:scale-105"
                         src={item.imageUrl}
                         alt={item.name}
                         onClick={() => setPreviewImage(item.imageUrl)}

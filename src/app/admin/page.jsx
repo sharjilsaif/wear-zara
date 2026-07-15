@@ -265,7 +265,7 @@ export default function AdminPanel() {
               {categories.length === 0 ? (
                 <p className="text-xs text-zinc-400">No categories found. Create one on the left!</p>
               ) : (
-                <div className="grid grid-cols-2 gap-2 max-h-38 overflow-y-auto">
+                <div className="grid grid-cols-2 gap-2 max-h-38 overflow-y-auto select-none">
                   {categories.map((cat) => (
                     <label key={cat.id} className="flex items-center gap-2.5 p-1.5 rounded cursor-pointer">
                       <input
