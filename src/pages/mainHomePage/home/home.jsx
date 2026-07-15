@@ -24,7 +24,6 @@ export default function HomePage() {
     <section className="mb-16 px-4 py-6 sm:px-6 lg:mb-30 lg:px-30 lg:py-0">
       <div className="flex h-auto flex-col-reverse gap-6 lg:h-112 lg:flex-row">
         <div className="w-full lg:w-[25%] flex flex-col justify-between gap-3 lg:gap-0 rounded-lg border border-[#e5e7eb] lg:border-t-transparent dark:border-t-transparent text-black bg-white dark:text-white dark:bg-black dark:border-[#525252] select-none lg:rounded-none lg:rounded-b-lg  p-5 lg:p-0 lg:pr-4 lg:pl-2 lg:pb-2 lg:pt-8">
-        {/* <div className="nav-bar-icons w-full lg:w-[25%] flex flex-col justify-between gap-3 lg:gap-0 rounded-lg border border-[#ececec] lg:border lg:border-t-transparent lg:border-[#e5e7eb] dark:text-white dark:bg-black dark:border-[#525252] bg-[#fafafa] p-5  select-none   lg:rounded-none lg:rounded-b-lg  lg:bg-transparent dark:border-t-transparent lg:p-0 lg:pr-4 lg:pl-2 lg:pb-2 lg:pt-8"> */}
           {shimmer ? (
             <div className="flex h-full w-full flex-col justify-between gap-4 md:gap-0 lg:pl-2 lg:pt-3 lg:pb-2">
               {[...Array(9)].map((_, index) => (
@@ -33,60 +32,60 @@ export default function HomePage() {
           ) : (
             <>
               <Link
-                href="/shopNow?title=Women's%20Fashion"
-                className="flex items-center justify-between rounded-md px-2 py-2 hover:bg-[#f3f4f6] dark:hover:bg-[#222] active:scale-97 transition-all duration-300"
-              >
-                <span>Women's Fashion</span>
-                <FaAngleRight />
-              </Link>
-              <Link
-                href="/shopNow?title=Men's%20Fashion"
+                href="/shopNow?category=mens-fashion"
                 className="flex items-center justify-between rounded-md px-2 py-2 hover:bg-[#f3f4f6] dark:hover:bg-[#222] active:scale-97 transition-all duration-300"
               >
                 <span>Men's Fashion</span>
                 <FaAngleRight />
               </Link>
               <Link
-                href="/shopNow?title=Home%20%26%20Lifestyle"
-                className="rounded-md px-2 py-2 hover:bg-[#f3f4f6] dark:hover:bg-[#222] active:scale-97 transition-all duration-300"
+                href="/shopNow?category=womens-fashion"
+                className="flex items-center justify-between rounded-md px-2 py-2 hover:bg-[#f3f4f6] dark:hover:bg-[#222] active:scale-97 transition-all duration-300"
               >
-                Home & Lifestyle
+                <span>Women's Fashion</span>
+                <FaAngleRight />
               </Link>
               <Link
-                href="/shopNow?title=Electronics"
+                href="/shopNow?category=active-gymwear"
                 className="rounded-md px-2 py-2 hover:bg-[#f3f4f6] dark:hover:bg-[#222] active:scale-97 transition-all duration-300"
               >
-                Electronics
+                Active & Gymwear
               </Link>
               <Link
-                href="/shopNow?title=Medicine"
+                href="/shopNow?category=outerwear-jackets"
                 className="rounded-md px-2 py-2 hover:bg-[#f3f4f6] dark:hover:bg-[#222] active:scale-97 transition-all duration-300"
               >
-                Medicine
+                Outerwear & Jackets
               </Link>
               <Link
-                href="/shopNow?title=Sports%20%26%20Outdoor"
+                href="/shopNow?category=kids-baby-wear"
                 className="rounded-md px-2 py-2 hover:bg-[#f3f4f6] dark:hover:bg-[#222] active:scale-97 transition-all duration-300"
               >
-                Sports & Outdoor
+                Kids & Baby Wear
               </Link>
               <Link
-                href="/shopNow?title=Baby's%20%26%20Toys"
+                href="/shopNow?category=loungewear-sleepwear"
                 className="rounded-md px-2 py-2 hover:bg-[#f3f4f6] dark:hover:bg-[#222] active:scale-97 transition-all duration-300"
               >
-                Baby's & Toys
+                Loungewear & Sleepwear
               </Link>
               <Link
-                href="/shopNow?title=Groceries%20%26%20Pets"
+                href="/shopNow?category=swim-beachwear"
                 className="rounded-md px-2 py-2 hover:bg-[#f3f4f6] dark:hover:bg-[#222] active:scale-97 transition-all duration-300"
               >
-                Groceries & Pets
+                Swim & Beachwear
               </Link>
               <Link
-                href="/shopNow?title=Health%20%26%20Beauty"
+                href="/shopNow?category=footwear-shoes"
                 className="rounded-md px-2 py-2 hover:bg-[#f3f4f6] dark:hover:bg-[#222] active:scale-97 transition-all duration-300"
               >
-                Health & Beauty
+                Footwear & Shoes
+              </Link>
+              <Link
+                href="/shopNow?category=bags-accessories"
+                className="rounded-md px-2 py-2 hover:bg-[#f3f4f6] dark:hover:bg-[#222] active:scale-97 transition-all duration-300"
+              >
+                Bags & Accessories
               </Link>
             </>
           )}
@@ -120,7 +119,7 @@ export default function HomePage() {
               </>
             )}
             <Link
-              href="/shopNow?title=Mobile%20Phones"
+              href="/shopNow?category=Mobile%20Phones"
               className="flex w-fit items-center mt-1 gap-2 rounded-full border border-white/25 bg-white/10 px-4 py-2 text-white transition-all duration-300 hover:gap-3 hover:bg-white/20 active:bg-white/30 active:scale-95"
             >
               <p className="text-sm font-medium">Shop Now</p>

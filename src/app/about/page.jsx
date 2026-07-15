@@ -99,34 +99,44 @@ export default function About() {
             <p className="text-sm text-[#6b7280] dark:text-[#888]">A passionate team building thoughtful products for modern shoppers.</p>
           </div>
 
-          <div className="grid gap-6 lg:grid-cols-3">
-            {shimmer
-              ? [0, 1, 2].map((item) => (
-                  <div key={item} className="rounded-3xl border border-[#ececec] dark:border-[#1f1f1f] bg-white dark:bg-[#141414] p-4 shadow-sm">
-                    <Skeleton className="h-72 w-full rounded-[1.2rem]" />
-                    <div className="mt-4 space-y-2">
-                      <Skeleton className="h-4 w-28 rounded-full" />
-                      <Skeleton className="h-4 w-36 rounded-full" />
-                    </div>
-                  </div>
-                ))
-              : teamMembers.map((member, index) => (
-                  <div key={index} className="group overflow-hidden rounded-3xl border border-[#ececec] dark:border-[#1f1f1f] bg-white dark:bg-[#141414] shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg dark:hover:shadow-[0_8px_30px_rgba(0,0,0,0.4)]">
-                    <div className="bg-[#f7f7f7] dark:bg-[#1a1a1a] p-4">
-                      <img className="h-72 w-full rounded-[1.2rem] object-contain transition-all duration-300 group-hover:scale-[1.02]" src={member.image} alt={member.name} />
-                    </div>
-                    <div className="p-5">
-                      <h3 className="text-lg font-semibold text-[#111111] dark:text-white">{member.name}</h3>
-                      <p className="mt-1 text-sm text-[#6b7280] dark:text-[#888]">{member.role}</p>
-                      <div className="mt-4 flex gap-3 text-[#6b7280] dark:text-[#666]">
-                        <FaXTwitter className="cursor-pointer transition-all duration-300 hover:text-[#DB4444]" />
-                        <FaInstagram className="cursor-pointer transition-all duration-300 hover:text-[#DB4444]" />
-                        <FaLinkedinIn className="cursor-pointer transition-all duration-300 hover:text-[#DB4444]" />
+            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 items-stretch">
+              {shimmer
+                ? [0, 1, 2].map((item) => (
+                    <div key={item} className="flex flex-col h-full rounded-3xl border border-[#ececec] dark:border-[#1f1f1f] bg-white dark:bg-[#141414] p-4 shadow-sm">
+                      <Skeleton className="h-72 w-full rounded-[1.2rem]" />
+                      <div className="mt-4 space-y-2">
+                        <Skeleton className="h-4 w-28 rounded-full" />
+                        <Skeleton className="h-4 w-36 rounded-full" />
                       </div>
                     </div>
-                  </div>
-                ))}
-          </div>
+                  ))
+                : teamMembers.map((member, index) => (
+                    <div key={index} className="group flex flex-col h-full overflow-hidden rounded-3xl border border-[#ececec] dark:border-[#1f1f1f] bg-white dark:bg-[#141414] shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg dark:hover:shadow-[0_8px_30px_rgba(0,0,0,0.4)]">
+                      
+                      <div className="bg-[#f7f7f7] dark:bg-[#1a1a1a] p-4 flex items-center justify-center">
+                        <div className="h-72 w-full flex items-center justify-center">
+                          <img 
+                            className="max-h-full max-w-full w-auto h-auto object-contain transition-all duration-300 group-hover:scale-[1.02]" 
+                            src={member.image} 
+                            alt={member.name} 
+                          />
+                        </div>
+                      </div>
+                      
+                      <div className="flex flex-col flex-1 p-5">
+                        <h3 className="text-lg font-semibold text-[#111111] dark:text-white">{member.name}</h3>
+                        <p className="mt-1 text-sm text-[#6b7280] dark:text-[#888]">{member.role}</p>
+                        
+                        <div className="mt-auto pt-4 flex gap-3 text-[#6b7280] dark:text-[#666]">
+                          <FaXTwitter className="cursor-pointer transition-all duration-300 hover:text-[#DB4444]" />
+                          <FaInstagram className="cursor-pointer transition-all duration-300 hover:text-[#DB4444]" />
+                          <FaLinkedinIn className="cursor-pointer transition-all duration-300 hover:text-[#DB4444]" />
+                        </div>
+                      </div>
+
+                    </div>
+                  ))}
+            </div>
         </div>
 
         <div className="mt-12">

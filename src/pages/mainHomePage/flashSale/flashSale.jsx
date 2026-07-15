@@ -17,15 +17,28 @@ export default function FlashSale() {
   const [shimmer, setShimmer] = useState(true);
   const [viewAll, setViewAll] = useState(false);
   const [redHeart, setRedHeart] = useState([]);
-  const [addedCart, setAddedCart] = useState(null);
-  const [previewImage, setPreviewImage] = useState(null)
+  const [addedCart, setAddedCart] = useState([]);
+  const [previewImage, setPreviewImage] = useState(null);
 
+  // 1. Dynamic State for products from the database
+  const [sale, setSale] = useState([]);
+
+  // 2. Fetch the "" category products from Neon DB
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setShimmer(false);
-    }, 400);
-
-    return () => clearTimeout(timer);
+    // Modify this if your category slug in Neon is named differently (e.g. 'mens-fashion' or 'men')
+    fetch("/api/products?category=flash-sales") 
+      .then((res) => {
+        if (!res.ok) throw new Error("Failed to load Men's products");
+        return res.json();
+      })
+      .then((data) => {
+        setSale(data);
+        setShimmer(false);
+      })
+      .catch((err) => {
+        console.error("Error loading Men's products:", err);
+        setShimmer(false);
+      });
   }, []);
 
   const startCountdown = () => {
@@ -65,69 +78,70 @@ export default function FlashSale() {
 
   useEffect(() => {
     const interval = startCountdown();
-
     return () => clearInterval(interval);
   }, []);
 
+  // 3. Wishlist integration (Adapted to handle database product structure)
   const handleRedHeart = (product) => {
     const currentWishlist = JSON.parse(localStorage.getItem("wishlist")) || [];
-    const isAlreadySaved = currentWishlist.some((item) => item.title === product.title);
+    // Using product.id instead of product.title to match DB standards perfectly
+    const isAlreadySaved = currentWishlist.some((item) => item.id === product.id);
 
     let updatedWishlist;
 
     if (isAlreadySaved) {
-      updatedWishlist = currentWishlist.filter((item) => item.title !== product.title);
-      setRedHeart((prev) => prev.filter((title) => title !== product.title));
+      updatedWishlist = currentWishlist.filter((item) => item.id !== product.id);
+      setRedHeart((prev) => prev.filter((id) => id !== product.id));
     } else {
       updatedWishlist = [...currentWishlist, product];
-      setRedHeart((prev) => [...prev, product.title]);
+      setRedHeart((prev) => [...prev, product.id]);
     }
 
     localStorage.setItem("wishlist", JSON.stringify(updatedWishlist));
-
     window.dispatchEvent(new Event("wishlist-updated"));
   };
 
+  // Sync wishlist and cart states
   useEffect(() => {
-      const syncStates = () => {
-        const savedWishlist = JSON.parse(localStorage.getItem("wishlist")) || [];
-        setRedHeart(savedWishlist.map((item) => item.title));
-  
-        const savedCart = JSON.parse(localStorage.getItem("cart")) || [];
-        setAddedCart(savedCart.map((item) => item.title));
-      };
-  
-      syncStates();
-  
-      window.addEventListener("wishlist-updated", syncStates);
-      window.addEventListener("cart-updated", syncStates);
-      window.addEventListener("storage", syncStates);
-  
-      return () => {
-        window.removeEventListener("wishlist-updated", syncStates);
-        window.removeEventListener("cart-updated", syncStates);
-        window.removeEventListener("storage", syncStates);
-      };
-    }, []);
+    const syncStates = () => {
+      const savedWishlist = JSON.parse(localStorage.getItem("wishlist")) || [];
+      setRedHeart(savedWishlist.map((item) => item.id));
 
+      const savedCart = JSON.parse(localStorage.getItem("cart")) || [];
+      setAddedCart(savedCart.map((item) => item.id));
+    };
+
+    syncStates();
+
+    window.addEventListener("wishlist-updated", syncStates);
+    window.addEventListener("cart-updated", syncStates);
+    window.addEventListener("storage", syncStates);
+
+    return () => {
+      window.removeEventListener("wishlist-updated", syncStates);
+      window.removeEventListener("cart-updated", syncStates);
+      window.removeEventListener("storage", syncStates);
+    };
+  }, []);
+
+  // 4. Cart integration (Adapted to handle database product structure)
   const handleCartToggle = (product) => {
     const currentCart = JSON.parse(localStorage.getItem("cart")) || [];
-    const isAlreadyInCart = currentCart.some((item) => item.title === product.title);
+    const isAlreadyInCart = currentCart.some((item) => item.id === product.id);
 
     let updatedCart;
 
     if (isAlreadyInCart) {
-      updatedCart = currentCart.filter((item) => item.title !== product.title);
-      setAddedCart((prev) => prev.filter((title) => title !== product.title));
+      updatedCart = currentCart.filter((item) => item.id !== product.id);
+      setAddedCart((prev) => prev.filter((id) => id !== product.id));
     } else {
       const cartProduct = {
         ...product,
-        id: product.id || Date.now() + Math.random(),
         qty: 1,
-        price: Number(product.priceNow)
+        price: Number(product.price)
       };
       updatedCart = [...currentCart, cartProduct];
-      setAddedCart((prev) => [...prev, product.title]);
+      setAddedCart((prev) => [...prev, product.id]);
     }
 
     localStorage.setItem("cart", JSON.stringify(updatedCart));
@@ -148,94 +162,10 @@ export default function FlashSale() {
     });
   };
 
-  const sale = [
-    {
-      off: "40",
-      imgURL: "gamepad.png",
-      title: "HAVIT HV-G92 GAMEPAD",
-      priceWas: "160",
-      priceNow: "120",
-      rating: "88",
-    },
-    {
-      off: "35",
-      imgURL: "keyboard.png",
-      title: "AK-900 WIRED KEYBOARD",
-      priceWas: "1160",
-      priceNow: "960",
-      rating: "75",
-    },
-    {
-      off: "30",
-      imgURL: "monitor.png",
-      title: "IPS LCS GAMING MONITOR",
-      priceWas: "400",
-      priceNow: "370",
-      rating: "99",
-    },
-    {
-      off: "25",
-      imgURL: "chair.png",
-      title: "S-SERIES COMFORT CHAIR",
-      priceWas: "400",
-      priceNow: "375",
-      rating: "76",
-    },
-    {
-      off: "45",
-      imgURL: "mouse.png",
-      title: "BRANDED DELL MOUSE",
-      priceWas: "100",
-      priceNow: "55",
-      rating: "40",
-    },
-    {
-      off: "25",
-      imgURL: "chair.png",
-      title: "S-SERIES COMFORT CHAIR",
-      priceWas: "400",
-      priceNow: "375",
-      rating: "76",
-    },
-    {
-      off: "55",
-      imgURL: "headphone.png",
-      title: "RONIN LATEST MODEL HEADPHOE",
-      priceWas: "210",
-      priceNow: "175",
-      rating: "96",
-    },
-    {
-      off: "25",
-      imgURL: "laptop-bag.png",
-      title: "S-SERIES COMFORT CHAIR",
-      priceWas: "400",
-      priceNow: "375",
-      rating: "76",
-    },
-    {
-      off: "15",
-      imgURL: "earbuds.png",
-      title: "SAMSUNG LATEST EARBUDS",
-      priceWas: "250",
-      priceNow: "145",
-      rating: "97",
-    },
-
-    {
-      off: "30",
-      imgURL: "camera.png",
-      title: "SONY UPGRADED CAMERA",
-      priceWas: "1200",
-      priceNow: "920",
-      rating: "67",
-    },
-  ];
-
   return (
     <>
       <section className="ml-4 border-b border-[#ccc9c9] dark:border-[#525252] pb-15 pl-0 pr-4 sm:ml-6 sm:pr-6 lg:ml-30 lg:pl-20 lg:pr-0">
-        <div className="flex items-center gap-2 mb-4 ">
+        <div className="flex items-center gap-2 mb-4">
           <div className="w-4 h-8 rounded-sm bg-[#DB4444]"></div>
           <p className="font-semibold text-sm text-[#DB4444]">Today's</p>
         </div>
@@ -332,96 +262,104 @@ export default function FlashSale() {
         </div>
 
         {shimmer ? (
-          <>
-            <div className="flex mt-10 mb-16 pb-2 pr-2 gap-9 overflow-x-auto">
-              {[...Array(8)].map((_, index) => (
-                <div key={index} className="h-70 min-w-55">
-                  <Skeleton className="h-[73%] w-full rounded-2xl" />
-                  <Skeleton className="mt-2 h-[5%] w-[70%] rounded-full" />
-                  <Skeleton className="mt-3 h-[5%] w-[30%] rounded-full" />
-                  <Skeleton className="mt-2 h-[5%] w-[50%] rounded-full" />
-                </div>
-              ))}
-            </div>
-          </>
+          <div className="flex mt-10 mb-16 pb-2 pr-2 gap-9 overflow-x-auto">
+            {[...Array(8)].map((_, index) => (
+              <div key={index} className="h-70 min-w-55">
+                <Skeleton className="h-[73%] w-full rounded-2xl" />
+                <Skeleton className="mt-2 h-[5%] w-[70%] rounded-full" />
+                <Skeleton className="mt-3 h-[5%] w-[30%] rounded-full" />
+                <Skeleton className="mt-2 h-[5%] w-[50%] rounded-full" />
+              </div>
+            ))}
+          </div>
+        ) : sale.length === 0 ? (
+          <div className="text-center py-20 text-zinc-500">
+            No products found in Men's category!
+          </div>
         ) : (
-          <>
-            <div
-              ref={sliderRef}
-              className={`mt-10 mb-7 select-none flex ${viewAll ? "flex-wrap justify-start gap-4 sm:gap-6 lg:gap-10" : "gap-4 overflow-x-auto pb-2 pr-2 sm:gap-6 lg:gap-8 xxl:justify-between"}`}
-            >
-              {sale.map((item, index) => (
-                <div
-                  key={index}
-                  className={`h-80 shrink-0 ${viewAll ? "mb-7 w-full min-w-55 sm:w-[calc(50%-0.75rem)] lg:w-55" : "min-w-55 sm:min-w-57.5 lg:min-w-55"}`}
-                >
-                  <div className="group relative h-56 w-full dark:bg-[#202020] overflow-hidden rounded-2xl border dark:border-[#525252] border-[#f0f0f0] bg-[#f7f7f7] p-0 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg cursor-pointer">
-                    <div className="absolute inset-0 flex items-center justify-center p-4">
-                      <img
-                        className="h-auto max-h-[75%] w-auto max-w-[80%] object-contain transition-all duration-300 group-hover:scale-105"
-                        src={item.imgURL}
-                        alt={item.title}
-                        onClick={() => setPreviewImage(item.imgURL)}
-                      />
-                    </div>
+          <div
+            ref={sliderRef}
+            className={`mt-10 mb-7 select-none flex ${viewAll ? "flex-wrap justify-start gap-4 sm:gap-6 lg:gap-10" : "gap-4 overflow-x-auto pb-2 pr-2 sm:gap-6 lg:gap-8 xxl:justify-between"}`}
+          >
+            {sale.map((item, index) => (
+              <div
+                key={item.id}
+                className={`h-80 shrink-0 ${viewAll ? "mb-7 w-full min-w-55 sm:w-[calc(50%-0.75rem)] lg:w-55" : "min-w-55 sm:min-w-57.5 lg:min-w-55"}`}
+              >
+                <div className="group relative h-56 w-full dark:bg-[#202020] overflow-hidden rounded-2xl border dark:border-[#525252] border-[#f0f0f0] bg-[#f7f7f7] p-0 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg cursor-pointer">
+                  <div className="absolute inset-0 flex items-center justify-center p-0">
+                    <img
+                      className="max-h-full max-w-full object-contain transition-all duration-300 group-hover:scale-105"
+                      src={item.imageUrl}
+                      alt={item.name}
+                      onClick={() => setPreviewImage(item.imageUrl)}
+                    />
+                  </div>
 
-                    <div className="absolute flex w-full justify-between pt-2 px-2">
+                  <div className="absolute flex w-full justify-between pt-2 px-2">
+                    {/* Render optional discount tag if present */}
+                    {item.discountPercentage ? (
                       <span className="flex h-5 w-10 items-center justify-center rounded-full bg-[#DB4444] text-[10px] font-semibold text-white">
-                        -{item.off}%
+                        -{item.discountPercentage}%
                       </span>
-                      <div className="flex flex-col gap-2">
-                        <div
-                          onClick={() => handleRedHeart(item)}
-                          className="flex h-8 w-8 cursor-pointer dark:hover:bg-[#b9b9b9] items-center justify-center rounded-full dark:bg-[#b9b9b9] bg-white shadow-sm transition-all duration-300 hover:scale-105 hover:bg-[#fff5f5] active:bg-[#ebebeb]"
-                        >
-                          {redHeart.includes(item.title) ? (
-                            <FaHeart className="text-md text-[#DB4444]" />
-                          ) : (
-                            <FaRegHeart className="text-md dark:text-black" />
-                          )}
-                        </div>
-                        <div className="flex h-8 w-8 cursor-pointer items-center dark:hover:bg-[#b9b9b9] justify-center rounded-full dark:bg-[#b9b9b9] bg-white shadow-sm transition-all duration-300 hover:scale-105 hover:bg-[#f7f7f7] active:bg-[#ebebeb]">
-                          <IoEyeOutline className="text-md dark:text-black" />
-                        </div>
+                    ) : (
+                      <div />
+                    )}
+                    
+                    <div className="flex flex-col gap-2">
+                      <div
+                        onClick={() => handleRedHeart(item)}
+                        className="flex h-8 w-8 cursor-pointer dark:hover:bg-[#b9b9b9] items-center justify-center rounded-full dark:bg-[#b9b9b9] bg-white shadow-sm transition-all duration-300 hover:scale-105 hover:bg-[#fff5f5] active:bg-[#ebebeb]"
+                      >
+                        {redHeart.includes(item.id) ? (
+                          <FaHeart className="text-md text-[#DB4444]" />
+                        ) : (
+                          <FaRegHeart className="text-md dark:text-black" />
+                        )}
                       </div>
-                    </div>
-
-                    <div
-                      onClick={() => handleCartToggle(item)}
-                      className="absolute bottom-0 w-full bg-[#111111] dark:bg-[#b9b9b9] dark:text-black py-2.5 text-center text-sm text-white opacity-0 translate-y-2 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100 active:text-[#e3e3e3]"
-                    >
-                      {addedCart.includes(item.title) ? "Added to Cart" : "Add to Cart"}
+                      <div className="flex h-8 w-8 cursor-pointer items-center dark:hover:bg-[#b9b9b9] justify-center rounded-full dark:bg-[#b9b9b9] bg-white shadow-sm transition-all duration-300 hover:scale-105 hover:bg-[#f7f7f7] active:bg-[#ebebeb]">
+                        <IoEyeOutline className="text-md dark:text-black" />
+                      </div>
                     </div>
                   </div>
 
-                  <div className="mt-4 flex h-20 flex-col justify-around">
-                    <h1 className="text-sm font-semibold text-[#111111]">
-                      {item.title}
-                    </h1>
-                    <div className="flex gap-2">
-                      <p className="text-sm font-semibold text-[#DB4444]">
-                        ${item.priceNow}
-                      </p>
-                      <p className="text-sm text-[#676666] line-through">
-                        ${item.priceWas}
-                      </p>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <div className="flex gap-1">
-                        {[...Array(5)].map((_, index) => (
-                          <FaStar
-                            key={index}
-                            className="text-xs text-yellow-500"
-                          />
-                        ))}
-                      </div>
-                      <p className="text-[#676666] text-xs">({item.rating})</p>
-                    </div>
+                  <div
+                    onClick={() => handleCartToggle(item)}
+                    className="absolute bottom-0 w-full bg-[#111111] dark:bg-[#b9b9b9] dark:text-black py-2.5 text-center text-sm text-white opacity-0 translate-y-2 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100 active:text-[#e3e3e3]"
+                  >
+                    {addedCart.includes(item.id) ? "Added to Cart" : "Add to Cart"}
                   </div>
                 </div>
-              ))}
-            </div>
-          </>
+
+                <div className="mt-4 flex h-20 flex-col justify-around">
+                  <h1 className="text-sm font-semibold text-[#111111] dark:text-white line-clamp-1">
+                    {item.name}
+                  </h1>
+                  <div className="flex gap-2">
+                    <p className="text-sm font-semibold text-[#DB4444]">
+                      ${item.price}
+                    </p>
+                    {item.discountPrice && (
+                      <p className="text-sm text-[#676666] line-through">
+                        ${item.discountPrice}
+                      </p>
+                    )}
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <div className="flex gap-1">
+                      {[...Array(5)].map((_, index) => (
+                        <FaStar
+                          key={index}
+                          className="text-xs text-yellow-500"
+                        />
+                      ))}
+                    </div>
+                    <p className="text-[#676666] text-xs">({item.reviews})</p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
         )}
 
         <div className="w-full flex justify-center select-none">
@@ -433,13 +371,13 @@ export default function FlashSale() {
           </button>
         </div>
 
-        {previewImage && (<div onClick={() => setPreviewImage(null)} className="fixed inset-0 cursor-pointer z-50 flex items-center justify-center bg-black/60 p-5">
-
-          <div className="relative h-[40vh] w-[30vw] bg-white dark:bg-[#202020] cursor-default flex items-center justify-center" onClick={(e) => e.stopPropagation()}>
-            <img src={previewImage} alt="Preview" className="max-h-[80%] max-w-[80%] object-contain"/>
+        {previewImage && (
+          <div onClick={() => setPreviewImage(null)} className="fixed inset-0 cursor-pointer z-50 flex items-center justify-center bg-black/60 p-5">
+            <div className="relative h-[40vh] w-[30vw] bg-white dark:bg-[#202020] cursor-default flex items-center justify-center" onClick={(e) => e.stopPropagation()}>
+              <img src={previewImage} alt="Preview" className="max-h-[80%] max-w-[80%] object-contain"/>
+            </div>
           </div>
-
-        </div>)}  
+        )}
         
       </section>
     </>
