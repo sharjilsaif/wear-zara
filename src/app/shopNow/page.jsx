@@ -399,7 +399,7 @@ function ShopNowContent() {
       </div>
 
       <p className="font-semibold text-2xl sm:text-3xl mb-10">
-        Explore {title}
+        Explore Latest Products
       </p>
 
       {shimmer ? (
