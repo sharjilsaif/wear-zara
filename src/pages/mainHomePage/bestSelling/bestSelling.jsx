@@ -132,7 +132,7 @@ export default function BestSelling() {
               {bestSelling.map((item) => (
                 <div
                   key={item.id}
-                  className="h-70 w-full mb-7 min-w-55 sm:w-[calc(50%-0.5rem)] lg:w-[calc(25%-0.75rem)] xl:min-w-55 xl:w-55"
+                  className="h-70 w-full mb-7  min-w-55 sm:w-[calc(50%-0.5rem)] lg:w-[calc(25%-0.75rem)] xl:min-w-55 xl:w-55"
                 >
                   <div className="group relative h-56 w-full overflow-hidden rounded-2xl border border-[#f0f0f0] dark:border-[#525252] bg-[#f7f7f7] dark:bg-[#202020] p-0 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg cursor-pointer">
                     <div className="absolute inset-0 flex items-center justify-center p-0">
