@@ -20,7 +20,6 @@ body {
   overflow-x: hidden;
   background-color: #ffffff;
   color: #111111;
-  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 html.dark body {
@@ -28,8 +27,11 @@ html.dark body {
   color: #f1f1f1;
 }
 
-img {
-  max-width: 100%;
-  height: auto;
-  display: block;
+/* Base styles must go in @layer base so Tailwind utility classes (like h-full) can override them */
+@layer base {
+  img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+  }
 }

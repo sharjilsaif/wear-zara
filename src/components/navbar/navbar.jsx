@@ -7,6 +7,7 @@ import { useTheme } from "next-themes";
 import { useSession, signOut } from "next-auth/react";
 
 import Skeleton from "../shimmer/shimmer";
+import ThemeToggle from "../themeToggle/themeToggle";
 
 import { GoHeart } from "react-icons/go";
 import { FiSearch, FiMenu, FiX } from "react-icons/fi";
@@ -95,7 +96,7 @@ export default function Navbar() {
 
           <div className="hidden md:flex absolute right-2 top-1/2 -translate-y-1/2 items-center gap-3 sm:right-6 lg:right-30">
 
-            <div onClick={() => setTheme(isDark ? "light" : "dark")} className="relative flex h-6 w-12 sm:h-7 sm:w-14 cursor-pointer items-center rounded-full border border-white/40 bg-white/40 dark:bg-black/40  px-0.5 backdrop-blur-xl transition-all duration-500  active:scale-95">
+            {/* <div onClick={() => setTheme(isDark ? "light" : "dark")} className="relative flex h-6 w-12 sm:h-7 sm:w-14 cursor-pointer items-center rounded-full border border-white/40 bg-white/40 dark:bg-black/40  px-0.5 backdrop-blur-xl transition-all duration-500  active:scale-95">
 
               <div className={`absolute h-5 w-5 sm:h-6 sm:w-6 rounded-full border border-white/30 backdrop-blur-2xl transition-all duration-500 ease-in-out ${isDark ? "left-[calc(100%-1.375rem)] sm:left-[calc(100%-1.625rem)] bg-[#1a1a2e] shadow-[0_2px_8px_rgba(0,0,0,0.5)]" : "left-0.5 bg-white/80 shadow-[0_2px_8px_rgba(255,255,255,0.4)]"}`} />
 
@@ -108,7 +109,9 @@ export default function Navbar() {
               </div>
 
               <div className="pointer-events-none absolute inset-0 rounded-full bg-linear-to-b from-white/20 via-transparent to-transparent" />
-            </div>
+            </div> */}
+
+            <ThemeToggle isDark={isDark} setTheme={setTheme} />
             
             <div onClick={handleClick} className="flex cursor-pointer select-none items-center gap-2 text-sm transition-all duration-300 hover:text-[#d7d7d7] active:text-[#b4b3b3]">
               <p>English</p>
