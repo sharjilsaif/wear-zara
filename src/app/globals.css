@@ -2,6 +2,20 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
+:root {
+  --brand-red: #DB4444;
+  --brand-red-hover: #d14444;
+  --brand-red-active: #bb3d3d;
+  --brand-red-soft: #fff5f5;
+}
+
+@theme {
+  --color-brand-red: var(--brand-red);
+  --color-brand-red-hover: var(--brand-red-hover);
+  --color-brand-red-active: var(--brand-red-active);
+  --color-brand-red-soft: var(--brand-red-soft);
+}
+
 * {
   box-sizing: border-box;
 }

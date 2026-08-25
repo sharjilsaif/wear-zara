@@ -73,7 +73,7 @@ export default function ProductDetails() {
               <>
                 <Link
                   href="/shopNow?title=Speakers%20Electronics"
-                  className="bg-[#DB4444] hover:bg-[#d14444] active:bg-[#bb3d3d] transition-all duration-300 cursor-pointer px-10 w-fit py-3 text-sm text-white rounded-md"
+                  className="bg-(--brand-red) hover:bg-(--brand-red-hover) active:bg-(--brand-red-active) transition-all duration-300 cursor-pointer px-10 w-fit py-3 text-sm text-white rounded-md"
                 >
                   Buy Now!
                 </Link>

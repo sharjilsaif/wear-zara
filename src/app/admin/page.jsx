@@ -321,7 +321,7 @@ export default function AdminPanel() {
               </div>
             </div>
 
-            <button type="submit" disabled={productStatus.loading} className="w-full mt-2 bg-[#DB4444] text-white py-3 rounded-lg font-medium hover:bg-[#c33b3b] transition-all disabled:opacity-50 cursor-pointer">
+            <button type="submit" disabled={productStatus.loading} className="w-full mt-2 bg-[var(--brand-red)] text-white py-3 rounded-lg font-medium hover:bg-[var(--brand-red-active)] transition-all disabled:opacity-50 cursor-pointer">
               {productStatus.loading ? "Publishing..." : "Publish Product"}
             </button>
           </form>

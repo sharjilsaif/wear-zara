@@ -26,7 +26,7 @@ export default function Contact() {
 
         <div className="grid gap-6 lg:grid-cols-[0.9fr_1.1fr]">
           <div className="rounded-4xl border border-[#ececec] dark:border-[#1f1f1f] bg-white dark:bg-[#141414] p-6 shadow-[0_20px_60px_rgba(0,0,0,0.06)] dark:shadow-[0_20px_60px_rgba(0,0,0,0.4)] sm:p-8 transition-colors duration-300">
-            <div className="inline-flex rounded-full bg-[#fff5f5] dark:bg-[#2a1010] px-3 py-1 text-sm font-medium text-[#DB4444]">
+            <div className="inline-flex rounded-full bg-[#fff5f5] dark:bg-[#2a1010] px-3 py-1 text-sm font-medium text-[var(--brand-red)]">
               Support
             </div>
             <h1 className="mt-4 text-3xl font-semibold tracking-tight text-[#111111] dark:text-white sm:text-4xl">
@@ -39,7 +39,7 @@ export default function Contact() {
             <div className="mt-8 space-y-4">
               <div className="rounded-[1.25rem] border border-[#f0f0f0] dark:border-[#1f1f1f] bg-[#f9fafb] dark:bg-[#1a1a1a] p-4 transition-colors duration-300">
                 <div className="flex items-center gap-3">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#DB4444]">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[var(--brand-red)]">
                     <FiPhone className="text-white" />
                   </div>
                   <div>
@@ -60,7 +60,7 @@ export default function Contact() {
 
               <div className="rounded-[1.25rem] border border-[#f0f0f0] dark:border-[#1f1f1f] bg-[#f9fafb] dark:bg-[#1a1a1a] p-4 transition-colors duration-300">
                 <div className="flex items-center gap-3">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#DB4444]">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[var(--brand-red)]">
                     <FiMail className="text-white" />
                   </div>
                   <div>
@@ -86,13 +86,13 @@ export default function Contact() {
           <div className="rounded-4xl border border-[#ececec] dark:border-[#1f1f1f] bg-white dark:bg-[#141414] p-6 shadow-[0_20px_60px_rgba(0,0,0,0.06)] dark:shadow-[0_20px_60px_rgba(0,0,0,0.4)] sm:p-8 transition-colors duration-300">
             <form className="space-y-5">
               <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-                <input type="text" className="w-full rounded-2xl border border-[#e5e7eb] dark:border-[#2a2a2a] bg-white dark:bg-[#1a1a1a] px-4 py-3 text-sm text-[#111111] dark:text-white placeholder:text-[#9ca3af] dark:placeholder:text-[#555] outline-none transition-all duration-300 focus:border-[#DB4444] dark:focus:border-[#DB4444]" placeholder="Your Name" />
-                <input type="email" className="w-full rounded-2xl border border-[#e5e7eb] dark:border-[#2a2a2a] bg-white dark:bg-[#1a1a1a] px-4 py-3 text-sm text-[#111111] dark:text-white placeholder:text-[#9ca3af] dark:placeholder:text-[#555] outline-none transition-all duration-300 focus:border-[#DB4444] dark:focus:border-[#DB4444]" placeholder="Your Email" />
-                <input type="tel" className="w-full rounded-2xl border border-[#e5e7eb] dark:border-[#2a2a2a] bg-white dark:bg-[#1a1a1a] px-4 py-3 text-sm text-[#111111] dark:text-white placeholder:text-[#9ca3af] dark:placeholder:text-[#555] outline-none transition-all duration-300 focus:border-[#DB4444] dark:focus:border-[#DB4444]" placeholder="Your Phone" />
+                <input type="text" className="w-full rounded-2xl border border-[#e5e7eb] dark:border-[#2a2a2a] bg-white dark:bg-[#1a1a1a] px-4 py-3 text-sm text-[#111111] dark:text-white placeholder:text-[#9ca3af] dark:placeholder:text-[#555] outline-none transition-all duration-300 focus:border-[var(--brand-red)] dark:focus:border-[var(--brand-red)]" placeholder="Your Name" />
+                <input type="email" className="w-full rounded-2xl border border-[#e5e7eb] dark:border-[#2a2a2a] bg-white dark:bg-[#1a1a1a] px-4 py-3 text-sm text-[#111111] dark:text-white placeholder:text-[#9ca3af] dark:placeholder:text-[#555] outline-none transition-all duration-300 focus:border-[var(--brand-red)] dark:focus:border-[var(--brand-red)]" placeholder="Your Email" />
+                <input type="tel" className="w-full rounded-2xl border border-[#e5e7eb] dark:border-[#2a2a2a] bg-white dark:bg-[#1a1a1a] px-4 py-3 text-sm text-[#111111] dark:text-white placeholder:text-[#9ca3af] dark:placeholder:text-[#555] outline-none transition-all duration-300 focus:border-[var(--brand-red)] dark:focus:border-[var(--brand-red)]" placeholder="Your Phone" />
               </div>
-              <textarea className="min-h-45 w-full resize-none rounded-[1.25rem] border border-[#e5e7eb] dark:border-[#2a2a2a] bg-white dark:bg-[#1a1a1a] px-4 py-3 text-sm text-[#111111] dark:text-white placeholder:text-[#9ca3af] dark:placeholder:text-[#555] outline-none transition-all duration-300 focus:border-[#DB4444] dark:focus:border-[#DB4444]" placeholder="Your Message" />
+              <textarea className="min-h-45 w-full resize-none rounded-[1.25rem] border border-[#e5e7eb] dark:border-[#2a2a2a] bg-white dark:bg-[#1a1a1a] px-4 py-3 text-sm text-[#111111] dark:text-white placeholder:text-[#9ca3af] dark:placeholder:text-[#555] outline-none transition-all duration-300 focus:border-[var(--brand-red)] dark:focus:border-[var(--brand-red)]" placeholder="Your Message" />
               <div className="flex justify-end">
-                <button type="submit" className="rounded-full bg-[#DB4444] px-6 py-3 text-sm font-medium text-white transition-all duration-300 hover:bg-[#d14444] active:bg-[#bb3d3d] cursor-pointer">
+                <button type="submit" className="rounded-full bg-[var(--brand-red)] px-6 py-3 text-sm font-medium text-white transition-all duration-300 hover:bg-[var(--brand-red-hover)] active:bg-[var(--brand-red-active)] cursor-pointer">
                   Send Message
                 </button>
               </div>

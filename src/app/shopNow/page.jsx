@@ -123,15 +123,15 @@ const LIMIT = 10;
 
 //       {/* Breadcrumb */}
 //       <div className="flex items-center gap-2 text-sm text-[#676666] mb-8">
-//         <Link href="/" className="hover:text-[#DB4444] transition-colors duration-200">Home</Link>
+//         <Link href="/" className="hover:text-[var(--brand-red)] transition-colors duration-200">Home</Link>
 //         <span>/</span>
 //         <span className="text-[#111] dark:text-white">{title}</span>
 //       </div>
 
 //       {/* Section label */}
 //       <div className="flex items-center gap-2 mb-4">
-//         <div className="w-4 h-8 rounded-sm bg-[#DB4444]"></div>
-//         <p className="font-semibold text-sm text-[#DB4444]">{title}</p>
+//         <div className="w-4 h-8 rounded-sm bg-[var(--brand-red)]"></div>
+//         <p className="font-semibold text-sm text-[var(--brand-red)]">{title}</p>
 //       </div>
 
 //       <p className="font-semibold text-2xl sm:text-3xl mb-10">Explore Latest Products</p>
@@ -152,7 +152,7 @@ const LIMIT = 10;
 //         <div className="flex flex-col items-center justify-center py-24 gap-4">
 //           <p className="text-lg font-semibold dark:text-white">No products found</p>
 //           <p className="text-sm text-[#676666]">There are no products in this category yet.</p>
-//           <Link href="/" className="bg-[#DB4444] hover:bg-[#d14444] active:bg-[#bb3d3d] transition-all duration-300 px-7 py-3 text-sm text-white rounded-md">
+//           <Link href="/" className="bg-[var(--brand-red)] hover:bg-[var(--brand-red-hover)] active:bg-[var(--brand-red-active)] transition-all duration-300 px-7 py-3 text-sm text-white rounded-md">
 //             Back to Home
 //           </Link>
 //         </div>
@@ -174,7 +174,7 @@ const LIMIT = 10;
 
 //                   <div className="absolute flex w-full justify-between pt-2 px-2">
 //                     {item.discountPercentage ? (
-//                       <span className="flex h-5 w-10 items-center justify-center rounded-full bg-[#DB4444] text-[10px] font-semibold text-white">
+//                       <span className="flex h-5 w-10 items-center justify-center rounded-full bg-[var(--brand-red)] text-[10px] font-semibold text-white">
 //                         -{item.discountPercentage}%
 //                       </span>
 //                     ) : (
@@ -186,7 +186,7 @@ const LIMIT = 10;
 //                         className="flex h-8 w-8 cursor-pointer dark:hover:bg-[#b9b9b9] items-center justify-center rounded-full dark:bg-[#b9b9b9] bg-white shadow-sm transition-all duration-300 hover:scale-105 hover:bg-[#fff5f5] active:bg-[#ebebeb]"
 //                       >
 //                         {redHeart.includes(item.id) ? (
-//                           <FaHeart className="text-md text-[#DB4444]" />
+//                           <FaHeart className="text-md text-[var(--brand-red)]" />
 //                         ) : (
 //                           <FaRegHeart className="text-md dark:text-black" />
 //                         )}
@@ -213,7 +213,7 @@ const LIMIT = 10;
 //                     {item.name}
 //                   </h1>
 //                   <div className="flex gap-2">
-//                     <p className="text-sm font-semibold text-[#DB4444]">${item.price}</p>
+//                     <p className="text-sm font-semibold text-[var(--brand-red)]">${item.price}</p>
 //                     {item.discountPrice && (
 //                       <p className="text-sm text-[#676666] line-through">${item.discountPrice}</p>
 //                     )}
@@ -248,7 +248,7 @@ const LIMIT = 10;
 //             <div className="flex justify-center mb-8">
 //               <button
 //                 onClick={() => setPage((prev) => prev + 1)}
-//                 className="bg-[#DB4444] hover:bg-[#d14444] active:bg-[#bb3d3d] transition-all duration-300 cursor-pointer px-7 py-3 text-sm text-white rounded-md"
+//                 className="bg-[var(--brand-red)] hover:bg-[var(--brand-red-hover)] active:bg-[var(--brand-red-active)] transition-all duration-300 cursor-pointer px-7 py-3 text-sm text-white rounded-md"
 //               >
 //                 View More Products
 //               </button>
@@ -282,13 +282,16 @@ function ShopNowContent() {
 
   const searchParams = useSearchParams();
   const category = searchParams.get("category") ?? "";
-  
+
   // 1. Get the raw title parameter or auto-generate it from the category slug
   const rawTitle = searchParams.get("title");
-  const title = rawTitle 
-    ? rawTitle 
-    : category 
-      ? category.split("-").map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(" ") 
+  const title = rawTitle
+    ? rawTitle
+    : category
+      ? category
+          .split("-")
+          .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+          .join(" ")
       : "Products";
 
   // Reset when category/title changes
@@ -318,7 +321,7 @@ function ShopNowContent() {
         const data = await res.json();
 
         setHasMore(data.length === LIMIT);
-        setProducts((prev) => page === 1 ? data : [...prev, ...data]);
+        setProducts((prev) => (page === 1 ? data : [...prev, ...data]));
       } catch (err) {
         console.error("Error fetching products:", err);
       } finally {
@@ -352,11 +355,15 @@ function ShopNowContent() {
 
   const handleRedHeart = (product) => {
     const currentWishlist = JSON.parse(localStorage.getItem("wishlist")) || [];
-    const isAlreadySaved = currentWishlist.some((item) => item.id === product.id);
+    const isAlreadySaved = currentWishlist.some(
+      (item) => item.id === product.id,
+    );
     let updatedWishlist;
 
     if (isAlreadySaved) {
-      updatedWishlist = currentWishlist.filter((item) => item.id !== product.id);
+      updatedWishlist = currentWishlist.filter(
+        (item) => item.id !== product.id,
+      );
       setRedHeart((prev) => prev.filter((id) => id !== product.id));
     } else {
       updatedWishlist = [...currentWishlist, product];
@@ -376,7 +383,10 @@ function ShopNowContent() {
       updatedCart = currentCart.filter((item) => item.id !== product.id);
       setAddedCart((prev) => prev.filter((id) => id !== product.id));
     } else {
-      updatedCart = [...currentCart, { ...product, qty: 1, price: Number(product.price) }];
+      updatedCart = [
+        ...currentCart,
+        { ...product, qty: 1, price: Number(product.price) },
+      ];
       setAddedCart((prev) => [...prev, product.id]);
     }
 
@@ -386,16 +396,20 @@ function ShopNowContent() {
 
   return (
     <section className="mx-4 mt-10 mb-16 sm:mx-6 lg:mx-30">
-
       <div className="flex items-center gap-2 text-sm text-[#676666] mb-8">
-        <Link href="/" className="hover:text-[#DB4444] transition-colors duration-200">Home</Link>
+        <Link
+          href="/"
+          className="hover:text-(--brand-red) transition-colors duration-200"
+        >
+          Home
+        </Link>
         <span>/</span>
         <span className="text-[#111] dark:text-white">{title}</span>
       </div>
 
       <div className="flex items-center gap-2 mb-4">
-        <div className="w-4 h-8 rounded-sm bg-[#DB4444]"></div>
-        <p className="font-semibold text-md text-[#DB4444]">{title}</p>
+        <div className="w-4 h-8 rounded-sm bg-(--brand-red)"></div>
+        <p className="font-semibold text-md text-(--brand-red)">{title}</p>
       </div>
 
       <p className="font-semibold text-2xl sm:text-3xl mb-10">
@@ -405,7 +419,10 @@ function ShopNowContent() {
       {shimmer ? (
         <div className="flex flex-wrap justify-center gap-20 md:gap-4 pt-4 pb-12 sm:justify-between">
           {[...Array(LIMIT)].map((_, i) => (
-            <div key={i} className="h-70 w-full min-w-55 sm:w-[calc(50%-0.75rem)] lg:w-55">
+            <div
+              key={i}
+              className="h-70 w-full min-w-55 sm:w-[calc(50%-0.75rem)] lg:w-55"
+            >
               <Skeleton className="h-[73%] w-full rounded-2xl" />
               <Skeleton className="mt-2 h-[5%] w-[70%] rounded-full" />
               <Skeleton className="mt-3 h-[5%] w-[30%] rounded-full" />
@@ -415,18 +432,28 @@ function ShopNowContent() {
         </div>
       ) : products.length === 0 ? (
         <div className="flex flex-col items-center justify-center py-24 gap-4">
-          <p className="text-lg font-semibold dark:text-white">No products found</p>
-          <p className="text-sm text-[#676666]">There are no products in this category yet.</p>
-          <Link href="/" className="bg-[#DB4444] hover:bg-[#d14444] active:bg-[#bb3d3d] transition-all duration-300 px-7 py-3 text-sm text-white rounded-md">
+          <p className="text-lg font-semibold dark:text-white">
+            No products found
+          </p>
+          <p className="text-sm text-[#676666]">
+            There are no products in this category yet.
+          </p>
+          <Link
+            href="/"
+            className="bg-(--brand-red) hover:bg-(--brand-red-hover) active:bg-(--brand-red-active) transition-all duration-300 px-7 py-3 text-sm text-white rounded-md"
+          >
             Back to Home
           </Link>
         </div>
       ) : (
         <>
           {/* Products grid[cite: 2] */}
-          <div className="flex flex-wrap justify-center gap-20 md:gap-4 pt-4 pb-12 select-none sm:justify-between sm:gap-6 lg:gap-8">
+          <div className="flex flex-wrap justify-center gap-6 md:gap-4 pt-4 pb-12 select-none sm:justify-between sm:gap-6 lg:gap-8">
             {products.map((item) => (
-              <div key={item.id} className="mb-7 h-80 w-full min-w-55 sm:w-[calc(50%-0.75rem)] lg:w-55">
+              <div
+                key={item.id}
+                className="mb-7 h-70 w-full min-w-55 sm:w-[calc(50%-0.75rem)] lg:w-55"
+              >
                 <div className="group relative h-56 w-full dark:bg-[#202020] overflow-hidden rounded-2xl border dark:border-[#525252] border-[#f0f0f0] bg-[#f7f7f7] shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg cursor-pointer">
                   <div className="absolute inset-0 flex items-center justify-center p-0">
                     <img
@@ -439,7 +466,7 @@ function ShopNowContent() {
 
                   <div className="absolute flex w-full justify-between pt-2 px-2">
                     {item.discountPercentage ? (
-                      <span className="flex h-5 w-10 items-center justify-center rounded-full bg-[#DB4444] text-[10px] font-semibold text-white">
+                      <span className="flex h-5 w-10 items-center justify-center rounded-full bg-(--brand-red) text-[10px] font-semibold text-white">
                         -{item.discountPercentage}%
                       </span>
                     ) : (
@@ -451,7 +478,7 @@ function ShopNowContent() {
                         className="flex h-8 w-8 cursor-pointer dark:hover:bg-[#b9b9b9] items-center justify-center rounded-full dark:bg-[#b9b9b9] bg-white shadow-sm transition-all duration-300 hover:scale-105 hover:bg-[#fff5f5] active:bg-[#ebebeb]"
                       >
                         {redHeart.includes(item.id) ? (
-                          <FaHeart className="text-md text-[#DB4444]" />
+                          <FaHeart className="text-md text-(--brand-red)" />
                         ) : (
                           <FaRegHeart className="text-md dark:text-black" />
                         )}
@@ -469,7 +496,9 @@ function ShopNowContent() {
                     onClick={() => handleCartToggle(item)}
                     className="absolute bottom-0 w-full bg-[#111111] dark:bg-[#b9b9b9] dark:text-black py-2.5 text-center text-sm text-white opacity-0 translate-y-2 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100 active:text-[#e3e3e3]"
                   >
-                    {addedCart.includes(item.id) ? "Added to Cart" : "Add to Cart"}
+                    {addedCart.includes(item.id)
+                      ? "Added to Cart"
+                      : "Add to Cart"}
                   </div>
                 </div>
 
@@ -478,9 +507,13 @@ function ShopNowContent() {
                     {item.name}
                   </h1>
                   <div className="flex gap-2">
-                    <p className="text-sm font-semibold text-[#DB4444]">${item.price}</p>
+                    <p className="text-sm font-semibold text-(--brand-red)">
+                      ${item.price}
+                    </p>
                     {item.discountPrice && (
-                      <p className="text-sm text-[#676666] line-through">${item.discountPrice}</p>
+                      <p className="text-sm text-[#676666] line-through">
+                        ${item.discountPrice}
+                      </p>
                     )}
                   </div>
                   <div className="flex items-center gap-2">
@@ -496,16 +529,18 @@ function ShopNowContent() {
             ))}
 
             {/* Load more shimmer[cite: 2] */}
-            {loadingMore && (
+            {loadingMore &&
               [...Array(LIMIT)].map((_, i) => (
-                <div key={`shimmer-more-${i}`} className="h-70 w-full min-w-55 sm:w-[calc(50%-0.75rem)] lg:w-55">
+                <div
+                  key={`shimmer-more-${i}`}
+                  className="h-70 w-full min-w-55 sm:w-[calc(50%-0.75rem)] lg:w-55"
+                >
                   <Skeleton className="h-[73%] w-full rounded-2xl" />
                   <Skeleton className="mt-2 h-[5%] w-[70%] rounded-full" />
                   <Skeleton className="mt-3 h-[5%] w-[30%] rounded-full" />
                   <Skeleton className="mt-2 h-[5%] w-[50%] rounded-full" />
                 </div>
-              ))
-            )}
+              ))}
           </div>
 
           {/* View More button[cite: 2] */}
@@ -513,7 +548,7 @@ function ShopNowContent() {
             <div className="flex justify-center mb-8">
               <button
                 onClick={() => setPage((prev) => prev + 1)}
-                className="bg-[#DB4444] hover:bg-[#d14444] active:bg-[#bb3d3d] transition-all duration-300 cursor-pointer px-7 py-3 text-sm text-white rounded-md"
+                className="bg-(--brand-red) hover:bg-(--brand-red-hover) active:bg-(--brand-red-active) transition-all duration-300 cursor-pointer px-7 py-3 text-sm text-white rounded-md"
               >
                 View More Products
               </button>
@@ -524,33 +559,47 @@ function ShopNowContent() {
 
       {/* Preview Modal[cite: 2] */}
       {previewImage && (
-        <div onClick={() => setPreviewImage(null)} className="fixed inset-0 cursor-pointer z-50 flex items-center justify-center bg-black/60 p-5">
-          <div className="relative h-[40vh] w-[30vw] bg-white dark:bg-[#202020] cursor-default flex items-center justify-center" onClick={(e) => e.stopPropagation()}>
-            <img src={previewImage} alt="Preview" className="max-h-[80%] max-w-[80%] object-contain" />
+        <div
+          onClick={() => setPreviewImage(null)}
+          className="fixed inset-0 cursor-pointer z-50 flex items-center justify-center bg-black/60 p-5"
+        >
+          <div
+            className="relative h-[40vh] w-[30vw] bg-white dark:bg-[#202020] cursor-default flex items-center justify-center"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <img
+              src={previewImage}
+              alt="Preview"
+              className="max-h-[80%] max-w-[80%] object-contain"
+            />
           </div>
         </div>
       )}
-
     </section>
   );
 }
 
 export default function ShopNow() {
   return (
-    <Suspense fallback={
-      <div className="mx-4 mt-10 sm:mx-6 lg:mx-30">
-        <div className="flex flex-wrap justify-center gap-20 md:gap-4 pt-4 pb-12 sm:justify-between">
-          {[...Array(10)].map((_, i) => (
-            <div key={i} className="h-70 w-full min-w-55 sm:w-[calc(50%-0.75rem)] lg:w-55">
-              <Skeleton className="h-[73%] w-full rounded-2xl" />
-              <Skeleton className="mt-2 h-[5%] w-[70%] rounded-full" />
-              <Skeleton className="mt-3 h-[5%] w-[30%] rounded-full" />
-              <Skeleton className="mt-2 h-[5%] w-[50%] rounded-full" />
-            </div>
-          ))}
+    <Suspense
+      fallback={
+        <div className="mx-4 mt-10 sm:mx-6 lg:mx-30">
+          <div className="flex flex-wrap justify-center gap-20 md:gap-4 pt-4 pb-12 sm:justify-between">
+            {[...Array(10)].map((_, i) => (
+              <div
+                key={i}
+                className="h-70 w-full min-w-55 sm:w-[calc(50%-0.75rem)] lg:w-55"
+              >
+                <Skeleton className="h-[73%] w-full rounded-2xl" />
+                <Skeleton className="mt-2 h-[5%] w-[70%] rounded-full" />
+                <Skeleton className="mt-3 h-[5%] w-[30%] rounded-full" />
+                <Skeleton className="mt-2 h-[5%] w-[50%] rounded-full" />
+              </div>
+            ))}
+          </div>
         </div>
-      </div>
-    }>
+      }
+    >
       <ShopNowContent />
     </Suspense>
   );

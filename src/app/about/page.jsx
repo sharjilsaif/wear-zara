@@ -42,7 +42,7 @@ export default function About() {
 
         <div className="grid items-center gap-8 rounded-4xl border border-[#ececec] dark:border-[#1f1f1f] bg-white dark:bg-[#141414] p-6 shadow-[0_20px_60px_rgba(0,0,0,0.06)] dark:shadow-[0_20px_60px_rgba(0,0,0,0.4)] lg:grid-cols-[1.05fr_0.95fr] lg:p-10 transition-colors duration-300">
           <div className="space-y-5">
-            <div className="inline-flex rounded-full bg-[#fff5f5] dark:bg-[#2a1010] px-3 py-1 text-sm font-medium text-[#DB4444]">
+            <div className="inline-flex rounded-full bg-[#fff5f5] dark:bg-[#2a1010] px-3 py-1 text-sm font-medium text-(--brand-red)">
               Our story
             </div>
             <h1 className="text-3xl font-semibold tracking-tight text-[#111111] dark:text-white sm:text-4xl">
@@ -77,7 +77,7 @@ export default function About() {
             const Icon = item.icon;
             const isActive = index === 1;
             return (
-              <div key={index} className={`flex min-h-45 cursor-pointer flex-col items-center justify-center gap-3 rounded-[1.3rem] border p-5 text-center transition-all duration-300 ${isActive ? "border-[#DB4444] bg-[#DB4444] text-white shadow-lg shadow-[#db44441f] hover:bg-[#d14444]" : "border-[#ececec] dark:border-[#1f1f1f] bg-white dark:bg-[#141414] hover:-translate-y-1 hover:bg-[#fafafa] dark:hover:bg-[#1a1a1a]"}`}>
+              <div key={index} className={`flex min-h-45 cursor-pointer flex-col items-center justify-center gap-3 rounded-[1.3rem] border p-5 text-center transition-all duration-300 ${isActive ? "border-[var(--brand-red)] bg-[var(--brand-red)] text-white shadow-lg shadow-[rgba(219, 68, 68, 0.12)] hover:bg-[var(--brand-red-hover)]" : "border-[#ececec] dark:border-[#1f1f1f] bg-white dark:bg-[#141414] hover:-translate-y-1 hover:bg-[#fafafa] dark:hover:bg-[#1a1a1a]"}`}>
                 <div className={`flex h-14 w-14 items-center justify-center rounded-full ${isActive ? "bg-white/20" : "bg-[#f3f4f6] dark:bg-[#252525]"}`}>
                   <div className={`flex h-10 w-10 items-center justify-center rounded-full ${isActive ? "bg-white" : "bg-[#111111] dark:bg-white"}`}>
                     <Icon className={`text-xl ${isActive ? "text-[#111111]" : "text-white dark:text-[#111]"}`} />
@@ -93,7 +93,7 @@ export default function About() {
         <div className="mt-12">
           <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
             <div>
-              <p className="text-sm font-semibold uppercase tracking-[0.3em] text-[#DB4444]">Meet the team</p>
+              <p className="text-sm font-semibold uppercase tracking-[0.3em] text-[var(--brand-red)]">Meet the team</p>
               <h2 className="text-2xl font-semibold text-[#111111] dark:text-white sm:text-3xl">People behind every great experience</h2>
             </div>
             <p className="text-sm text-[#6b7280] dark:text-[#888]">A passionate team building thoughtful products for modern shoppers.</p>
@@ -128,9 +128,9 @@ export default function About() {
                         <p className="mt-1 text-sm text-[#6b7280] dark:text-[#888]">{member.role}</p>
                         
                         <div className="mt-auto pt-4 flex gap-3 text-[#6b7280] dark:text-[#666]">
-                          <FaXTwitter className="cursor-pointer transition-all duration-300 hover:text-[#DB4444]" />
-                          <FaInstagram className="cursor-pointer transition-all duration-300 hover:text-[#DB4444]" />
-                          <FaLinkedinIn className="cursor-pointer transition-all duration-300 hover:text-[#DB4444]" />
+                          <FaXTwitter className="cursor-pointer transition-all duration-300 hover:text-(--brand-red)" />
+                          <FaInstagram className="cursor-pointer transition-all duration-300 hover:text-(--brand-red)" />
+                          <FaLinkedinIn className="cursor-pointer transition-all duration-300 hover:text-(--brand-red)" />
                         </div>
                       </div>
 

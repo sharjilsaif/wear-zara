@@ -148,7 +148,7 @@ export default function HomePage() {
               <>
                 <div className="h-2.5 w-2.5 rounded-full bg-gray-400"></div>
                 <div className="h-2.5 w-2.5 rounded-full bg-gray-400"></div>
-                <div className="h-3 w-3 rounded-full bg-red-500"></div>
+                <div className="h-3 w-3 rounded-full bg-brand-red"></div>
                 <div className="h-2.5 w-2.5 rounded-full bg-gray-400"></div>
                 <div className="h-2.5 w-2.5 rounded-full bg-gray-400"></div>
               </>

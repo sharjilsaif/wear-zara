@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 
 import Skeleton from "@/components/shimmer/shimmer";
+import { readStorageList, toggleStoredItem } from "@/lib/localStorageHelpers";
 
 import { IoEyeOutline } from "react-icons/io5";
 import { FiArrowRight, FiArrowLeft } from "react-icons/fi";
@@ -34,10 +35,10 @@ export default function ExploreProducts() {
 
   useEffect(() => {
     const syncStates = () => {
-      const savedWishlist = JSON.parse(localStorage.getItem("wishlist")) || [];
+      const savedWishlist = readStorageList("wishlist");
       setRedHeart(savedWishlist.map((item) => item.id));
 
-      const savedCart = JSON.parse(localStorage.getItem("cart")) || [];
+      const savedCart = readStorageList("cart");
       setAddedCart(savedCart.map((item) => item.id));
     };
 
@@ -55,48 +56,25 @@ export default function ExploreProducts() {
   }, []);
 
   const handleRedHeart = (product) => {
-    const currentWishlist = JSON.parse(localStorage.getItem("wishlist")) || [];
-    const isAlreadySaved = currentWishlist.some((item) => item.id === product.id);
-
-    let updatedWishlist;
-
-    if (isAlreadySaved) {
-      updatedWishlist = currentWishlist.filter((item) => item.id !== product.id);
-      setRedHeart((prev) => prev.filter((id) => id !== product.id));
-    } else {
-      updatedWishlist = [...currentWishlist, product];
-      setRedHeart((prev) => [...prev, product.id]);
-    }
-
-    localStorage.setItem("wishlist", JSON.stringify(updatedWishlist));
-    window.dispatchEvent(new Event("wishlist-updated"));
+    const updatedWishlist = toggleStoredItem("wishlist", product);
+    setRedHeart(updatedWishlist.map((item) => item.id));
   };
 
   const handleCartToggle = (product) => {
-    const currentCart = JSON.parse(localStorage.getItem("cart")) || [];
-    const isAlreadyInCart = currentCart.some((item) => item.id === product.id);
-
-    let updatedCart;
-
-    if (isAlreadyInCart) {
-      updatedCart = currentCart.filter((item) => item.id !== product.id);
-      setAddedCart((prev) => prev.filter((id) => id !== product.id));
-    } else {
-      const cartProduct = { ...product, qty: 1, price: Number(product.price) };
-      updatedCart = [...currentCart, cartProduct];
-      setAddedCart((prev) => [...prev, product.id]);
-    }
-
-    localStorage.setItem("cart", JSON.stringify(updatedCart));
-    window.dispatchEvent(new Event("cart-updated"));
+    const updatedCart = toggleStoredItem("cart", {
+      ...product,
+      qty: 1,
+      price: Number(product.price),
+    });
+    setAddedCart(updatedCart.map((item) => item.id));
   };
 
   return (
     <>
       <section className="mx-4 sm:mx-6 lg:mx-30">
         <div className="flex items-center gap-2 mb-4">
-          <div className="w-4 h-8 rounded-sm bg-[#DB4444]"></div>
-          <p className="font-semibold text-sm text-[#DB4444]">Our Products</p>
+          <div className="w-4 h-8 rounded-sm bg-(--brand-red)"></div>
+          <p className="font-semibold text-sm text-(--brand-red)">Our Products</p>
         </div>
 
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
@@ -129,7 +107,7 @@ export default function ExploreProducts() {
               No products found in Explore category.
             </div>
           ) : (
-            <div className="flex flex-wrap justify-center gap-20 md:gap-4 pt-15 pb-12 select-none sm:justify-between sm:gap-6 lg:gap-8">
+            <div className="flex flex-wrap justify-center gap-6 md:gap-4 pt-10 pb-12 select-none sm:justify-between sm:gap-6 lg:gap-8">
               {ourProducts.map((item) => (
                 <div
                   key={item.id}
@@ -151,7 +129,7 @@ export default function ExploreProducts() {
                         className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-full bg-white dark:bg-[#b9b9b9] shadow-sm transition-all duration-300 hover:scale-105 hover:bg-[#fff5f5] dark:hover:bg-[#b9b9b9] active:bg-[#ebebeb]"
                       >
                         {redHeart.includes(item.id) ? (
-                          <FaHeart className="text-md text-[#DB4444]" />
+                          <FaHeart className="text-md text-(--brand-red)" />
                         ) : (
                           <FaRegHeart className="text-md dark:text-black" />
                         )}
@@ -174,7 +152,7 @@ export default function ExploreProducts() {
                       {item.name}
                     </h1>
                     <div className="flex gap-2">
-                      <p className="text-sm font-semibold text-[#DB4444]">${item.price}</p>
+                      <p className="text-sm font-semibold text-(--brand-red)">${item.price}</p>
                       {item.discountPrice && (
                         <p className="text-sm text-[#676666] line-through">${item.discountPrice}</p>
                       )}
@@ -197,7 +175,7 @@ export default function ExploreProducts() {
         <div className="flex justify-center">
           <Link
             href="/shopNow?title=Our%20Products"
-            className="bg-[#DB4444] hover:bg-[#d14444] active:bg-[#bb3d3d] transition-all duration-300 cursor-pointer px-7 py-3 text-sm text-white rounded-md"
+            className="bg-(--brand-red) hover:bg-(--brand-red-hover) active:bg-(--brand-red-active) transition-all duration-300 cursor-pointer px-7 py-3 text-sm text-white rounded-md"
           >
             View All Products
           </Link>

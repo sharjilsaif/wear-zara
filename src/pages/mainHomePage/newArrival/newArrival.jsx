@@ -22,8 +22,8 @@ export default function NewArrival() {
     <>
       <section className="mx-4 mt-16 sm:mx-6 sm:mt-20 lg:mx-10 lg:mt-28 xl:mx-30 xl:mt-35">
         <div className="flex items-center gap-2 mb-4">
-          <div className="w-4 h-8 rounded-sm bg-[#DB4444]"></div>
-          <p className="font-semibold text-sm text-[#DB4444]">Featured</p>
+          <div className="w-4 h-8 rounded-sm bg-[var(--brand-red)]"></div>
+          <p className="font-semibold text-sm text-[var(--brand-red)]">Featured</p>
         </div>
 
         <p className="font-semibold text-2xl sm:text-3xl">New Arrival</p>
@@ -58,7 +58,7 @@ export default function NewArrival() {
               )}
               <Link
                 href="/shopNow?title=PlayStations"
-                className="flex w-fit items-center gap-2 rounded-full border border-white/25 bg-white/10 px-4 py-2 text-white transition-all duration-300 hover:gap-3 hover:bg-white/20 active:bg-white/30 active:scale-95 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#DB4444]"
+                className="flex w-fit items-center gap-2 rounded-full border border-white/25 bg-white/10 px-4 py-2 text-white transition-all duration-300 hover:gap-3 hover:bg-white/20 active:bg-white/30 active:scale-95 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--brand-red)]"
               >
                 <p className="text-white text-md transition-all duration-300 hover:text-gray-200 select-none">
                   Shop Now
@@ -91,7 +91,7 @@ export default function NewArrival() {
                   )}
                   <Link
                     href="/shopNow?title=Women's%20Fashion"
-                    className="flex w-fit items-center gap-2 rounded-full border border-white/25 bg-white/10 px-4 py-2 text-white transition-all duration-300 hover:gap-3 hover:bg-white/20 active:bg-white/30 active:scale-95 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#DB4444]"
+                    className="flex w-fit items-center gap-2 rounded-full border border-white/25 bg-white/10 px-4 py-2 text-white transition-all duration-300 hover:gap-3 hover:bg-white/20 active:bg-white/30 active:scale-95 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--brand-red)]"
                   >
                     <p className="text-white text-md transition-all duration-300 hover:text-gray-200 select-none">
                       Shop Now
@@ -139,7 +139,7 @@ export default function NewArrival() {
                   )}
                   <Link
                     href="/shopNow?title=Speakers"
-                    className="flex w-fit items-center mt-3 gap-2 rounded-full border border-white/25 bg-white/10 px-3 sm:px-4 py-2 text-white transition-all duration-300 hover:gap-3 hover:bg-white/20 active:bg-white/30 active:scale-95 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#DB4444]"
+                    className="flex w-fit items-center mt-3 gap-2 rounded-full border border-white/25 bg-white/10 px-3 sm:px-4 py-2 text-white transition-all duration-300 hover:gap-3 hover:bg-white/20 active:bg-white/30 active:scale-95 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--brand-red)]"
                   >
                     <p className="text-white text-sm sm:text-md transition-all duration-300 hover:text-gray-200 select-none">
                       Shop Now
@@ -173,7 +173,7 @@ export default function NewArrival() {
                   )}
                   <Link
                     href="/shopNow?title=Perfumes"
-                    className="flex w-fit items-center mt-3 gap-2 rounded-full border border-white/25 bg-white/10 px-3 sm:px-4 py-2 text-white transition-all duration-300 hover:gap-3 hover:bg-white/20 active:bg-white/30 active:scale-95 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#DB4444]"
+                    className="flex w-fit items-center mt-3 gap-2 rounded-full border border-white/25 bg-white/10 px-3 sm:px-4 py-2 text-white transition-all duration-300 hover:gap-3 hover:bg-white/20 active:bg-white/30 active:scale-95 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--brand-red)]"
                   >
                     <p className="text-white text-sm sm:text-md transition-all duration-300 hover:text-gray-200 select-none">
                       Shop Now

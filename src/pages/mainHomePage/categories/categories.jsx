@@ -69,8 +69,8 @@ export default function Categories() {
     <>
       <section className="mx-4 border-b border-[#ccc9c9] dark:border-[#525252] py-12 sm:mx-6 lg:mx-30 lg:py-17 select-none">
         <div className="flex items-center gap-2 mb-4">
-          <div className="w-4 h-8 rounded-sm bg-[#DB4444]"></div>
-          <p className="font-semibold text-sm text-[#DB4444]">Categories</p>
+          <div className="w-4 h-8 rounded-sm bg-brand-red"></div>
+          <p className="font-semibold text-sm text-brand-red">Categories</p>
         </div>
 
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
@@ -98,7 +98,10 @@ export default function Categories() {
           {shimmer ? (
             <>
               {[...Array(6)].map((_, index) => (
-                <Skeleton key={index} className="h-22 w-22 sm:h-40 sm:w-40 rounded-xl" />
+                <Skeleton
+                  key={index}
+                  className="h-22 w-22 sm:h-40 sm:w-40 rounded-xl"
+                />
               ))}
             </>
           ) : (
@@ -107,7 +110,7 @@ export default function Categories() {
                 <div
                   onClick={() => handleCategory(index)}
                   key={index}
-                  className={`flex h-22 w-22 rounded-xl flex-col cursor-pointer items-center justify-center gap-3 dark:border-none border border-[#ccc9c9] text-center transition-all duration-300 sm:h-40 sm:w-40 sm:gap-5 ${activeCategory === index ? "bg-[#DB4444] text-white active:bg-[#cb3f3f]" : "dark:bg-[#3d3d3d] dark:text-white bg-white text-black"}`}
+                  className={`flex h-22 w-22 rounded-xl flex-col cursor-pointer items-center justify-center gap-3 dark:border-none border border-[#ccc9c9] text-center transition-all duration-300 sm:h-40 sm:w-40 sm:gap-5 ${activeCategory === index ? "bg-brand-red text-white active:bg-brand-red-active" : "dark:bg-[#3d3d3d] dark:text-white bg-white text-black"}`}
                 >
                   <div className="text-3xl md:text-5xl">{item.icon}</div>
                   <h1 className="text-xs md:text-md">{item.title}</h1>

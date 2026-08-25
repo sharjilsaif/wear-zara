@@ -3,9 +3,13 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { signIn } from "next-auth/react";
 
 import Skeleton from "@/components/shimmer/shimmer";
+import {
+  getCurrentUser,
+  findUserByEmail,
+  setCurrentUser,
+} from "@/lib/authStorage";
 
 import { BiShow, BiHide } from "react-icons/bi";
 
@@ -26,11 +30,11 @@ export default function LogIn() {
   }, []);
 
   const clearError = () => {
-    if(error){
-      setError("")
+    if (error) {
+      setError("");
     }
-  }
-  
+  };
+
   const handleLogin = async (e) => {
     e.preventDefault();
 
@@ -48,42 +52,45 @@ export default function LogIn() {
     setError("");
 
     try {
-      const result = await signIn("credentials", {
-        email: email.trim().toLowerCase(),
-        password,
-        redirect: false,
-      });
+      const registeredUser = findUserByEmail(email);
 
-      if (result?.error) {
-        if (result.error.includes("EMAIL_NOT_FOUND")) {
-          setError("This email is not registered.");
-          setSignUp(true);
-        } else if (result.error.includes("WRONG_PASSWORD")) {
-          setError("Incorrect password.");
-        } else {
-          setError("Invalid email or password.");
-        }
+      if (!registeredUser) {
+        setError("This email is not registered.");
+        setSignUp(true);
         return;
       }
 
-      setSuccess(true);
+      if (registeredUser.password !== password) {
+        setError("Incorrect password.");
+        return;
+      }
+
+      setCurrentUser({
+        id: registeredUser.id,
+        name: registeredUser.name,
+        email: registeredUser.email,
+      });
+
       setEmail("");
       setPassword("");
 
-      window.dispatchEvent(new Event("auth:change"));
-
       setTimeout(() => {
+        setLoading(false);
+        setSuccess(true);
         router.push("/");
-      }, 1000);
+      }, 1500);
     } catch (error) {
       console.error("Login error:", error);
       setError("Something went wrong. Please try again.");
-    } finally {
       setLoading(false);
     }
   };
 
-  useEffect(() => { router.prefetch("/"); }, []);
+  useEffect(() => {
+    router.prefetch("/");
+    const user = getCurrentUser();
+    if (user) router.push("/");
+  }, [router]);
 
   return (
     <section className="px-4 py-8 sm:px-6 lg:px-8 bg-white dark:bg-[#0f0f0f] transition-colors duration-300">
@@ -92,21 +99,31 @@ export default function LogIn() {
           {shimmer ? (
             <Skeleton className="h-full w-full" />
           ) : (
-            <img className="h-full w-full object-cover" src="/signUpPageIMG.png" alt="Authentication" />
+            <img
+              className="h-full w-full object-cover"
+              src="/signUpPageIMG.png"
+              alt="Authentication"
+            />
           )}
         </div>
 
         <div className="flex w-full items-center justify-center px-6 py-10 sm:px-8 lg:w-[50%] lg:px-12">
           <div className="w-full max-w-md">
             <div className="mb-6">
-              <h1 className="mb-2 text-3xl font-semibold tracking-tight text-[#111111] dark:text-white">Log in to Exclusive</h1>
-              <h2 className="text-sm text-[#6b7280] dark:text-[#888]">Enter your details below</h2>
+              <h1 className="mb-2 text-3xl font-semibold tracking-tight text-[#111111] dark:text-white">
+                Log in to Exclusive
+              </h1>
+              <h2 className="text-sm text-[#6b7280] dark:text-[#888]">
+                Enter your details below
+              </h2>
             </div>
 
             <form onSubmit={handleLogin} noValidate className="space-y-4">
               <div className="space-y-4">
                 <div>
-                  <label className="mb-2 block text-sm font-medium text-[#111111] dark:text-[#e5e5e5]">Email</label>
+                  <label className="mb-2 block text-sm font-medium text-[#111111] dark:text-[#e5e5e5]">
+                    Email
+                  </label>
                   <input
                     className={`w-full rounded-2xl border bg-[#f9fafb] dark:bg-[#1a1a1a] text-[#111] dark:text-white placeholder:text-[#9ca3af] dark:placeholder:text-[#555] px-4 py-3 text-sm outline-none transition-all duration-300 focus:border-[#bfbaba] dark:focus:border-[#444] focus:bg-white dark:focus:bg-[#1f1f1f] ${error ? "border-red-400" : "border-[#e5e7eb] dark:border-[#2a2a2a]"}`}
                     placeholder="Email or Phone Number"
@@ -117,17 +134,24 @@ export default function LogIn() {
                   />
                 </div>
                 <div className="relative">
-                  <label className="mb-2 block text-sm font-medium text-[#111111] dark:text-[#e5e5e5]">Password</label>
+                  <label className="mb-2 block text-sm font-medium text-[#111111] dark:text-[#e5e5e5]">
+                    Password
+                  </label>
                   <input
                     className={`w-full rounded-2xl border bg-[#f9fafb] dark:bg-[#1a1a1a] text-[#111] dark:text-white placeholder:text-[#9ca3af] dark:placeholder:text-[#555] px-4 py-3 pr-12 text-sm outline-none transition-all duration-300 focus:border-[#bfbaba] dark:focus:border-[#444] focus:bg-white dark:focus:bg-[#1f1f1f] ${error ? "border-red-400" : "border-[#e5e7eb] dark:border-[#2a2a2a]"}`}
                     placeholder="Password"
                     type={showPassword ? "text" : "password"}
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    onKeyDown={(e) => { if (e.key === " ") e.preventDefault(); }}
+                    onKeyDown={(e) => {
+                      if (e.key === " ") e.preventDefault();
+                    }}
                     onFocus={clearError}
                   />
-                  <div className="absolute right-3 top-[2.7rem] cursor-pointer text-[#6b7280] dark:text-[#888]" onClick={() => setShowPassword(!showPassword)}>
+                  <div
+                    className="absolute right-3 top-[2.7rem] cursor-pointer text-[#6b7280] dark:text-[#888]"
+                    onClick={() => setShowPassword(!showPassword)}
+                  >
                     {showPassword ? <BiHide /> : <BiShow />}
                   </div>
                 </div>
@@ -147,19 +171,29 @@ export default function LogIn() {
               <div className="flex flex-col gap-3 select-none">
                 <button
                   type="submit"
-                  className={`flex h-11 w-full items-center justify-center rounded-2xl px-6 text-sm font-medium text-white transition-all duration-300 ${loading ? "cursor-not-allowed bg-[#bb3d3d]" : "cursor-pointer bg-[#DB4444] hover:bg-[#d14444]"}`}
+                  className={`flex h-11 w-full items-center justify-center rounded-2xl px-6 text-sm font-medium text-white transition-all duration-300 ${loading ? "cursor-not-allowed bg-(--brand-red-active)" : "cursor-pointer bg-(--brand-red) hover:bg-(--brand-red-hover)"}`}
                   disabled={loading}
                 >
-                  {loading ? <span className="h-5 w-5 animate-spin rounded-full border-2 border-white border-t-transparent"></span> : <span>Log in</span>}
+                  {loading ? (
+                    <span className="h-5 w-5 animate-spin rounded-full border-2 border-white border-t-transparent"></span>
+                  ) : (
+                    <span>Log in</span>
+                  )}
                 </button>
 
-                <button type="button" className="flex h-11 w-full items-center justify-center rounded-2xl border border-[#e5e7eb] dark:border-[#2a2a2a] bg-[#f9fafb] dark:bg-[#1a1a1a] px-6 text-sm font-medium text-[#111111] dark:text-[#e5e5e5] transition-all duration-300 hover:bg-white dark:hover:bg-[#252525] cursor-pointer">
+                <button
+                  type="button"
+                  className="flex h-11 w-full items-center justify-center rounded-2xl border border-[#e5e7eb] dark:border-[#2a2a2a] bg-[#f9fafb] dark:bg-[#1a1a1a] px-6 text-sm font-medium text-[#111111] dark:text-[#e5e5e5] transition-all duration-300 hover:bg-white dark:hover:bg-[#252525] cursor-pointer"
+                >
                   Forgot Password?
                 </button>
 
                 {signUp && (
                   <div className="text-center">
-                    <Link href="signUp" className="text-sm font-semibold text-[#111111] dark:text-white transition-all duration-300 hover:text-[#DB4444]">
+                    <Link
+                      href="/signUp"
+                      className="text-sm font-semibold text-[#111111] dark:text-white transition-all duration-300 hover:text-(--brand-red)"
+                    >
                       Sign up
                     </Link>
                   </div>
