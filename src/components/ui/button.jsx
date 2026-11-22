@@ -4,39 +4,28 @@ import Spinner from "@/components/ui/spinner";
 import { cn } from "@/lib/format";
 
 const VARIANTS = {
-  primary: "bg-brand text-white hover:bg-brand-hover active:bg-brand-active",
+  primary: "bg-brand text-white shadow-[0_1px_2px_rgb(0_0_0/0.12),0_4px_14px_var(--brand-soft)] hover:bg-brand-hover active:bg-brand-active",
+  secondary: "bg-fg/6 text-fg hover:bg-fg/10 active:bg-fg/15",
   dark: "bg-inverse text-inverse-fg hover:opacity-90 active:opacity-80",
-  outline: "border border-line bg-surface text-fg hover:bg-surface-muted active:bg-line",
-  ghost: "text-fg hover:bg-surface-muted active:bg-line",
-  danger: "bg-red-600 text-white hover:bg-red-700 active:bg-red-800",
-  "danger-outline":
-    "border border-red-200 bg-red-50/60 text-brand hover:bg-red-100 dark:border-red-900/50 dark:bg-red-950/20 dark:hover:bg-red-950/40",
+  outline: "glass text-fg hover:bg-glass-strong",
+  ghost: "text-fg hover:bg-fg/6",
+  danger: "bg-sale text-white hover:opacity-90 active:opacity-80",
+  "danger-soft": "bg-sale-soft text-sale hover:bg-sale/15",
+  link: "h-auto! px-0! text-link hover:underline underline-offset-4",
 };
 
 const SIZES = {
-  sm: "h-9 px-4 text-xs",
+  sm: "h-9 px-4 text-[13px]",
   md: "h-11 px-6 text-sm",
-  lg: "h-12 px-9 text-sm",
+  lg: "h-12 px-8 text-[15px]",
 };
 
-/**
- * The one button used across the app. Renders a <Link> when `href` is given.
- */
-export default function Button({
-  href,
-  variant = "primary",
-  size = "md",
-  loading = false,
-  className,
-  children,
-  type = "button",
-  disabled,
-  ...props
-}) {
+/** The one button used across the app — renders a <Link> when `href` is given. */
+export default function Button({ href, variant = "primary", size = "md", loading = false, className, children, type = "button", disabled, ...props }) {
   const classes = cn(
-    "inline-flex select-none items-center justify-center gap-2 rounded-md font-medium whitespace-nowrap transition-all duration-200 active:scale-[0.98] disabled:pointer-events-none disabled:opacity-60",
-    VARIANTS[variant],
+    "inline-flex select-none items-center justify-center gap-2 rounded-full font-medium whitespace-nowrap transition-all duration-200 ease-apple active:scale-[0.97] disabled:pointer-events-none disabled:opacity-50",
     SIZES[size],
+    VARIANTS[variant],
     className,
   );
 

@@ -1,32 +1,43 @@
-import { formatPrice } from "@/lib/format";
+"use client";
+
+import { useI18n } from "@/i18n/client";
+import { cn } from "@/lib/format";
 import { FREE_SHIPPING_THRESHOLD } from "@/lib/site";
 
 function Row({ label, value, strong, className }) {
   return (
-    <div className={`flex justify-between gap-4 py-3.5 ${strong ? "text-base font-semibold" : "text-sm"} ${className ?? ""}`}>
+    <div className={cn("flex justify-between gap-4 py-3", strong ? "text-[17px] font-semibold" : "text-sm", className)}>
       <span className={strong ? "" : "text-fg-muted"}>{label}</span>
       <span className="font-medium tabular-nums">{value}</span>
     </div>
   );
 }
 
-/** Subtotal / discount / shipping / total rows — shared by the cart and checkout pages. */
-export default function OrderSummary({ totals }) {
-  const { subtotal, discount, shipping, total, coupon } = totals;
+/**
+ * Subtotal / discount / shipping / total rows. Works with live cart totals
+ * (from getCartTotals) and saved orders (same field names).
+ */
+export default function OrderSummary({ totals, couponCode }) {
+  const { t, format } = useI18n();
+  const { subtotal, discount, shipping, total } = totals;
   const remaining = FREE_SHIPPING_THRESHOLD - subtotal;
+  const code = couponCode ?? totals.coupon?.code;
 
   return (
     <div>
       <div className="divide-y divide-line">
-        <Row label="Subtotal" value={formatPrice(subtotal)} />
-        {discount > 0 && <Row label={`Discount (${coupon.percent}%)`} value={`−${formatPrice(discount)}`} className="text-green-600 dark:text-green-400" />}
-        <Row label="Shipping" value={shipping === 0 ? "Free" : formatPrice(shipping)} />
-        <Row label="Total" value={formatPrice(total)} strong />
+        <Row label={t("cart.subtotal")} value={format.price(subtotal)} />
+        {discount > 0 && <Row label={t("cart.discount", { code })} value={`−${format.price(discount)}`} className="text-success" />}
+        <Row label={t("cart.shipping")} value={shipping === 0 ? t("cart.free") : format.price(shipping)} />
+        <Row label={t("cart.total")} value={format.price(total)} strong />
       </div>
-      {shipping > 0 && remaining > 0 && (
-        <p className="mt-1 rounded-md bg-brand-soft px-3 py-2 text-xs text-fg">
-          Add <strong>{formatPrice(remaining)}</strong> more for free delivery.
-        </p>
+      {totals.itemCount !== undefined && shipping > 0 && remaining > 0 && (
+        <div className="mt-2 rounded-2xl bg-brand-soft p-3">
+          <p className="text-xs">{t("cart.freeShippingHint", { amount: format.price(remaining) })}</p>
+          <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-brand/15">
+            <div className="h-full rounded-full bg-brand transition-all duration-500" style={{ width: `${Math.min(100, (subtotal / FREE_SHIPPING_THRESHOLD) * 100)}%` }} />
+          </div>
+        </div>
       )}
     </div>
   );

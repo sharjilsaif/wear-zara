@@ -2,26 +2,26 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 import { useSession } from "next-auth/react";
-import { GoHeart } from "react-icons/go";
-import { FiMenu, FiX } from "react-icons/fi";
-import { IoCartOutline } from "react-icons/io5";
+import { LuHeart, LuMenu, LuShoppingBag, LuX } from "react-icons/lu";
 
 import AccountMenu from "@/components/layout/accountMenu";
+import LanguageMenu from "@/components/layout/languageMenu";
 import SearchForm from "@/components/layout/searchForm";
 import ThemeToggle from "@/components/layout/themeToggle";
 import IconButton from "@/components/ui/iconButton";
+import { useI18n, useLocalPath } from "@/i18n/client";
 import { cn } from "@/lib/format";
-import { NAV_LINKS, shopHref } from "@/lib/site";
+import { NAV_LINKS, SITE, shopHref } from "@/lib/site";
 import { useCart, useWishlist } from "@/lib/store";
+import useMounted from "@/lib/useMounted";
 
-function isActive(pathname, href) {
-  return href === "/" ? pathname === "/" : pathname.startsWith(href);
-}
+const isActive = (pathname, href) => (href === "/" ? pathname === "/" : pathname.startsWith(href));
 
 export default function Navbar() {
-  const pathname = usePathname();
+  const { t } = useI18n();
+  const pathname = useLocalPath();
+  const mounted = useMounted();
   const { status } = useSession();
   const cartCount = useCart().reduce((sum, item) => sum + item.qty, 0);
   const wishlistCount = useWishlist().length;
@@ -31,53 +31,55 @@ export default function Navbar() {
   const menuOpen = menuOpenOn === pathname;
   const closeMenu = () => setMenuOpenOn(null);
 
-  const guestLinks =
+  const links = NAV_LINKS.map((link) => ({ ...link, label: t(`nav.${link.key}`), active: mounted && isActive(pathname, link.href) }));
+  const authLinks =
     status === "unauthenticated"
       ? [
-          { href: "/signup", label: "Sign Up" },
-          { href: "/login", label: "Log In" },
+          { href: "/login", label: t("nav.signIn") },
+          { href: "/signup", label: t("nav.signUp") },
         ]
       : [];
 
   return (
     <header className="sticky top-0 z-40">
-      <a
-        href="#main"
-        className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-2 focus:z-50 focus:rounded-md focus:bg-brand focus:px-4 focus:py-2 focus:text-white"
-      >
-        Skip to content
+      <a href="#main" className="sr-only focus:not-sr-only focus:absolute focus:start-4 focus:top-2 focus:z-50 focus:rounded-full focus:bg-brand focus:px-4 focus:py-2 focus:text-white">
+        {t("nav.skip")}
       </a>
 
-      {/* Promo bar */}
-      <div className="bg-black text-white">
-        <div className="container-page flex h-10 items-center justify-center gap-4 text-xs sm:text-sm md:justify-between">
-          <span className="hidden w-11 md:block" aria-hidden />
-          <p className="truncate text-center">
-            Summer Sale on all Swimwear — up to 50% off with free delivery{" "}
-            <Link href={shopHref({ category: "swim-beachwear" })} className="ml-1 font-semibold underline underline-offset-2 hover:text-neutral-300">
-              Shop Now
-            </Link>
-          </p>
-          <ThemeToggle className="hidden md:inline-flex" />
-        </div>
+      <div className="bg-[#1d1d1f] text-white dark:border-b dark:border-line dark:bg-[#161617]">
+        <p className="container-page flex h-9 items-center justify-center gap-2 truncate text-xs">
+          <span className="truncate">{t("promo.text")}</span>
+          <Link href={shopHref({ category: "swim-beachwear" })} className="shrink-0 font-semibold underline-offset-4 hover:underline">
+            {t("promo.cta")} ›
+          </Link>
+        </p>
       </div>
 
-      <nav aria-label="Main" className="border-b border-line bg-surface/90 backdrop-blur-md">
-        <div className="container-page flex h-16 items-center justify-between gap-4 lg:h-20">
-          <Link href="/" className="shrink-0 text-xl font-bold tracking-tight sm:text-2xl">
-            Wear Zara
-          </Link>
+      <nav aria-label={t("nav.main")} className="border-b border-line bg-glass backdrop-blur-xl backdrop-saturate-[1.8]">
+        <div className="container-page flex h-14 items-center justify-between gap-3 lg:h-16">
+          <div className="flex items-center gap-1">
+            <IconButton
+              label={t(menuOpen ? "nav.closeMenu" : "nav.openMenu")}
+              aria-expanded={menuOpen}
+              aria-controls="mobile-menu"
+              variant="ghost"
+              className="-ms-2 lg:hidden"
+              onClick={() => setMenuOpenOn(menuOpen ? null : pathname)}
+            >
+              {menuOpen ? <LuX /> : <LuMenu />}
+            </IconButton>
+            <Link href="/" className="text-lg font-semibold tracking-tight sm:text-xl" aria-label={SITE.name}>
+              Wear<span className="text-brand">Zara</span>
+            </Link>
+          </div>
 
-          <ul className="hidden items-center gap-8 lg:flex">
-            {[...NAV_LINKS, ...guestLinks].map((link) => (
+          <ul className="hidden items-center gap-1 lg:flex">
+            {links.map((link) => (
               <li key={link.href}>
                 <Link
                   href={link.href}
-                  aria-current={isActive(pathname, link.href) ? "page" : undefined}
-                  className={cn(
-                    "border-b-2 pb-0.5 text-[15px] font-medium transition-colors hover:border-fg/40",
-                    isActive(pathname, link.href) ? "border-brand" : "border-transparent",
-                  )}
+                  aria-current={link.active ? "page" : undefined}
+                  className={cn("rounded-full px-4 py-2 text-sm transition-colors hover:bg-fg/6", link.active ? "font-semibold text-fg" : "text-fg/75")}
                 >
                   {link.label}
                 </Link>
@@ -85,54 +87,51 @@ export default function Navbar() {
             ))}
           </ul>
 
-          <div className="flex items-center gap-1 sm:gap-2">
-            <SearchForm className="mr-2 hidden w-56 md:block xl:w-64" />
-            <IconButton href="/wishlist" label="Wishlist" variant="ghost" badge={wishlistCount}>
-              <GoHeart />
+          <div className="flex items-center gap-0.5 sm:gap-1">
+            <SearchForm className="me-1 hidden w-52 md:block xl:w-60" />
+            <LanguageMenu className="hidden md:block" />
+            <span className="hidden md:block">
+              <ThemeToggle />
+            </span>
+            <IconButton href="/wishlist" label={t("nav.wishlist")} variant="ghost" badge={mounted ? wishlistCount : 0}>
+              <LuHeart />
             </IconButton>
-            <IconButton href="/cart" label="Cart" variant="ghost" badge={cartCount}>
-              <IoCartOutline className="text-2xl" />
+            <IconButton href="/cart" label={t("nav.cart")} variant="ghost" badge={mounted ? cartCount : 0}>
+              <LuShoppingBag />
             </IconButton>
-            <AccountMenu />
-            <IconButton
-              label={menuOpen ? "Close menu" : "Open menu"}
-              aria-expanded={menuOpen}
-              aria-controls="mobile-menu"
-              variant="ghost"
-              className="lg:hidden"
-              onClick={() => setMenuOpenOn(menuOpen ? null : pathname)}
-            >
-              {menuOpen ? <FiX /> : <FiMenu />}
-            </IconButton>
+            <div className="ms-1">
+              <AccountMenu />
+            </div>
           </div>
         </div>
 
-        {menuOpen && (
-          <div id="mobile-menu" className="container-page border-t border-line pb-6 pt-4 lg:hidden">
-            <SearchForm className="mb-4 md:hidden" onSearch={closeMenu} />
-            <ul className="flex flex-col">
-              {[...NAV_LINKS, ...guestLinks].map((link) => (
-                <li key={link.href}>
-                  <Link
-                    href={link.href}
-                    onClick={closeMenu}
-                    aria-current={isActive(pathname, link.href) ? "page" : undefined}
-                    className={cn(
-                      "block rounded-lg px-3 py-3 text-sm font-medium transition-colors hover:bg-surface-muted",
-                      isActive(pathname, link.href) && "text-brand",
-                    )}
-                  >
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-            <div className="mt-2 flex items-center justify-between rounded-lg bg-black px-3 py-3 text-sm font-medium text-white">
-              Dark mode
-              <ThemeToggle />
+        {/* Mobile menu — animates its height open/closed. */}
+        <div id="mobile-menu" className={cn("grid transition-[grid-template-rows] duration-300 ease-apple lg:hidden", menuOpen ? "grid-rows-[1fr]" : "grid-rows-[0fr]")} inert={!menuOpen}>
+          <div className="overflow-hidden">
+            <div className="container-page flex flex-col gap-4 border-t border-line pb-6 pt-4">
+              <SearchForm className="md:hidden" onSearch={closeMenu} />
+              <ul className="flex flex-col">
+                {[...links, ...authLinks].map((link) => (
+                  <li key={link.href}>
+                    <Link
+                      href={link.href}
+                      onClick={closeMenu}
+                      aria-current={link.active ? "page" : undefined}
+                      className={cn("block rounded-xl px-3 py-3 text-[17px] transition-colors hover:bg-fg/5", link.active && "font-semibold text-brand")}
+                    >
+                      {link.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+              <div className="flex items-center justify-between gap-4 rounded-2xl bg-fg/4 p-3 md:hidden">
+                <span className="text-sm font-medium">{t("theme.label")}</span>
+                <ThemeToggle />
+              </div>
+              <LanguageMenu inline className="md:hidden" />
             </div>
           </div>
-        )}
+        </div>
       </nav>
     </header>
   );

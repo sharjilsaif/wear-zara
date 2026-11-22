@@ -1,37 +1,38 @@
-import Link from "next/link";
-import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
+"use client";
 
+import Link from "next/link";
+import { LuChevronLeft, LuChevronRight } from "react-icons/lu";
+
+import { useI18n } from "@/i18n/client";
 import { cn } from "@/lib/format";
 
-/** Server-rendered, crawlable pagination. `hrefFor(page)` builds each link. */
-export default function Pagination({ page, totalPages, hrefFor }) {
-  if (totalPages <= 1) return null;
+/** Crawlable pagination. `hrefs` is the list of page URLs (index 0 = page 1). */
+export default function Pagination({ page, hrefs }) {
+  const { t, format } = useI18n();
+  if (hrefs.length <= 1) return null;
 
-  const pages = Array.from({ length: totalPages }, (_, index) => index + 1);
-  const base = "flex h-10 min-w-10 items-center justify-center rounded-md border px-3 text-sm font-medium transition-colors";
+  const base = "flex h-10 min-w-10 items-center justify-center rounded-full px-3 text-sm font-medium transition-all";
+  const arrow = (target, label, Icon) =>
+    target >= 1 && target <= hrefs.length ? (
+      <Link href={hrefs[target - 1]} aria-label={label} className={cn(base, "glass hover:bg-glass-strong")}>
+        <Icon className="rtl:-scale-x-100" />
+      </Link>
+    ) : null;
 
   return (
-    <nav aria-label="Pagination" className="mt-14 flex flex-wrap items-center justify-center gap-2">
-      {page > 1 && (
-        <Link href={hrefFor(page - 1)} aria-label="Previous page" className={cn(base, "border-line hover:bg-surface-muted")}>
-          <FiChevronLeft />
-        </Link>
-      )}
-      {pages.map((number) => (
+    <nav aria-label={t("common.pagination")} className="mt-14 flex flex-wrap items-center justify-center gap-2">
+      {arrow(page - 1, t("common.previous"), LuChevronLeft)}
+      {hrefs.map((href, index) => (
         <Link
-          key={number}
-          href={hrefFor(number)}
-          aria-current={number === page ? "page" : undefined}
-          className={cn(base, number === page ? "border-brand bg-brand text-white" : "border-line hover:bg-surface-muted")}
+          key={href}
+          href={href}
+          aria-current={index + 1 === page ? "page" : undefined}
+          className={cn(base, index + 1 === page ? "bg-inverse text-inverse-fg" : "hover:bg-fg/6")}
         >
-          {number}
+          {format.number(index + 1)}
         </Link>
       ))}
-      {page < totalPages && (
-        <Link href={hrefFor(page + 1)} aria-label="Next page" className={cn(base, "border-line hover:bg-surface-muted")}>
-          <FiChevronRight />
-        </Link>
-      )}
+      {arrow(page + 1, t("common.next"), LuChevronRight)}
     </nav>
   );
 }

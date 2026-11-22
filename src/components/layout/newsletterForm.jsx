@@ -1,60 +1,63 @@
 "use client";
 
 import { useState } from "react";
-import { LuSendHorizontal } from "react-icons/lu";
+import { LuArrowRight } from "react-icons/lu";
 
 import Spinner from "@/components/ui/spinner";
 import { useToast } from "@/components/ui/toast";
-import { EMAIL_PATTERN } from "@/lib/validation";
+import { useI18n } from "@/i18n/client";
+import useRequest from "@/lib/useRequest";
+import { validateEmail } from "@/lib/validation";
 
 export default function NewsletterForm() {
+  const { t } = useI18n();
   const toast = useToast();
+  const { send, pending } = useRequest();
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
-  const [submitting, setSubmitting] = useState(false);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    if (!EMAIL_PATTERN.test(email.trim())) {
-      setError("Enter a valid email address.");
-      return;
-    }
+    if (validateEmail(email)) return setError(t("validation.email"));
 
     setError("");
-    setSubmitting(true);
-    await new Promise((resolve) => setTimeout(resolve, 800));
-    setSubmitting(false);
+    const result = await send("/api/newsletter", { body: { email }, refresh: false });
+    if (!result.ok) return;
     setEmail("");
-    toast({ title: "You're subscribed!", description: "Use code WELCOME10 for 10% off your first order." });
+    toast(
+      result.existing
+        ? { type: "info", title: t("newsletter.already") }
+        : { title: t("newsletter.success"), description: t("newsletter.successText") },
+    );
   };
 
   return (
-    <form onSubmit={handleSubmit} noValidate className="w-full max-w-64">
+    <form onSubmit={handleSubmit} noValidate className="w-full max-w-72">
       <label htmlFor="newsletter-email" className="sr-only">
-        Email address
+        {t("common.email")}
       </label>
-      <div className="flex items-center rounded-md border border-white/30 focus-within:border-white">
+      <div className="flex items-center rounded-full border border-line bg-field p-1 ps-4 transition-all focus-within:border-brand focus-within:ring-4 focus-within:ring-brand/15">
         <input
           id="newsletter-email"
           type="email"
           value={email}
           onChange={(event) => setEmail(event.target.value)}
-          placeholder="Enter your email"
+          placeholder={t("newsletter.placeholder")}
           aria-invalid={error ? true : undefined}
           aria-describedby={error ? "newsletter-error" : undefined}
-          className="min-w-0 flex-1 bg-transparent px-3 py-2.5 text-sm text-white outline-none placeholder:text-neutral-400"
+          className="min-w-0 flex-1 bg-transparent py-1.5 text-sm text-fg outline-none"
         />
         <button
           type="submit"
-          aria-label="Subscribe"
-          disabled={submitting}
-          className="flex h-10 w-10 items-center justify-center text-lg text-white transition-colors hover:text-neutral-300"
+          aria-label={t("newsletter.submit")}
+          disabled={pending}
+          className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-brand text-white transition-all hover:bg-brand-hover active:scale-90"
         >
-          {submitting ? <Spinner /> : <LuSendHorizontal />}
+          {pending ? <Spinner /> : <LuArrowRight className="rtl:-scale-x-100" />}
         </button>
       </div>
       {error && (
-        <p id="newsletter-error" className="mt-2 text-xs text-red-400">
+        <p id="newsletter-error" className="mt-2 text-xs text-sale">
           {error}
         </p>
       )}

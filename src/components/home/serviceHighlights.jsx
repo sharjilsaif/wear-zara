@@ -1,31 +1,34 @@
-import { MdOutlineVerifiedUser } from "react-icons/md";
-import { RiCustomerServiceLine } from "react-icons/ri";
-import { TbTruckDelivery } from "react-icons/tb";
+"use client";
 
-import { FREE_SHIPPING_THRESHOLD } from "@/lib/site";
+import Link from "next/link";
+import { LuHeadphones, LuShieldCheck, LuTruck } from "react-icons/lu";
+
+import { useI18n } from "@/i18n/client";
+import { FREE_SHIPPING_THRESHOLD, RETURN_DAYS } from "@/lib/site";
 
 const SERVICES = [
-  { icon: TbTruckDelivery, title: "Free and Fast Delivery", text: `Free delivery for all orders over $${FREE_SHIPPING_THRESHOLD}` },
-  { icon: RiCustomerServiceLine, title: "24/7 Customer Service", text: "Friendly 24/7 customer support" },
-  { icon: MdOutlineVerifiedUser, title: "Money Back Guarantee", text: "We return money within 30 days" },
+  { key: "delivery", icon: LuTruck, href: "/faq#delivery" },
+  { key: "support", icon: LuHeadphones, href: "/contact" },
+  { key: "guarantee", icon: LuShieldCheck, href: "/faq#returns" },
 ];
 
-/** Delivery / support / guarantee strip shown on the home and about pages. */
+/** Delivery / support / guarantee strip — each card links to the details. */
 export default function ServiceHighlights() {
+  const { t, format } = useI18n();
+  const vars = { amount: format.price(FREE_SHIPPING_THRESHOLD), days: RETURN_DAYS };
+
   return (
-    <section className="container-page py-16 lg:py-24">
-      <ul className="grid gap-12 sm:grid-cols-3 sm:gap-8">
-        {SERVICES.map(({ icon: Icon, title, text }) => (
-          <li key={title} className="flex flex-col items-center gap-5 text-center">
-            <span className="flex h-20 w-20 items-center justify-center rounded-full bg-neutral-300 dark:bg-neutral-700">
-              <span className="flex h-14 w-14 items-center justify-center rounded-full bg-black text-white">
-                <Icon aria-hidden className="text-3xl" />
+    <section className="container-page py-16 lg:py-20">
+      <ul className="grid gap-4 sm:grid-cols-3 sm:gap-6">
+        {SERVICES.map(({ key, icon: Icon, href }) => (
+          <li key={key}>
+            <Link href={href} className="glass group flex h-full flex-col items-center gap-4 rounded-3xl p-8 text-center transition-all duration-300 ease-apple hover:-translate-y-1">
+              <span className="flex h-14 w-14 items-center justify-center rounded-2xl bg-brand-soft text-2xl text-brand transition-transform duration-300 group-hover:scale-110">
+                <Icon aria-hidden />
               </span>
-            </span>
-            <div>
-              <h3 className="font-semibold uppercase">{title}</h3>
-              <p className="mt-1 text-sm text-fg-muted">{text}</p>
-            </div>
+              <h3 className="text-[17px] font-semibold">{t(`services.${key}.title`)}</h3>
+              <p className="text-sm text-fg-muted">{t(`services.${key}.text`, vars)}</p>
+            </Link>
           </li>
         ))}
       </ul>

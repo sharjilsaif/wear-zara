@@ -1,12 +1,3 @@
-const currency = new Intl.NumberFormat("en-US", {
-  style: "currency",
-  currency: "USD",
-});
-
-export function formatPrice(value) {
-  return currency.format(Number(value) || 0);
-}
-
 const SMALL_WORDS = new Set(["a", "an", "and", "by", "for", "in", "of", "on", "or", "the", "to", "with"]);
 
 /** "PACK OF 3 PRINTED SHIRTS" -> "Pack of 3 Printed Shirts" */
@@ -16,9 +7,7 @@ export function displayName(name = "") {
     .split(/\s+/)
     .filter(Boolean)
     .map((word, index) =>
-      index > 0 && SMALL_WORDS.has(word)
-        ? word
-        : word.charAt(0).toUpperCase() + word.slice(1),
+      index > 0 && SMALL_WORDS.has(word) ? word : word.charAt(0).toUpperCase() + word.slice(1),
     )
     .join(" ");
 }
@@ -50,4 +39,10 @@ export function slugify(value = "") {
 
 export function cn(...classes) {
   return classes.filter(Boolean).join(" ");
+}
+
+/** "Sharjil Malik" -> "SM" */
+export function initials(name = "") {
+  const parts = name.trim().split(/\s+/).filter(Boolean);
+  return ((parts[0]?.[0] ?? "") + (parts.length > 1 ? parts[parts.length - 1][0] : "")).toUpperCase() || "?";
 }

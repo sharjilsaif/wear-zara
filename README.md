@@ -1,38 +1,24 @@
 # Wear Zara — Full-Stack Fashion E-commerce
 
-A modern, responsive online fashion store built with **Next.js 16 (App Router)**, **React 19**, **Tailwind CSS 4**, **Prisma**, **PostgreSQL** and **Auth.js**.
+A production-grade online fashion store built with **Next.js 16 (App Router)**, **React 19**, **Tailwind CSS 4**, **Prisma**, **PostgreSQL** and **Auth.js** — in **English, Urdu (right-to-left) and Spanish**, with an Apple-inspired glass design, light/dark themes and a full admin panel.
 
-**Live demo:** https://wear-zara.vercel.app
+**Live demo:** https://wear-zara.vercel.app · **Full project report:** [PROJECT_REPORT.md](PROJECT_REPORT.md)
 
 ![Wear Zara home page](assets/home-light.png)
 
 ---
 
-## ✨ Features
+## ✨ Highlights
 
-### Shopping
-- **Product catalogue** served from PostgreSQL — 12 categories, many-to-many product ↔ category relations
-- **Shop page** with category filters, search, sorting (newest, price, name) and crawlable pagination
-- **Product details pages** with related items, SEO metadata and JSON-LD structured data
-- **Quick view** modal, live **cart & wishlist** with badges, synced across tabs
-- **Cart** with quantity controls, coupon codes (`WELCOME10`, `ZARA20`), free-delivery threshold and totals
-- **Checkout** with validated billing form and order confirmation (cash on delivery)
-- Flash-sale and promo **countdowns** that roll over automatically (weekly / monthly)
+**Shopping** — catalogue with category filters, search, sorting and pagination · product pages with reviews and related items · quick-view sheet · bag and wishlist that **sync to your account across devices** · server-validated coupons · checkout with saved details · order confirmation, tracking (signed-in or by order number + email) and self-service cancellation.
 
-### Accounts & admin
-- **Sign up / log in** with Auth.js (credentials), bcrypt-hashed passwords and JWT sessions
-- Account menu with **log out** and **delete account**
-- **Admin dashboard** — create/delete categories, publish/delete products, live image preview
-  - Restricted to emails listed in `ADMIN_EMAILS`; everyone else sees a **read-only demo**
-  - Every write API route is protected server-side
+**Accounts** — sign up / sign in, profile photo upload, name and phone editing, password change, account deletion, order history.
 
-### Quality
-- **Light / dark / system theme** with no flash on load
-- Fully **responsive**, mobile-first layouts and touch-friendly product cards
-- **Accessible**: semantic landmarks, skip link, keyboard-friendly dialogs (native `<dialog>`), labelled icon buttons, live regions for toasts
-- **Fast**: static home page with incremental revalidation, responsive images, `next/font`
-- **SEO**: per-page metadata, Open Graph image, `sitemap.xml`, `robots.txt`
-- Custom **404** and **error** pages, loading skeletons
+**Admin panel** (admins only) — overview stats, orders with status workflow, products (create / edit / delete), categories, coupons (percent or fixed, minimum spend, usage limit, expiry, on/off), customers with photos, carts and wishlists, review moderation, contact-form inbox, newsletter subscribers with CSV export.
+
+**Experience** — English / Urdu / Spanish with full RTL layout, art-directed hero images per screen size, glassmorphism UI, custom dropdowns, accessible dialogs, cookie consent with preferences, store policy pages, size guide, careers, SEO (metadata, sitemap, JSON-LD).
+
+**Security** — bcrypt passwords, JWT sessions, server-side authorisation on every write, admin gate with live session guard, rate limiting, CSRF origin check, strict security headers (CSP, HSTS, frame denial), prices and coupons always re-checked on the server.
 
 ---
 
@@ -48,11 +34,11 @@ A modern, responsive online fashion store built with **Next.js 16 (App Router)**
 
 | Area | Technology |
 | --- | --- |
-| Framework | Next.js 16 (App Router, Server Components, Route Handlers) |
-| UI | React 19 + React Compiler, Tailwind CSS 4, react-icons |
+| Framework | Next.js 16 (App Router, Server Components, Route Handlers, Proxy) |
+| UI | React 19 + React Compiler, Tailwind CSS 4, react-icons (Lucide) |
 | Database | PostgreSQL (Neon) with Prisma ORM |
-| Auth | Auth.js (NextAuth v5) — credentials provider, bcrypt |
-| Theming | next-themes |
+| Auth | Auth.js v5 — credentials provider, bcrypt, JWT sessions |
+| i18n | Custom dictionaries + locale proxy (en / ur / es), Intl formatting |
 | Deployment | Vercel |
 
 ---
@@ -61,24 +47,22 @@ A modern, responsive online fashion store built with **Next.js 16 (App Router)**
 
 ```
 src/
-├── app/                    # Routes (App Router)
-│   ├── page.jsx            # Home
-│   ├── shop/               # Catalogue with filters, search, sort, pagination
-│   ├── product/[id]/       # Product details
-│   ├── cart/ checkout/ wishlist/
-│   ├── login/ signup/ about/ contact/ faq/ admin/
-│   └── api/                # Route handlers (products, categories, auth, user)
-├── components/
-│   ├── ui/                 # Reusable primitives: Button, Modal, FormField, Toast, Stars…
-│   ├── product/            # ProductCard, ProductGrid, ProductRail, QuickView…
-│   ├── layout/             # Navbar, Footer, ThemeToggle, Providers
-│   ├── home/ shop/ cart/ auth/ admin/ contact/
-├── lib/                    # Data access, cart store, formatting, validation, config
-└── auth.js                 # Auth.js configuration
+├── app/
+│   ├── [lang]/            # Every page, rendered per language (URLs stay clean: /shop, not /en/shop)
+│   │   ├── shop/ product/[id]/ cart/ wishlist/ checkout/ track-order/
+│   │   ├── account/       # Profile, orders, order detail
+│   │   ├── admin/         # Overview, orders, products, categories, coupons, customers, reviews, messages, subscribers
+│   │   └── [page]/        # Shipping, returns, size guide, careers, privacy, terms, cookies
+│   └── api/               # 25 route handlers (auth, account, cart, wishlist, orders, coupons, reviews, admin…)
+├── components/            # ui/ layout/ home/ product/ cart/ orders/ account/ admin/ auth/ shop/
+├── i18n/                  # config, translator, dictionaries (en / ur / es)
+├── lib/                   # data access, pricing, validation, store sync, rate limiting, helpers
+├── proxy.js               # language routing + API CSRF check
+└── auth.js                # Auth.js configuration
 prisma/
-├── schema.prisma
+├── schema.prisma          # 12 models
 ├── migrations/
-└── seed.js                 # Seeds the demo catalogue
+└── seed.js                # Demo catalogue
 ```
 
 ---
@@ -88,23 +72,16 @@ prisma/
 **Prerequisites:** Node.js 20.9+ and a PostgreSQL database (a free [Neon](https://neon.tech) database works great).
 
 ```bash
-# 1. Clone and install
 git clone https://github.com/sharjilsaif/wear-zara.git
 cd wear-zara
 npm install
-
-# 2. Configure environment variables
-cp .env.example .env      # then fill in DATABASE_URL, AUTH_SECRET and ADMIN_EMAILS
-
-# 3. Create the tables and load the demo catalogue
-npm run db:migrate
-npm run db:seed
-
-# 4. Start the dev server
+cp .env.example .env      # fill in DATABASE_URL, AUTH_SECRET and ADMIN_EMAILS
+npm run db:migrate        # create the tables
+npm run db:seed           # load the demo catalogue
 npm run dev
 ```
 
-Open http://localhost:3000.
+Open http://localhost:3000. Sign up with an email listed in `ADMIN_EMAILS` to unlock `/admin`.
 
 ### Environment variables
 
@@ -112,15 +89,15 @@ Open http://localhost:3000.
 | --- | --- |
 | `DATABASE_URL` | PostgreSQL connection string |
 | `AUTH_SECRET` | Secret for signing sessions — generate with `npx auth secret` |
-| `ADMIN_EMAILS` | Comma-separated emails allowed to edit the catalogue in `/admin` |
+| `ADMIN_EMAILS` | Comma-separated emails that can open the admin panel |
 
 ### Scripts
 
 | Command | Description |
 | --- | --- |
-| `npm run dev` | Start the development server |
+| `npm run dev` | Development server |
 | `npm run build` / `npm start` | Production build / server |
-| `npm run lint` | Run ESLint |
+| `npm run lint` | ESLint |
 | `npm run db:migrate` | Apply database migrations |
 | `npm run db:seed` | Seed categories and products |
 
@@ -128,10 +105,10 @@ Open http://localhost:3000.
 
 ## 🗺️ Roadmap
 
-- Online card payments (Stripe)
-- Persisted orders & order history
-- Product reviews and multiple images per product
-- Account-synced cart and wishlist
+- Online card payments (Stripe) and order confirmation emails
+- Password reset by email
+- Multiple images and size/colour variants per product
+- Wear Zara mobile app
 
 ---
 

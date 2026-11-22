@@ -1,85 +1,100 @@
 "use client";
 
 import { useState } from "react";
-import { FiTrash2 } from "react-icons/fi";
+import Link from "next/link";
+import { LuCheck, LuPencil, LuX } from "react-icons/lu";
 
 import AdminCard from "@/components/admin/adminCard";
-import useAdminRequest from "@/components/admin/useAdminRequest";
+import DeleteButton from "@/components/admin/deleteButton";
 import Button from "@/components/ui/button";
-import FormField from "@/components/ui/formField";
+import FormField, { inputClasses } from "@/components/ui/formField";
 import IconButton from "@/components/ui/iconButton";
-import { ConfirmDialog } from "@/components/ui/modal";
+import { useI18n } from "@/i18n/client";
+import { cn } from "@/lib/format";
+import { shopHref } from "@/lib/site";
+import useRequest from "@/lib/useRequest";
 
-export default function CategoryManager({ categories, readOnly }) {
-  const [name, setName] = useState("");
-  const [toDelete, setToDelete] = useState(null);
-  const create = useAdminRequest();
-  const remove = useAdminRequest();
+function CategoryRow({ category }) {
+  const { t } = useI18n();
+  const { send, pending } = useRequest();
+  const [name, setName] = useState(null); // null = not editing
 
-  const handleCreate = async (event) => {
+  const save = async (event) => {
     event.preventDefault();
-    if (!name.trim()) return;
-    const ok = await create.send("/api/categories", { body: { name }, success: `Category “${name.trim()}” added` });
-    if (ok) setName("");
-  };
-
-  // Takes the category as an argument (rather than reading `toDelete` in the closure)
-  // so the React Compiler doesn't dereference a null `toDelete` while memoizing.
-  const handleDelete = async (category) => {
-    await remove.send(`/api/categories?id=${category.id}`, { method: "DELETE", success: `Deleted “${category.name}”` });
-    setToDelete(null);
+    const result = await send(`/api/categories/${category.id}`, { method: "PATCH", body: { name }, success: t("admin.categories.renamed") });
+    if (result.ok) setName(null);
   };
 
   return (
-    <AdminCard title="Categories" description="Create and remove store departments.">
-      <form onSubmit={handleCreate} className="mb-6 flex items-end gap-2">
-        <FormField
-          label="New category"
-          className="flex-1"
-          value={name}
-          onChange={(event) => setName(event.target.value)}
-          placeholder="e.g. Winter Wear"
-          disabled={readOnly}
-          maxLength={50}
-        />
-        <Button type="submit" variant="dark" loading={create.pending} disabled={readOnly || !name.trim()}>
-          Add
-        </Button>
-      </form>
-
-      <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-fg-muted">{categories.length} categories</p>
-      <ul className="no-scrollbar flex max-h-96 flex-col gap-2 overflow-y-auto">
-        {categories.map((category) => (
-          <li key={category.id} className="flex items-center justify-between rounded-lg border border-line bg-surface-muted px-3 py-2">
-            <div>
-              <p className="text-sm font-medium">{category.name}</p>
-              <p className="text-xs text-fg-muted">
-                {category._count.products} products · /{category.slug}
-              </p>
-            </div>
-            <IconButton
-              label={`Delete ${category.name}`}
-              variant="ghost"
-              size="sm"
-              className="text-brand"
-              disabled={readOnly}
-              onClick={() => setToDelete(category)}
-            >
-              <FiTrash2 />
-            </IconButton>
-          </li>
-        ))}
-      </ul>
-
-      <ConfirmDialog
-        open={Boolean(toDelete)}
-        onClose={() => setToDelete(null)}
-        onConfirm={() => handleDelete(toDelete)}
-        loading={remove.pending}
-        title="Delete category?"
-        description={toDelete ? `“${toDelete.name}” will be removed. Its products stay in the store but are no longer listed under it.` : ""}
-        confirmLabel="Delete"
+    <li className="flex items-center gap-3 py-3">
+      {name === null ? (
+        <div className="min-w-0 flex-1">
+          <Link href={shopHref({ category: category.slug })} className="font-medium hover:text-brand">
+            {category.name}
+          </Link>
+          <p className="text-xs text-fg-muted" dir="ltr">
+            /{category.slug}
+          </p>
+        </div>
+      ) : (
+        <form onSubmit={save} className="flex flex-1 items-center gap-2">
+          <input value={name} onChange={(event) => setName(event.target.value)} aria-label={t("admin.categories.name")} autoFocus maxLength={50} className={cn(inputClasses, "py-2")} />
+          <IconButton label={t("common.save")} type="submit" size="sm" disabled={pending}>
+            <LuCheck />
+          </IconButton>
+          <IconButton label={t("common.cancel")} size="sm" variant="ghost" onClick={() => setName(null)}>
+            <LuX />
+          </IconButton>
+        </form>
+      )}
+      <span className="rounded-full bg-fg/6 px-2.5 py-1 text-xs text-fg-muted">{t("admin.productsCount", { count: category._count.products })}</span>
+      {name === null && (
+        <IconButton label={t("common.edit")} variant="ghost" size="sm" onClick={() => setName(category.name)}>
+          <LuPencil />
+        </IconButton>
+      )}
+      <DeleteButton
+        url={`/api/categories/${category.id}`}
+       
+        title={t("admin.categories.deleteTitle")}
+        description={t("admin.categories.deleteText", { name: category.name })}
+        success={t("admin.deleted")}
       />
-    </AdminCard>
+    </li>
+  );
+}
+
+export default function CategoryManager({ categories }) {
+  const { t } = useI18n();
+  const { send, pending } = useRequest();
+  const [name, setName] = useState("");
+  const [error, setError] = useState(null);
+
+  const handleCreate = async (event) => {
+    event.preventDefault();
+    const result = await send("/api/categories", { body: { name }, success: t("admin.categories.added") });
+    if (result.ok) setName("");
+    setError(result.ok ? null : result.fields?.name ?? null);
+  };
+
+  return (
+    <div className="grid gap-6 lg:grid-cols-[20rem_minmax(0,1fr)] lg:items-start">
+      <AdminCard title={t("admin.categories.new")} description={t("admin.categories.newText")}>
+        <form onSubmit={handleCreate} className="flex flex-col gap-4">
+          <FormField label={t("admin.categories.name")} value={name} onChange={(event) => setName(event.target.value)} placeholder={t("admin.categories.placeholder")} maxLength={50} error={error} />
+          <Button type="submit" loading={pending} disabled={name.trim().length < 2}>
+            {t("admin.categories.add")}
+          </Button>
+        </form>
+      </AdminCard>
+
+      <AdminCard title={t("admin.categories.all", { count: categories.length })}>
+        <ul className="-my-3 divide-y divide-line">
+          {categories.map((category) => (
+            <CategoryRow key={category.id} category={category} />
+          ))}
+        </ul>
+      </AdminCard>
+    </div>
   );
 }

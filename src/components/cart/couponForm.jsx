@@ -1,71 +1,80 @@
 "use client";
 
 import { useState } from "react";
-import { FiX } from "react-icons/fi";
+import { LuTicket, LuX } from "react-icons/lu";
 
 import Button from "@/components/ui/button";
 import { inputClasses } from "@/components/ui/formField";
 import { useToast } from "@/components/ui/toast";
+import { useI18n } from "@/i18n/client";
 import { cn } from "@/lib/format";
-import { COUPONS } from "@/lib/site";
 import { setCoupon, useCoupon } from "@/lib/store";
+import useRequest from "@/lib/useRequest";
 
-export default function CouponForm() {
+/** Applies a coupon after the server validates it; the applied coupon is kept in the browser. */
+export default function CouponForm({ subtotal }) {
+  const { t, format } = useI18n();
   const toast = useToast();
   const applied = useCoupon();
+  const { send, pending } = useRequest();
   const [code, setCode] = useState("");
   const [error, setError] = useState("");
 
-  if (applied && COUPONS[applied]) {
+  if (applied) {
+    const short = subtotal < applied.minSubtotal;
     return (
-      <div className="flex items-center justify-between rounded-md border border-dashed border-green-500 bg-green-50 px-4 py-3 text-sm dark:bg-green-950/30">
-        <span>
-          <strong>{applied}</strong> — {COUPONS[applied].label}
-        </span>
-        <button type="button" aria-label="Remove coupon" onClick={() => setCoupon(null)} className="text-fg-muted hover:text-fg">
-          <FiX />
+      <div className={cn("flex items-start justify-between gap-3 rounded-2xl border border-dashed p-3.5 text-sm", short ? "border-warning/50 bg-warning-soft" : "border-success/50 bg-success-soft")}>
+        <div className="flex gap-2.5">
+          <LuTicket aria-hidden className={cn("mt-0.5 shrink-0", short ? "text-warning" : "text-success")} />
+          <div>
+            <p className="font-semibold">{applied.code}</p>
+            <p className="text-xs text-fg-muted">
+              {short ? t("coupon.spendMore", { amount: format.price(applied.minSubtotal - subtotal) }) : applied.description || t("coupon.applied")}
+            </p>
+          </div>
+        </div>
+        <button type="button" aria-label={t("coupon.remove")} onClick={() => setCoupon(null)} className="rounded-full p-1 text-fg-muted transition-colors hover:bg-fg/6 hover:text-fg">
+          <LuX />
         </button>
       </div>
     );
   }
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    const normalized = code.trim().toUpperCase();
-    if (!COUPONS[normalized]) {
-      setError("That coupon code isn't valid. Try WELCOME10.");
-      return;
-    }
-    setCoupon(normalized);
+    if (!code.trim()) return setError(t("coupon.errors.empty"));
+
+    const result = await send("/api/coupons/validate", { body: { code, subtotal }, refresh: false, quiet: true });
+    if (!result.ok) return setError(t(`coupon.errors.${result.reason ?? "invalid"}`));
+
+    setCoupon(result.coupon);
     setCode("");
     setError("");
-    toast({ title: "Coupon applied", description: COUPONS[normalized].label });
+    toast({ title: t("coupon.appliedToast"), description: result.coupon.description ?? result.coupon.code });
   };
 
   return (
     <form onSubmit={handleSubmit} noValidate>
+      <label htmlFor="coupon" className="mb-2 block text-[13px] font-medium text-fg/85">
+        {t("coupon.label")}
+      </label>
       <div className="flex gap-2">
-        <label htmlFor="coupon" className="sr-only">
-          Coupon code
-        </label>
         <input
           id="coupon"
           value={code}
-          onChange={(event) => {
-            setCode(event.target.value);
-            setError("");
-          }}
-          placeholder="Coupon code"
+          onChange={(event) => (setCode(event.target.value), setError(""))}
+          placeholder={t("coupon.placeholder")}
+          autoComplete="off"
           aria-invalid={error ? true : undefined}
           aria-describedby={error ? "coupon-error" : undefined}
-          className={cn(inputClasses, "min-w-0 flex-1 uppercase placeholder:normal-case", error ? "border-red-400" : "border-line")}
+          className={cn(inputClasses, "min-w-0 flex-1 py-2.5 uppercase placeholder:normal-case", error && "border-sale/60")}
         />
-        <Button type="submit" variant="dark">
-          Apply
+        <Button type="submit" variant="dark" loading={pending}>
+          {t("coupon.apply")}
         </Button>
       </div>
       {error && (
-        <p id="coupon-error" className="mt-2 text-xs text-red-500">
+        <p id="coupon-error" className="mt-2 animate-fade-up text-xs text-sale">
           {error}
         </p>
       )}

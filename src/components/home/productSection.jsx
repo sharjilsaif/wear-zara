@@ -1,34 +1,26 @@
 import ProductGrid from "@/components/product/productGrid";
 import Button from "@/components/ui/button";
 import SectionHeader from "@/components/ui/sectionHeader";
+import { getI18n } from "@/i18n/server";
 import { getProductsByCategory } from "@/lib/catalog";
 import { shopHref } from "@/lib/site";
 
-/**
- * Generic "eyebrow + title + product grid + View All" home section,
- * used for Best Selling and Explore Our Products.
- */
-export default async function ProductSection({ category, eyebrow, title, count = 8, buttonPlacement = "header", className }) {
-  const products = await getProductsByCategory(category, count);
+/** "Eyebrow + title + product grid + View all" home section (Best Selling, Explore). */
+export default async function ProductSection({ lang, category, eyebrow, title, count = 8 }) {
+  const [{ t }, products] = await Promise.all([getI18n(lang), getProductsByCategory(category, count)]);
   if (products.length === 0) return null;
 
   const viewAll = (
-    <Button href={shopHref({ category })} size="lg">
-      View All
+    <Button href={shopHref({ category })} variant="outline">
+      {t("common.viewAll")}
     </Button>
   );
 
   return (
-    <section className={className ?? "container-page py-16 lg:py-20"}>
-      <SectionHeader
-        eyebrow={eyebrow}
-        title={title}
-        aside={buttonPlacement === "header" ? <span className="hidden sm:block">{viewAll}</span> : null}
-      />
+    <section className="container-page py-16 lg:py-20">
+      <SectionHeader eyebrow={t(eyebrow)} title={t(title)} aside={<span className="hidden sm:block">{viewAll}</span>} />
       <ProductGrid products={products} />
-      <div className={buttonPlacement === "header" ? "mt-10 flex justify-center sm:hidden" : "mt-12 flex justify-center"}>
-        {viewAll}
-      </div>
+      <div className="mt-10 flex justify-center sm:hidden">{viewAll}</div>
     </section>
   );
 }

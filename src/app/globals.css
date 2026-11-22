@@ -3,60 +3,121 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 /* ---------------------------------------------------------------------------
-   Design tokens — every colour used in the UI comes from here, so light and
-   dark mode are defined in exactly one place.
+   Design tokens — an Apple-inspired, glassy palette. Every colour in the UI
+   comes from here, so light and dark mode are defined in exactly one place.
 --------------------------------------------------------------------------- */
 :root {
-  --brand: #db4444;
-  --brand-hover: #c93b3b;
-  --brand-active: #b23434;
-  --brand-soft: #fdecec;
-
+  --bg: #f5f5f7;
   --surface: #ffffff;
-  --surface-muted: #f5f5f5;
-  --surface-raised: #ffffff;
-  --fg: #111111;
-  --fg-muted: #5f6368;
-  --line: #e5e7eb;
-  --inverse: #111111;
+  --surface-muted: #f0f0f3;
+  --fg: #1d1d1f;
+  --fg-muted: #6e6e73;
+  --line: rgb(0 0 0 / 0.08);
+  --line-strong: rgb(0 0 0 / 0.16);
+
+  --brand: #0071e3;
+  --brand-hover: #0077ed;
+  --brand-active: #006edb;
+  --brand-soft: rgb(0 113 227 / 0.1);
+  --link: #0066cc;
+
+  --sale: #e3002b;
+  --sale-soft: rgb(227 0 43 / 0.1);
+  --success: #1d8a3a;
+  --success-soft: rgb(36 138 61 / 0.12);
+  --warning: #b25000;
+  --warning-soft: rgb(255 149 0 / 0.14);
+
+  --glass: rgb(255 255 255 / 0.72);
+  --glass-strong: rgb(255 255 255 / 0.86);
+  --glass-border: rgb(255 255 255 / 0.7);
+  --glass-shadow: 0 1px 1px rgb(0 0 0 / 0.03), 0 8px 32px rgb(0 0 0 / 0.07);
+  --field: rgb(255 255 255 / 0.8);
+  --field-hover: #ffffff;
+
+  --inverse: #1d1d1f;
   --inverse-fg: #ffffff;
-  --skeleton: #e7e7e7;
+  --skeleton: rgb(0 0 0 / 0.06);
+
+  --ambient-1: rgb(0 113 227 / 0.12);
+  --ambient-2: rgb(255 55 95 / 0.08);
+  --ambient-3: rgb(175 82 222 / 0.09);
 }
 
 .dark {
-  --brand-soft: #3a1717;
+  --bg: #000000;
+  --surface: #1c1c1e;
+  --surface-muted: #2c2c2e;
+  --fg: #f5f5f7;
+  --fg-muted: #a1a1a6;
+  --line: rgb(255 255 255 / 0.1);
+  --line-strong: rgb(255 255 255 / 0.2);
 
-  --surface: #0f0f0f;
-  --surface-muted: #1a1a1a;
-  --surface-raised: #161616;
-  --fg: #f1f1f1;
-  --fg-muted: #a3a3a3;
-  --line: #2a2a2a;
-  --inverse: #f1f1f1;
-  --inverse-fg: #111111;
-  --skeleton: #262626;
+  --brand: #0a84ff;
+  --brand-hover: #3395ff;
+  --brand-active: #0071e3;
+  --brand-soft: rgb(10 132 255 / 0.16);
+  --link: #2997ff;
+
+  --sale: #ff375f;
+  --sale-soft: rgb(255 55 95 / 0.16);
+  --success: #30d158;
+  --success-soft: rgb(48 209 88 / 0.16);
+  --warning: #ffb340;
+  --warning-soft: rgb(255 159 10 / 0.16);
+
+  --glass: rgb(28 28 30 / 0.66);
+  --glass-strong: rgb(28 28 30 / 0.84);
+  --glass-border: rgb(255 255 255 / 0.1);
+  --glass-shadow: 0 1px 1px rgb(0 0 0 / 0.3), 0 8px 32px rgb(0 0 0 / 0.45);
+  --field: rgb(255 255 255 / 0.06);
+  --field-hover: rgb(255 255 255 / 0.09);
+
+  --inverse: #f5f5f7;
+  --inverse-fg: #1d1d1f;
+  --skeleton: rgb(255 255 255 / 0.08);
+
+  --ambient-1: rgb(10 132 255 / 0.18);
+  --ambient-2: rgb(255 55 95 / 0.1);
+  --ambient-3: rgb(191 90 242 / 0.12);
 }
 
 @theme {
-  --font-sans: var(--font-poppins), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", var(--font-inter), "Helvetica Neue",
+    ui-sans-serif, system-ui, sans-serif;
 
+  --color-bg: var(--bg);
   --color-brand: var(--brand);
   --color-brand-hover: var(--brand-hover);
   --color-brand-active: var(--brand-active);
   --color-brand-soft: var(--brand-soft);
+  --color-link: var(--link);
+  --color-sale: var(--sale);
+  --color-sale-soft: var(--sale-soft);
+  --color-success: var(--success);
+  --color-success-soft: var(--success-soft);
+  --color-warning: var(--warning);
+  --color-warning-soft: var(--warning-soft);
 
   --color-surface: var(--surface);
   --color-surface-muted: var(--surface-muted);
-  --color-surface-raised: var(--surface-raised);
   --color-fg: var(--fg);
   --color-fg-muted: var(--fg-muted);
   --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+  --color-glass: var(--glass);
+  --color-glass-strong: var(--glass-strong);
+  --color-field: var(--field);
   --color-inverse: var(--inverse);
   --color-inverse-fg: var(--inverse-fg);
   --color-skeleton: var(--skeleton);
 
+  --ease-apple: cubic-bezier(0.32, 0.72, 0, 1);
+
   --animate-shimmer: shimmer 1.6s infinite;
-  --animate-toast-in: toast-in 0.25s ease-out;
+  --animate-toast-in: toast-in 0.4s var(--ease-apple);
+  --animate-fade-up: fade-up 0.5s var(--ease-apple) both;
+  --animate-pop: pop 0.35s var(--ease-apple);
 
   @keyframes shimmer {
     from { transform: translateX(-100%); }
@@ -64,8 +125,19 @@
   }
 
   @keyframes toast-in {
-    from { opacity: 0; transform: translateY(0.5rem); }
-    to { opacity: 1; transform: translateY(0); }
+    from { opacity: 0; transform: translateY(0.75rem) scale(0.96); }
+    to { opacity: 1; transform: none; }
+  }
+
+  @keyframes fade-up {
+    from { opacity: 0; transform: translateY(0.75rem); }
+    to { opacity: 1; transform: none; }
+  }
+
+  @keyframes pop {
+    0% { transform: scale(1); }
+    40% { transform: scale(1.25); }
+    100% { transform: scale(1); }
   }
 }
 
@@ -85,6 +157,23 @@
   }
 }
 
+/* Frosted-glass surface (navbar, cards, panels, dialogs). */
+@utility glass {
+  background-color: var(--glass);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  backdrop-filter: saturate(180%) blur(20px);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow);
+}
+
+@utility glass-strong {
+  background-color: var(--glass-strong);
+  -webkit-backdrop-filter: saturate(180%) blur(30px);
+  backdrop-filter: saturate(180%) blur(30px);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow);
+}
+
 /* Horizontal sliders scroll without a visible scrollbar. */
 @utility no-scrollbar {
   scrollbar-width: none;
@@ -97,18 +186,81 @@
 @layer base {
   html {
     scroll-behavior: smooth;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* No visible scrollbars anywhere (page and inner scroll areas still scroll). */
+  * {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  *::-webkit-scrollbar {
+    display: none;
+  }
+
+  html[lang="ur"] {
+    /* Inter for Latin letters and digits, Noto Naskh for the Urdu script. */
+    --font-sans: var(--font-inter), var(--font-urdu), system-ui, sans-serif;
+    font-family: var(--font-sans);
+  }
+
+  /* Naskh script needs a little more room than Latin text. */
+  html[lang="ur"] body {
+    line-height: 1.75;
   }
 
   body {
-    background-color: var(--surface);
+    background-color: var(--bg);
     color: var(--fg);
     -webkit-font-smoothing: antialiased;
-    transition: background-color 0.3s, color 0.3s;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    letter-spacing: -0.01em;
   }
 
-  /* Lock page scroll while a modal <dialog> is open. */
-  body:has(dialog[open]) {
-    overflow: hidden;
+  html[lang="ur"] body {
+    letter-spacing: 0;
+  }
+
+  /* Soft colour glow behind the page — gives the glass surfaces something to blur. */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background:
+      radial-gradient(55rem 38rem at 0% -10%, var(--ambient-1), transparent 65%),
+      radial-gradient(45rem 34rem at 100% 5%, var(--ambient-2), transparent 65%),
+      radial-gradient(60rem 40rem at 50% 115%, var(--ambient-3), transparent 65%);
+  }
+
+  /* Grids default to one shrinkable column, so wide content (tables, sliders) can never
+     stretch a page sideways. Any grid-cols-* utility overrides this. */
+  .grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  /* Every interactive element gets a pointer (Tailwind 4 no longer does this for buttons). */
+  button:not(:disabled),
+  [role="button"]:not([aria-disabled="true"]),
+  [type="button"]:not(:disabled),
+  [type="submit"]:not(:disabled),
+  [type="reset"]:not(:disabled),
+  [type="checkbox"]:not(:disabled),
+  [type="radio"]:not(:disabled),
+  [type="file"]:not(:disabled),
+  select:not(:disabled),
+  summary,
+  label:has(input:not(:disabled)),
+  a[href] {
+    cursor: pointer;
+  }
+
+  :disabled,
+  [aria-disabled="true"] {
+    cursor: not-allowed;
   }
 
   img {
@@ -117,14 +269,93 @@
     display: block;
   }
 
+  ::selection {
+    background: var(--brand-soft);
+  }
+
   :focus-visible {
     outline: 2px solid var(--brand);
     outline-offset: 2px;
   }
 
+  input::placeholder,
+  textarea::placeholder {
+    color: var(--fg-muted);
+    opacity: 0.75;
+  }
+
+  /* Native date/number pickers follow the theme. */
+  .dark input,
+  .dark select,
+  .dark textarea {
+    color-scheme: dark;
+  }
+
+  input[type="number"] {
+    -moz-appearance: textfield;
+  }
+
+  input[type="number"]::-webkit-inner-spin-button,
+  input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  input[type="search"]::-webkit-search-cancel-button {
+    -webkit-appearance: none;
+  }
+
+  /* ---------------- Dialogs: fade + lift in, fade out ---------------- */
+  dialog {
+    opacity: 0;
+    transform: translateY(1.25rem) scale(0.97);
+    transition:
+      opacity 0.3s var(--ease-apple),
+      transform 0.4s var(--ease-apple),
+      overlay 0.4s allow-discrete,
+      display 0.4s allow-discrete;
+  }
+
+  dialog[open] {
+    opacity: 1;
+    transform: none;
+  }
+
+  @starting-style {
+    dialog[open] {
+      opacity: 0;
+      transform: translateY(1.25rem) scale(0.97);
+    }
+  }
+
   dialog::backdrop {
-    background: rgb(0 0 0 / 0.55);
-    backdrop-filter: blur(2px);
+    background: rgb(0 0 0 / 0);
+    -webkit-backdrop-filter: blur(0);
+    backdrop-filter: blur(0);
+    transition:
+      background 0.3s ease,
+      backdrop-filter 0.3s ease,
+      overlay 0.4s allow-discrete,
+      display 0.4s allow-discrete;
+  }
+
+  dialog[open]::backdrop {
+    background: rgb(0 0 0 / 0.32);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+  }
+
+  @starting-style {
+    dialog[open]::backdrop {
+      background: rgb(0 0 0 / 0);
+      -webkit-backdrop-filter: blur(0);
+      backdrop-filter: blur(0);
+    }
+  }
+
+  /* Lock page scroll while a modal <dialog> is open. */
+  body:has(dialog[open]) {
+    overflow: hidden;
   }
 
   @media (prefers-reduced-motion: reduce) {

@@ -1,95 +1,116 @@
+"use client";
+
 import Link from "next/link";
-import { FaGithub } from "react-icons/fa6";
+import { LuGithub, LuMail, LuMapPin, LuPhone } from "react-icons/lu";
 
+import { openCookieSettings } from "@/components/layout/cookieConsent";
 import NewsletterForm from "@/components/layout/newsletterForm";
-import { SITE, SHOP_CATEGORIES, shopHref } from "@/lib/site";
-
-const COLUMNS = [
-  {
-    title: "Shop",
-    links: [
-      { href: "/shop", label: "All Products" },
-      ...SHOP_CATEGORIES.slice(0, 4).map((category) => ({ href: shopHref({ category: category.slug }), label: category.name })),
-    ],
-  },
-  {
-    title: "Account",
-    links: [
-      { href: "/login", label: "Login / Register" },
-      { href: "/cart", label: "Cart" },
-      { href: "/wishlist", label: "Wishlist" },
-      { href: "/checkout", label: "Checkout" },
-    ],
-  },
-  {
-    title: "Help",
-    links: [
-      { href: "/faq", label: "FAQs" },
-      { href: "/contact", label: "Contact" },
-      { href: "/about", label: "About Us" },
-    ],
-  },
-];
-
-function FooterHeading({ children }) {
-  return <h2 className="mb-5 text-lg font-semibold">{children}</h2>;
-}
+import { useI18n } from "@/i18n/client";
+import { SHOP_CATEGORIES, SITE, categoryName, shopHref } from "@/lib/site";
 
 export default function Footer() {
+  const { t } = useI18n();
+
+  const columns = [
+    {
+      title: t("footer.shop"),
+      links: [
+        { href: "/shop", label: t("footer.allProducts") },
+        { href: shopHref({ category: "flash-sales" }), label: t("categories.flash-sales") },
+        ...SHOP_CATEGORIES.slice(0, 4).map((category) => ({ href: shopHref({ category: category.slug }), label: categoryName(t, category) })),
+      ],
+    },
+    {
+      title: t("footer.help"),
+      links: [
+        { href: "/track-order", label: t("pages.trackOrder.title") },
+        { href: "/shipping", label: t("pages.shipping.title") },
+        { href: "/returns", label: t("pages.returns.title") },
+        { href: "/size-guide", label: t("pages.sizeGuide.title") },
+        { href: "/faq", label: t("nav.faq") },
+        { href: "/contact", label: t("nav.contact") },
+      ],
+    },
+    {
+      title: t("footer.company"),
+      links: [
+        { href: "/about", label: t("nav.about") },
+        { href: "/careers", label: t("pages.careers.title") },
+        { href: "/account", label: t("account.title") },
+        { href: "/account/orders", label: t("account.orders") },
+      ],
+    },
+    {
+      title: t("footer.legal"),
+      links: [
+        { href: "/privacy", label: t("pages.privacy.title") },
+        { href: "/terms", label: t("pages.terms.title") },
+        { href: "/cookies", label: t("pages.cookies.title") },
+        { onClick: openCookieSettings, label: t("footer.cookieSettings") },
+      ],
+    },
+  ];
+
+  const contact = [
+    { icon: LuMapPin, label: SITE.address.join(", "), href: `https://maps.google.com/?q=${encodeURIComponent(SITE.address.join(", "))}` },
+    { icon: LuMail, label: SITE.email, href: `mailto:${SITE.email}` },
+    { icon: LuPhone, label: SITE.phone, href: `tel:${SITE.phone.replace(/[^\d+]/g, "")}` },
+  ];
+
+  const linkClasses = "text-start transition-colors hover:text-fg";
+
   return (
-    <footer className="mt-24 bg-black text-white">
-      <div className="container-page grid gap-10 py-16 sm:grid-cols-2 lg:grid-cols-5 lg:gap-8">
-        <div>
-          <p className="mb-5 text-2xl font-bold tracking-tight">{SITE.name}</p>
-          <p className="mb-1 font-medium">Subscribe</p>
-          <p className="mb-4 text-sm text-neutral-300">Get 10% off your first order</p>
+    <footer className="mt-24 border-t border-line bg-glass backdrop-blur-xl">
+      <div className="container-page grid gap-10 py-14 sm:grid-cols-2 lg:grid-cols-[1.5fr_repeat(4,1fr)] lg:gap-8">
+        <div className="flex flex-col gap-5 sm:col-span-2 lg:col-span-1">
+          <Link href="/" className="text-xl font-semibold tracking-tight">
+            Wear<span className="text-brand">Zara</span>
+          </Link>
+          <p className="max-w-72 text-sm text-fg-muted">{t("footer.subscribeText")}</p>
           <NewsletterForm />
+          <ul className="flex flex-col gap-2.5 text-[13px] text-fg-muted">
+            {contact.map(({ icon: Icon, label, href }) => (
+              <li key={href}>
+                <a href={href} target={href.startsWith("http") ? "_blank" : undefined} rel="noreferrer" className="inline-flex items-center gap-2 transition-colors hover:text-fg" dir="ltr">
+                  <Icon aria-hidden className="shrink-0" /> {label}
+                </a>
+              </li>
+            ))}
+          </ul>
         </div>
 
-        <div>
-          <FooterHeading>Support</FooterHeading>
-          <address className="flex flex-col gap-3 text-sm not-italic text-neutral-300">
-            <span>
-              {SITE.address[0]}
-              <br />
-              {SITE.address[1]}
-            </span>
-            <a href={`mailto:${SITE.email}`} className="hover:text-white">
-              {SITE.email}
-            </a>
-            <a href={`tel:${SITE.phone.replace(/[^\d+]/g, "")}`} className="hover:text-white">
-              {SITE.phone}
-            </a>
-          </address>
-        </div>
-
-        {COLUMNS.map((column) => (
-          <div key={column.title}>
-            <FooterHeading>{column.title}</FooterHeading>
-            <ul className="flex flex-col gap-3 text-sm text-neutral-300">
+        {columns.map((column) => (
+          <nav key={column.title} aria-label={column.title}>
+            <h2 className="mb-4 text-[13px] font-semibold text-fg">{column.title}</h2>
+            <ul className="flex flex-col gap-3 text-[13px] text-fg-muted">
               {column.links.map((link) => (
-                <li key={link.href}>
-                  <Link href={link.href} className="transition-colors hover:text-white">
-                    {link.label}
-                  </Link>
+                <li key={link.label}>
+                  {link.href ? (
+                    <Link href={link.href} className={linkClasses}>
+                      {link.label}
+                    </Link>
+                  ) : (
+                    <button type="button" onClick={link.onClick} className={linkClasses}>
+                      {link.label}
+                    </button>
+                  )}
                 </li>
               ))}
             </ul>
-          </div>
+          </nav>
         ))}
       </div>
 
-      <div className="border-t border-white/10">
-        <div className="container-page flex flex-col items-center justify-between gap-4 py-6 text-sm text-neutral-400 sm:flex-row">
+      <div className="border-t border-line">
+        <div className="container-page flex flex-col items-center justify-between gap-3 py-5 text-xs text-fg-muted sm:flex-row">
           <p>
-            © {new Date().getFullYear()} {SITE.name}. Designed &amp; developed by{" "}
-            <a href={SITE.author.url} target="_blank" rel="noreferrer" className="font-medium text-neutral-200 hover:text-white">
+            © {new Date().getFullYear()} {SITE.name}. {t("footer.rights")} {t("footer.credit")}{" "}
+            <a href={SITE.author.url} target="_blank" rel="noreferrer" className="font-medium text-fg hover:text-brand">
               {SITE.author.name}
             </a>
-            .
           </p>
-          <a href={SITE.author.url} target="_blank" rel="noreferrer" aria-label="GitHub" className="text-lg hover:text-white">
-            <FaGithub />
+          <a href={SITE.author.url} target="_blank" rel="noreferrer" aria-label="GitHub" className="rounded-full p-2 text-base transition-colors hover:bg-fg/6 hover:text-fg">
+            <LuGithub />
           </a>
         </div>
       </div>

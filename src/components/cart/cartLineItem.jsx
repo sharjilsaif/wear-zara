@@ -1,53 +1,41 @@
 "use client";
 
 import Link from "next/link";
-import { FiTrash2 } from "react-icons/fi";
+import { LuTrash2 } from "react-icons/lu";
 
 import ProductImage from "@/components/product/productImage";
 import IconButton from "@/components/ui/iconButton";
 import QuantityStepper from "@/components/ui/quantityStepper";
-import { displayName, formatPrice } from "@/lib/format";
+import { useI18n } from "@/i18n/client";
+import { displayName } from "@/lib/format";
 import { removeFromCart, setCartQty } from "@/lib/store";
 
-/** One row in the cart (stacked on mobile, table-like on larger screens). */
+/** One cart row: image, name, unit price, quantity, line total, remove. */
 export default function CartLineItem({ item }) {
+  const { t, format } = useI18n();
   const name = displayName(item.name);
 
   return (
-    <li className="grid grid-cols-[5rem_1fr] items-center gap-4 rounded-xl border border-line bg-surface-raised p-4 shadow-sm sm:grid-cols-[2fr_1fr_1fr_1fr] sm:px-6">
-      <div className="relative h-20 w-20 overflow-hidden rounded-lg bg-surface-muted sm:hidden">
-        <ProductImage src={item.imageUrl} alt={name} fill sizes="80px" className="object-cover" />
-      </div>
+    <li className="glass flex animate-fade-up gap-4 rounded-3xl p-3 sm:items-center sm:p-4">
+      <Link href={`/product/${item.id}`} className="relative h-24 w-20 shrink-0 overflow-hidden rounded-2xl bg-surface sm:h-28 sm:w-24">
+        <ProductImage src={item.imageUrl} alt={name} fill sizes="96px" className="object-cover" />
+      </Link>
 
-      <div className="flex min-w-0 items-center gap-4">
-        <div className="relative hidden h-16 w-16 shrink-0 overflow-hidden rounded-lg bg-surface-muted sm:block">
-          <ProductImage src={item.imageUrl} alt={name} fill sizes="64px" className="object-cover" />
-        </div>
+      <div className="flex min-w-0 flex-1 flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div className="min-w-0">
-          <Link href={`/product/${item.id}`} className="line-clamp-2 text-sm font-medium hover:text-brand">
+          <Link href={`/product/${item.id}`} className="line-clamp-2 text-[15px] font-semibold transition-colors hover:text-brand">
             {name}
           </Link>
-          <p className="mt-1 text-sm text-fg-muted sm:hidden">{formatPrice(item.price)}</p>
+          <p className="mt-1 text-sm text-fg-muted">{format.price(item.price)}</p>
         </div>
-      </div>
 
-      <p className="hidden text-center text-sm sm:block">{formatPrice(item.price)}</p>
-
-      <div className="col-span-2 flex items-center justify-between sm:col-span-1 sm:justify-center">
-        <QuantityStepper value={item.qty} onChange={(qty) => setCartQty(item.id, qty)} size="sm" label={`Quantity of ${name}`} />
-        <div className="flex items-center gap-2 sm:hidden">
-          <span className="text-sm font-semibold">{formatPrice(item.price * item.qty)}</span>
-          <IconButton label={`Remove ${name}`} variant="ghost" size="sm" onClick={() => removeFromCart(item.id)}>
-            <FiTrash2 />
+        <div className="flex items-center justify-between gap-4 sm:justify-end">
+          <QuantityStepper value={item.qty} onChange={(qty) => setCartQty(item, qty)} size="sm" label={t("cart.quantityOf", { name })} />
+          <span className="w-20 text-end text-[15px] font-semibold tabular-nums">{format.price(item.price * item.qty)}</span>
+          <IconButton label={t("cart.remove", { name })} variant="ghost" size="sm" className="hover:text-sale" onClick={() => removeFromCart(item)}>
+            <LuTrash2 />
           </IconButton>
         </div>
-      </div>
-
-      <div className="hidden items-center justify-end gap-3 sm:flex">
-        <span className="text-sm font-semibold tabular-nums">{formatPrice(item.price * item.qty)}</span>
-        <IconButton label={`Remove ${name}`} variant="ghost" size="sm" className="hover:text-brand" onClick={() => removeFromCart(item.id)}>
-          <FiTrash2 />
-        </IconButton>
       </div>
     </li>
   );

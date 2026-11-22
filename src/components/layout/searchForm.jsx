@@ -2,12 +2,14 @@
 
 import { useId } from "react";
 import { useRouter } from "next/navigation";
-import { FiSearch } from "react-icons/fi";
+import { LuSearch } from "react-icons/lu";
 
+import { useI18n } from "@/i18n/client";
 import { cn } from "@/lib/format";
 
-/** Product search used in the navbar (desktop and mobile menu). */
+/** Product search used in the navbar (desktop) and the mobile menu. */
 export default function SearchForm({ className, onSearch }) {
+  const { t } = useI18n();
   const router = useRouter();
   const id = useId();
 
@@ -23,22 +25,19 @@ export default function SearchForm({ className, onSearch }) {
   return (
     <form role="search" onSubmit={handleSubmit} className={cn("relative", className)}>
       <label htmlFor={id} className="sr-only">
-        Search products
+        {t("search.label")}
       </label>
+      <button type="submit" aria-label={t("search.submit")} className="absolute start-1 top-1/2 flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-full text-fg-muted transition-colors hover:text-fg">
+        <LuSearch />
+      </button>
       <input
         id={id}
         name="q"
         type="search"
-        placeholder="What are you looking for?"
-        className="h-10 w-full rounded-full border border-line bg-surface-muted pl-4 pr-11 text-sm text-fg outline-none transition-colors placeholder:text-fg-muted focus:border-fg/40"
+        enterKeyHint="search"
+        placeholder={t("search.placeholder")}
+        className="h-10 w-full rounded-full border border-transparent bg-fg/6 ps-10 pe-4 text-sm text-fg outline-none transition-all duration-200 hover:bg-fg/8 focus:border-brand focus:bg-field-hover focus:ring-4 focus:ring-brand/15"
       />
-      <button
-        type="submit"
-        aria-label="Search"
-        className="absolute right-1 top-1/2 flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-full text-lg text-fg transition-colors hover:bg-line"
-      >
-        <FiSearch />
-      </button>
     </form>
   );
 }

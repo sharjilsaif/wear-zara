@@ -1,19 +1,59 @@
-// Validation rules shared by the sign-up form (client) and the register API (server).
+// Validation shared by forms (client) and API routes (server).
+// Functions return error *codes*; the UI translates them via `validation.<code>`.
 
 export const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+export const PHONE_PATTERN = /^[+\d][\d\s()-]{6,19}$/;
 
-export function validateSignup({ name = "", email = "", password = "" }) {
-  const errors = {};
-  const trimmedName = name.trim();
+const clean = (value) => String(value ?? "").trim();
 
-  if (trimmedName.length < 2) errors.name = "Please enter your name (at least 2 characters).";
-  else if (trimmedName.length > 60) errors.name = "Name must be 60 characters or fewer.";
+export function validateName(name) {
+  const value = clean(name);
+  if (value.length < 2) return "nameShort";
+  if (value.length > 60) return "nameLong";
+  return null;
+}
 
-  if (!EMAIL_PATTERN.test(email.trim())) errors.email = "Please enter a valid email address.";
+export function validateEmail(email) {
+  return EMAIL_PATTERN.test(clean(email)) ? null : "email";
+}
 
-  if (password.length < 8) errors.password = "Password must be at least 8 characters.";
-  else if (password.length > 72) errors.password = "Password must be 72 characters or fewer.";
-  else if (!/[a-zA-Z]/.test(password) || !/\d/.test(password)) errors.password = "Use at least one letter and one number.";
+export function validatePassword(password = "") {
+  if (password.length < 8) return "passwordShort";
+  if (password.length > 72) return "passwordLong";
+  if (!/[a-zA-Z]/.test(password) || !/\d/.test(password)) return "passwordWeak";
+  return null;
+}
 
-  return errors;
+export function validatePhone(phone, { required = true } = {}) {
+  const value = clean(phone);
+  if (!value) return required ? "phone" : null;
+  return PHONE_PATTERN.test(value) ? null : "phone";
+}
+
+function collect(checks) {
+  return Object.fromEntries(Object.entries(checks).filter(([, code]) => code));
+}
+
+export function validateSignup({ name, email, password }) {
+  return collect({ name: validateName(name), email: validateEmail(email), password: validatePassword(password) });
+}
+
+export function validateCheckout(data) {
+  return collect({
+    name: validateName(data.name),
+    street: clean(data.street).length < 3 ? "street" : null,
+    city: clean(data.city).length < 2 ? "city" : null,
+    phone: validatePhone(data.phone),
+    email: validateEmail(data.email),
+  });
+}
+
+export function validateContact(data) {
+  const message = clean(data.message);
+  return collect({
+    name: validateName(data.name),
+    email: validateEmail(data.email),
+    phone: validatePhone(data.phone, { required: false }),
+    message: message.length < 10 ? "messageShort" : message.length > 2000 ? "messageLong" : null,
+  });
 }

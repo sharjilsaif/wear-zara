@@ -2,99 +2,80 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { FiTrash2 } from "react-icons/fi";
+import { LuPencil, LuSearch } from "react-icons/lu";
 
-import AdminCard from "@/components/admin/adminCard";
-import useAdminRequest from "@/components/admin/useAdminRequest";
+import AdminCard, { Table } from "@/components/admin/adminCard";
+import DeleteButton from "@/components/admin/deleteButton";
 import ProductImage from "@/components/product/productImage";
 import { inputClasses } from "@/components/ui/formField";
 import IconButton from "@/components/ui/iconButton";
-import { ConfirmDialog } from "@/components/ui/modal";
-import { cn, displayName, formatPrice } from "@/lib/format";
+import { useI18n } from "@/i18n/client";
+import { cn, displayName, getDiscountPercent } from "@/lib/format";
 
-export default function ProductTable({ products, readOnly, className }) {
+export default function ProductTable({ products }) {
+  const { t, format } = useI18n();
   const [query, setQuery] = useState("");
-  const [toDelete, setToDelete] = useState(null);
-  const { send, pending } = useAdminRequest();
-
   const filtered = products.filter((product) => product.name.toLowerCase().includes(query.trim().toLowerCase()));
-
-  // Receives the product as an argument so the React Compiler never reads `toDelete.id` while it is null.
-  const handleDelete = async (product) => {
-    await send(`/api/products/${product.id}`, { method: "DELETE", success: `Deleted “${displayName(product.name)}”` });
-    setToDelete(null);
-  };
 
   return (
     <AdminCard
-      className={className}
-      title="Products"
-      description={`${products.length} products in the catalogue.`}
+      title={t("admin.products.all", { count: products.length })}
       aside={
-        <>
-          <label htmlFor="admin-search" className="sr-only">
-            Search products
-          </label>
+        <div className="relative w-full sm:w-64">
+          <LuSearch aria-hidden className="absolute start-3.5 top-1/2 -translate-y-1/2 text-fg-muted" />
           <input
-            id="admin-search"
             type="search"
             value={query}
             onChange={(event) => setQuery(event.target.value)}
-            placeholder="Search…"
-            className={cn(inputClasses, "w-40 border-line py-2 sm:w-56")}
+            placeholder={t("admin.products.search")}
+            aria-label={t("admin.products.search")}
+            className={cn(inputClasses, "rounded-full py-2 ps-10")}
           />
-        </>
+        </div>
       }
     >
-      <div className="no-scrollbar max-h-128 overflow-auto">
-        <table className="w-full min-w-xl text-left text-sm">
-          <thead className="sticky top-0 bg-surface-raised text-xs uppercase tracking-wider text-fg-muted">
-            <tr>
-              <th className="py-3 pr-4 font-medium">Product</th>
-              <th className="py-3 pr-4 font-medium">Price</th>
-              <th className="py-3 pr-4 font-medium">Categories</th>
-              <th className="py-3 font-medium">
-                <span className="sr-only">Actions</span>
-              </th>
+      <Table
+        head={[t("admin.products.product"), t("admin.products.price"), t("admin.products.categories"), ""]}
+        empty={filtered.length === 0 && <p className="py-10 text-center text-sm text-fg-muted">{t("admin.noMatches", { query })}</p>}
+      >
+        {filtered.map((product) => {
+          const name = displayName(product.name);
+          const discount = getDiscountPercent(product);
+          return (
+            <tr key={product.id} className="transition-colors hover:bg-fg/2">
+              <td className="py-3 pe-4">
+                <Link href={`/product/${product.id}`} className="flex items-center gap-3 hover:text-brand">
+                  <span className="relative h-12 w-10 shrink-0 overflow-hidden rounded-lg bg-surface">
+                    <ProductImage src={product.imageUrl} alt="" fill sizes="40px" className="object-cover" />
+                  </span>
+                  <span className="line-clamp-1 font-medium">{name}</span>
+                </Link>
+              </td>
+              <td className="py-3 pe-4 whitespace-nowrap tabular-nums">
+                {format.price(product.price)}
+                {discount ? <span className="ms-2 text-xs text-sale">-{discount}%</span> : null}
+              </td>
+              <td className="max-w-56 py-3 pe-4 text-xs text-fg-muted">
+                <span className="line-clamp-2">{product.categories.map((category) => category.name).join(", ")}</span>
+              </td>
+              <td className="py-3">
+                <div className="flex justify-end gap-1">
+                  <IconButton href={`/admin/products/${product.id}`} label={t("common.edit")} variant="ghost" size="sm">
+                    <LuPencil />
+                  </IconButton>
+                  <DeleteButton
+                    url={`/api/products/${product.id}`}
+                   
+                    title={t("admin.products.deleteTitle")}
+                    description={t("admin.products.deleteText", { name })}
+                    success={t("admin.deleted")}
+                  />
+                </div>
+              </td>
             </tr>
-          </thead>
-          <tbody className="divide-y divide-line">
-            {filtered.map((product) => {
-              const name = displayName(product.name);
-              return (
-                <tr key={product.id}>
-                  <td className="py-3 pr-4">
-                    <Link href={`/product/${product.id}`} className="flex items-center gap-3 hover:text-brand">
-                      <span className="relative h-10 w-10 shrink-0 overflow-hidden rounded-md bg-surface-muted">
-                        <ProductImage src={product.imageUrl} alt="" fill sizes="40px" className="object-cover" />
-                      </span>
-                      <span className="line-clamp-1 font-medium">{name}</span>
-                    </Link>
-                  </td>
-                  <td className="py-3 pr-4 tabular-nums">{formatPrice(product.price)}</td>
-                  <td className="py-3 pr-4 text-xs text-fg-muted">{product.categories.map((category) => category.name).join(", ")}</td>
-                  <td className="py-3 text-right">
-                    <IconButton label={`Delete ${name}`} variant="ghost" size="sm" className="text-brand" disabled={readOnly} onClick={() => setToDelete(product)}>
-                      <FiTrash2 />
-                    </IconButton>
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-        {filtered.length === 0 && <p className="py-10 text-center text-sm text-fg-muted">No products match “{query}”.</p>}
-      </div>
-
-      <ConfirmDialog
-        open={Boolean(toDelete)}
-        onClose={() => setToDelete(null)}
-        onConfirm={() => handleDelete(toDelete)}
-        loading={pending}
-        title="Delete product?"
-        description={toDelete ? `“${displayName(toDelete.name)}” will be permanently removed from the store.` : ""}
-        confirmLabel="Delete"
-      />
+          );
+        })}
+      </Table>
     </AdminCard>
   );
 }

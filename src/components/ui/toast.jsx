@@ -2,29 +2,25 @@
 
 import { createContext, useCallback, useContext, useRef, useState } from "react";
 import Link from "next/link";
-import { FiAlertCircle, FiCheckCircle, FiInfo, FiX } from "react-icons/fi";
+import { LuCircleAlert, LuCircleCheck, LuInfo, LuX } from "react-icons/lu";
 
-import { cn } from "@/lib/format";
+import { useI18n } from "@/i18n/client";
 
 const ToastContext = createContext(() => {});
 
 const ICONS = {
-  success: <FiCheckCircle className="text-green-500" />,
-  error: <FiAlertCircle className="text-red-500" />,
-  info: <FiInfo className="text-sky-500" />,
+  success: <LuCircleCheck className="text-success" />,
+  error: <LuCircleAlert className="text-sale" />,
+  info: <LuInfo className="text-brand" />,
 };
 
-/**
- * Lightweight notifications.
- * Usage: const toast = useToast(); toast({ title, description, type, action: { label, href } })
- */
+/** Usage: const toast = useToast(); toast({ title, description, type, action: { label, href } }) */
 export function ToastProvider({ children }) {
+  const { t } = useI18n();
   const [toasts, setToasts] = useState([]);
   const nextId = useRef(0);
 
-  const dismiss = useCallback((id) => {
-    setToasts((current) => current.filter((toast) => toast.id !== id));
-  }, []);
+  const dismiss = useCallback((id) => setToasts((current) => current.filter((toast) => toast.id !== id)), []);
 
   const toast = useCallback(
     ({ type = "success", duration = 3500, ...rest }) => {
@@ -40,35 +36,27 @@ export function ToastProvider({ children }) {
       {children}
       <div
         aria-live="polite"
-        className="pointer-events-none fixed inset-x-4 bottom-4 z-[1000] flex flex-col items-center gap-2 sm:inset-x-auto sm:right-6 sm:bottom-6 sm:items-end"
+        className="pointer-events-none fixed inset-x-3 bottom-4 z-[1000] flex flex-col items-center gap-2 sm:inset-x-auto sm:end-6 sm:bottom-6 sm:items-end"
       >
         {toasts.map((item) => (
-          <div
-            key={item.id}
-            role="status"
-            className="pointer-events-auto flex w-full max-w-sm animate-toast-in items-start gap-3 rounded-xl border border-line bg-surface-raised p-4 text-fg shadow-xl"
-          >
+          <div key={item.id} role="status" className="glass-strong pointer-events-auto flex w-full max-w-sm animate-toast-in items-start gap-3 rounded-2xl p-4 text-fg">
             <span className="mt-0.5 text-lg">{ICONS[item.type]}</span>
             <div className="min-w-0 flex-1">
               <p className="text-sm font-semibold">{item.title}</p>
-              {item.description && <p className="mt-0.5 truncate text-xs text-fg-muted">{item.description}</p>}
+              {item.description && <p className="mt-0.5 line-clamp-2 text-xs text-fg-muted">{item.description}</p>}
               {item.action && (
-                <Link
-                  href={item.action.href}
-                  onClick={() => dismiss(item.id)}
-                  className={cn("mt-2 inline-block text-xs font-semibold text-brand hover:underline")}
-                >
+                <Link href={item.action.href} onClick={() => dismiss(item.id)} className="mt-2 inline-block text-xs font-semibold text-link hover:underline">
                   {item.action.label}
                 </Link>
               )}
             </div>
             <button
               type="button"
-              aria-label="Dismiss notification"
+              aria-label={t("common.dismiss")}
               onClick={() => dismiss(item.id)}
-              className="text-fg-muted transition-colors hover:text-fg"
+              className="rounded-full p-1 text-fg-muted transition-colors hover:bg-fg/6 hover:text-fg"
             >
-              <FiX />
+              <LuX />
             </button>
           </div>
         ))}
@@ -77,6 +65,4 @@ export function ToastProvider({ children }) {
   );
 }
 
-export function useToast() {
-  return useContext(ToastContext);
-}
+export const useToast = () => useContext(ToastContext);

@@ -1,46 +1,59 @@
 "use client";
 
 import { useState } from "react";
+import { useSession } from "next-auth/react";
 
 import Button from "@/components/ui/button";
 import FormField from "@/components/ui/formField";
 import { useToast } from "@/components/ui/toast";
-import { EMAIL_PATTERN } from "@/lib/validation";
+import { useI18n } from "@/i18n/client";
+import useRequest from "@/lib/useRequest";
+import { validateContact } from "@/lib/validation";
 
+/** Saves the message to the admin inbox (pre-filled for signed-in users). */
 export default function ContactForm() {
+  const { t } = useI18n();
   const toast = useToast();
+  const { data: session } = useSession();
+  const { send, pending } = useRequest();
   const [errors, setErrors] = useState({});
-  const [sending, setSending] = useState(false);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     const form = event.currentTarget;
-    const data = Object.fromEntries(Array.from(new FormData(form).entries()).map(([key, value]) => [key, String(value).trim()]));
+    const data = Object.fromEntries([...new FormData(form)].map(([key, value]) => [key, String(value).trim()]));
 
-    const nextErrors = {};
-    if (!data.name) nextErrors.name = "Please enter your name.";
-    if (!EMAIL_PATTERN.test(data.email)) nextErrors.email = "Please enter a valid email address.";
-    if (data.message.length < 10) nextErrors.message = "Please write at least 10 characters.";
-    setErrors(nextErrors);
-    if (Object.keys(nextErrors).length > 0) return;
+    const fieldErrors = validateContact(data);
+    setErrors(fieldErrors);
+    if (Object.keys(fieldErrors).length > 0) return;
 
-    setSending(true);
-    await new Promise((resolve) => setTimeout(resolve, 900));
-    setSending(false);
+    const result = await send("/api/contact", { body: data, refresh: false });
+    if (!result.ok) return setErrors(result.fields ?? {});
     form.reset();
-    toast({ title: "Message sent", description: "Thanks for reaching out — we'll reply within 24 hours." });
+    toast({ title: t("contact.sent"), description: t("contact.sentText") });
   };
 
   return (
-    <form onSubmit={handleSubmit} noValidate className="flex h-full flex-col gap-5">
+    <form key={session?.user?.email ?? "guest"} onSubmit={handleSubmit} noValidate className="flex h-full flex-col gap-5">
       <div className="grid gap-5 md:grid-cols-3">
-        <FormField label="Name" name="name" required autoComplete="name" error={errors.name} />
-        <FormField label="Email" name="email" type="email" required autoComplete="email" error={errors.email} />
-        <FormField label="Phone" name="phone" type="tel" autoComplete="tel" />
+        <FormField label={t("auth.name")} name="name" required autoComplete="name" placeholder={t("auth.namePlaceholder")} defaultValue={session?.user?.name ?? ""} error={errors.name} />
+        <FormField label={t("common.email")} name="email" type="email" required autoComplete="email" placeholder="you@example.com" defaultValue={session?.user?.email ?? ""} error={errors.email} dir="ltr" />
+        <FormField label={t("checkout.phone")} name="phone" type="tel" autoComplete="tel" placeholder={t("common.optional")} error={errors.phone} />
       </div>
-      <FormField as="textarea" label="Message" name="message" required rows={8} inputClassName="resize-none flex-1" className="flex flex-1 flex-col" error={errors.message} />
-      <Button type="submit" size="lg" loading={sending} className="self-end">
-        Send Message
+      <FormField
+        as="textarea"
+        label={t("contact.message")}
+        name="message"
+        required
+        rows={8}
+        maxLength={2000}
+        placeholder={t("contact.messagePlaceholder")}
+        inputClassName="resize-none flex-1"
+        className="flex flex-1 flex-col"
+        error={errors.message}
+      />
+      <Button type="submit" size="lg" loading={pending} className="self-end">
+        {t("contact.send")}
       </Button>
     </form>
   );

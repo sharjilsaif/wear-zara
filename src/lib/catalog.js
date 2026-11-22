@@ -1,5 +1,6 @@
 import "server-only";
 
+import { avatarUrl } from "@/lib/avatar";
 import { prisma } from "@/lib/prisma";
 import { MERCH_CATEGORY_SLUGS } from "@/lib/site";
 
@@ -101,4 +102,15 @@ export async function getCategoryBySlug(slug) {
 
 export async function getAllProductIds() {
   return prisma.product.findMany({ select: { id: true, updatedAt: true } });
+}
+
+/** Latest reviews for a product, with the author's name and profile picture. */
+export async function getReviews(productId, take = 20) {
+  const reviews = await prisma.review.findMany({
+    where: { productId },
+    orderBy: { createdAt: "desc" },
+    take,
+    select: { id: true, rating: true, title: true, body: true, createdAt: true, userId: true, user: { select: { name: true, avatar: { select: { updatedAt: true } } } } },
+  });
+  return reviews.map(({ user, ...review }) => ({ ...review, name: user.name, image: avatarUrl(review.userId, user.avatar) }));
 }
