@@ -1,1 +1,1 @@
-export { PageSkeleton as default } from "../loading";
+export { default } from "@/components/ui/pageSkeleton";

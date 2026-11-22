@@ -1,7 +1,7 @@
 import Skeleton from "@/components/ui/skeleton";
 
-/** Skeleton blocks shown instantly while a server-rendered page loads (account/admin reuse them inside their layouts). */
-export function PageSkeleton() {
+/** Skeleton blocks shown instantly while an account or admin page loads (inside their layouts). */
+export default function PageSkeleton() {
   return (
     <div aria-busy="true">
       <Skeleton className="mb-3 h-4 w-24 rounded-full" />
@@ -11,14 +11,6 @@ export function PageSkeleton() {
           <Skeleton key={index} className="h-32 rounded-3xl" />
         ))}
       </div>
-    </div>
-  );
-}
-
-export default function Loading() {
-  return (
-    <div className="container-page py-10">
-      <PageSkeleton />
     </div>
   );
 }
