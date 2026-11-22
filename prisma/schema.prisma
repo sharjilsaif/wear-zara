@@ -114,7 +114,7 @@ model Order {
   status OrderStatus @default(PENDING)
 
   userId String?
-  user   User?   @relation(fields: [userId], references: [id], onDelete: SetNull)
+  user   User?   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   customerName String
   email        String

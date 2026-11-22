@@ -38,7 +38,7 @@ export default async function AboutPage({ params }) {
         <section className="grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
           <div>
             <span className="inline-flex rounded-full bg-brand-soft px-3 py-1 text-sm font-medium text-brand">{t("about.eyebrow")}</span>
-            <h1 className="mt-5 text-4xl font-semibold leading-[1.1] tracking-tight sm:text-5xl">{t("about.title")}</h1>
+            <h1 className="mt-5 text-3xl font-semibold leading-[1.1] tracking-tight sm:text-5xl">{t("about.title")}</h1>
             <div className="mt-6 space-y-4 text-[17px] leading-8 text-fg-muted">
               <p>{t("about.p1")}</p>
               <p>{t("about.p2")}</p>
@@ -71,7 +71,7 @@ export default async function AboutPage({ params }) {
               <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-brand-soft text-xl text-brand">
                 <Icon aria-hidden />
               </span>
-              <p className="text-3xl font-semibold tracking-tight" dir="ltr">
+              <p className="text-2xl sm:text-3xl font-semibold tracking-tight" dir="ltr">
                 {value}
               </p>
               <p className="text-sm text-fg-muted">{t(`about.stats.${key}`)}</p>

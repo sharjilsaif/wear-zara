@@ -17,7 +17,7 @@ const VARIANTS = {
 const SIZES = {
   sm: "h-9 px-4 text-[13px]",
   md: "h-11 px-6 text-sm",
-  lg: "h-12 px-8 text-[15px]",
+  lg: "h-11 px-6 text-sm sm:h-12 sm:px-8 sm:text-[15px]",
 };
 
 /** The one button used across the app — renders a <Link> when `href` is given. */

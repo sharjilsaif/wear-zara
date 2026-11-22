@@ -429,7 +429,7 @@ const en = {
     passwordChanged: "Password updated",
     deleteTitle: "Delete account",
     deleteText:
-      "Permanently delete your account, bag and wishlist. Past orders are kept for our records.",
+      "Permanently delete your account, bag, wishlist and order history.",
     delete: "Delete Account",
     deleteConfirmTitle: "Delete your account?",
     deleteConfirmText:
@@ -720,7 +720,7 @@ const en = {
       delete: "Delete Customer",
       deleteTitle: "Delete this customer?",
       deleteText:
-        "{name}'s account, bag and wishlist will be deleted. Their orders are kept.",
+        "{name}'s account, bag, wishlist and orders will be deleted.",
     },
     messages: {
       text: "Messages sent from the contact form.",

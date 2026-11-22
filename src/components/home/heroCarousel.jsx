@@ -71,7 +71,7 @@ export default function HeroCarousel() {
               )}
             >
               <p className="text-sm font-semibold text-white/80">{t(`hero.${slide.key}.eyebrow`)}</p>
-              <h2 className="text-4xl font-semibold leading-[1.05] tracking-tight sm:text-5xl lg:text-6xl">{t(`hero.${slide.key}.title`)}</h2>
+              <h2 className="text-3xl font-semibold leading-[1.05] tracking-tight sm:text-5xl lg:text-6xl">{t(`hero.${slide.key}.title`)}</h2>
               <p className="max-w-md text-[15px] text-white/80 sm:text-lg">{t(`hero.${slide.key}.text`)}</p>
               <div className="mt-2 flex flex-wrap gap-3">
                 <Button href={shopHref({ category: slide.category })} size="lg">

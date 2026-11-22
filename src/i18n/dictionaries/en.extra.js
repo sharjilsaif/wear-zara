@@ -2,6 +2,8 @@
 const extra = {
   meta: { adminReviews: { title: "Reviews · Admin" } },
 
+  auth: { welcomeBackName: "Welcome back, {name}!", welcomeAdmin: "Welcome back, admin!" },
+
   footer: { company: "Company", legal: "Legal", cookieSettings: "Cookie settings", rights: "All rights reserved." },
 
   cookies: {
@@ -47,6 +49,7 @@ const extra = {
 
   admin: {
     nav: { reviews: "Reviews" },
+    products: { noCategory: "No category" },
     reviews: { text: "What customers are saying. Remove anything inappropriate.", all: { one: "{count} review", other: "{count} reviews" }, empty: "No reviews yet" },
   },
 
@@ -120,7 +123,7 @@ const extra = {
         { title: "What we collect", body: "Account details (name, email, password stored as a secure hash), delivery details you enter at checkout, your orders, bag and wishlist, reviews, and messages you send us." },
         { title: "How we use it", body: "To process and deliver orders, keep your account and bag in sync, answer your questions and — only if you opt in — send offers." },
         { title: "Who we share it with", body: "Only with the couriers and service providers needed to run the store. We never sell your personal data." },
-        { title: "How long we keep it", body: "Account data is kept until you delete your account. Order records are kept for accounting purposes, without a link to a deleted account." },
+        { title: "How long we keep it", body: "Account data is kept until you delete your account. Deleting your account also deletes your order history." },
         { title: "Your rights", body: "You can view and update your details in your account, delete your account at any time, and contact {email} with any privacy request." },
         { title: "Security", body: "Passwords are hashed with bcrypt, connections are encrypted, and access to customer data is limited to store administrators." },
       ],

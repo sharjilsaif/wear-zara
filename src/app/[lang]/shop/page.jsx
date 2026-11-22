@@ -62,7 +62,7 @@ export default async function ShopPage({ params, searchParams }) {
       <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
         <div>
           <Eyebrow className="mb-2">{t(filters.q ? "search.label" : "nav.shop")}</Eyebrow>
-          <h1 className="text-3xl font-semibold tracking-tight sm:text-5xl">{title}</h1>
+          <h1 className="text-2xl font-semibold tracking-tight sm:text-5xl">{title}</h1>
           <p className="mt-2 text-sm text-fg-muted">{t("shop.count", { count: result.total })}</p>
         </div>
         <Suspense>

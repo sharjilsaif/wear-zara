@@ -75,11 +75,11 @@ export default function Reviews({ productId, rating, count, reviews }) {
 
   return (
     <section id="reviews" className="mt-24 scroll-mt-28">
-      <h2 className="mb-8 text-3xl font-semibold tracking-tight sm:text-4xl">{t("reviews.title")}</h2>
+      <h2 className="mb-8 text-2xl font-semibold tracking-tight sm:text-4xl">{t("reviews.title")}</h2>
       <div className="grid gap-8 lg:grid-cols-[20rem_minmax(0,1fr)] lg:items-start">
         <div className="flex flex-col gap-4 lg:sticky lg:top-28">
           <div className="glass rounded-3xl p-6">
-            <p className="text-5xl font-semibold tracking-tight">{format.number(rating)}</p>
+            <p className="text-4xl sm:text-5xl font-semibold tracking-tight">{format.number(rating)}</p>
             <Stars rating={rating} className="mt-2" />
             <p className="mt-2 text-sm text-fg-muted">{t("reviews.count", { count })}</p>
           </div>

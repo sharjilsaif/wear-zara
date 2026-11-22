@@ -2,6 +2,8 @@
 const extra = {
   meta: { adminReviews: { title: "Reseñas · Admin" } },
 
+  auth: { welcomeBackName: "¡Hola de nuevo, {name}!", welcomeAdmin: "¡Bienvenido de nuevo, admin!" },
+
   footer: { company: "Empresa", legal: "Legal", cookieSettings: "Configurar cookies", rights: "Todos los derechos reservados." },
 
   cookies: {
@@ -47,6 +49,7 @@ const extra = {
 
   admin: {
     nav: { reviews: "Opiniones" },
+    products: { noCategory: "Sin categoría" },
     reviews: { text: "Lo que dicen los clientes. Elimina cualquier contenido inapropiado.", all: { one: "{count} opinión", other: "{count} opiniones" }, empty: "Aún no hay opiniones" },
   },
 
@@ -120,7 +123,7 @@ const extra = {
         { title: "Qué recogemos", body: "Datos de la cuenta (nombre, correo y contraseña guardada como hash seguro), datos de entrega del pago, tus pedidos, bolsa y favoritos, opiniones y mensajes que nos envías." },
         { title: "Para qué los usamos", body: "Para procesar y entregar pedidos, sincronizar tu cuenta y tu bolsa, responder a tus consultas y, solo si lo aceptas, enviarte ofertas." },
         { title: "Con quién los compartimos", body: "Solo con los transportistas y proveedores necesarios para operar la tienda. Nunca vendemos tus datos." },
-        { title: "Cuánto tiempo los guardamos", body: "Los datos de la cuenta se guardan hasta que la eliminas. Los pedidos se conservan por motivos contables, sin vínculo con la cuenta eliminada." },
+        { title: "Cuánto tiempo los guardamos", body: "Los datos de la cuenta se guardan hasta que la eliminas. Al eliminar tu cuenta también se elimina tu historial de pedidos." },
         { title: "Tus derechos", body: "Puedes ver y actualizar tus datos en tu cuenta, eliminarla cuando quieras y escribir a {email} para cualquier solicitud de privacidad." },
         { title: "Seguridad", body: "Las contraseñas se cifran con bcrypt, las conexiones están cifradas y solo los administradores pueden acceder a los datos de clientes." },
       ],

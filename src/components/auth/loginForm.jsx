@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { signIn } from "next-auth/react";
+import { getSession, signIn } from "next-auth/react";
 
 import Button from "@/components/ui/button";
 import FormField, { FormAlert, PasswordField } from "@/components/ui/formField";
@@ -36,7 +36,9 @@ export default function LoginForm({ redirectTo = "/" }) {
     try {
       const result = await signIn("credentials", { email, password, redirect: false });
       if (!result?.ok || result.error) throw new Error("invalid");
-      toast({ title: t("auth.welcomeBack") });
+      const user = (await getSession())?.user;
+      const firstName = user?.name?.trim().split(/\s+/)[0];
+      toast({ title: user?.isAdmin ? t("auth.welcomeAdmin") : firstName ? t("auth.welcomeBackName", { name: firstName }) : t("auth.welcomeBack") });
       router.replace(redirectTo);
       router.refresh();
     } catch (error) {

@@ -80,7 +80,7 @@ export default async function ProductPage({ params }) {
         <div className="flex flex-col gap-6 lg:py-4">
           <div>
             {primary && <p className="mb-2 text-sm font-semibold text-brand">{categoryName(t, primary)}</p>}
-            <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">{name}</h1>
+            <h1 className="text-2xl font-semibold tracking-tight sm:text-4xl">{name}</h1>
             <div className="mt-3 flex flex-wrap items-center gap-3 text-sm">
               <a href="#reviews" className="transition-opacity hover:opacity-70">
                 <Stars rating={product.rating} reviews={product.reviews} />

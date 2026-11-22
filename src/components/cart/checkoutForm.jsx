@@ -85,7 +85,7 @@ export default function CheckoutForm({ defaults }) {
   return (
     <form onSubmit={handleSubmit} noValidate className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_26rem] lg:items-start">
       <section aria-labelledby="billing-heading" className="glass rounded-3xl p-6 sm:p-8">
-        <h1 id="billing-heading" className="text-3xl font-semibold tracking-tight">
+        <h1 id="billing-heading" className="text-2xl sm:text-3xl font-semibold tracking-tight">
           {t("checkout.title")}
         </h1>
         <p className="mb-8 mt-1 text-sm text-fg-muted">{t("checkout.subtitle")}</p>

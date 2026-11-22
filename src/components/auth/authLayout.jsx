@@ -46,7 +46,7 @@ export default function AuthLayout({ title, subtitle, children }) {
 
         <div className="flex items-center justify-center px-6 py-10 sm:px-12 lg:py-14">
           <div className="w-full max-w-sm animate-fade-up">
-            <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">{title}</h1>
+            <h1 className="text-2xl font-semibold tracking-tight sm:text-4xl">{title}</h1>
             <p className="mb-8 mt-2 text-[15px] text-fg-muted">{subtitle}</p>
             {children}
           </div>

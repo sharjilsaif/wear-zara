@@ -34,7 +34,7 @@ export default async function AccountPage({ params }) {
   return (
     <div className="flex flex-col gap-6">
       <section className="glass rounded-3xl p-6 sm:p-8">
-        <h1 className="mb-6 text-3xl font-semibold tracking-tight">{t("account.hello", { name: user.name.split(" ")[0] })}</h1>
+        <h1 className="mb-6 text-2xl sm:text-3xl font-semibold tracking-tight">{t("account.hello", { name: user.name.split(" ")[0] })}</h1>
         <AvatarUploader name={user.name} image={avatarUrl(user.id, user.avatar)} />
         <dl className="mt-8 grid grid-cols-3 gap-3">
           {stats.map((stat) => (

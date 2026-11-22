@@ -38,7 +38,7 @@ export default function WishlistView() {
     <>
       <div className="mb-10 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">{t("wishlist.title")}</h1>
+          <h1 className="text-2xl font-semibold tracking-tight sm:text-4xl">{t("wishlist.title")}</h1>
           <p className="mt-1 text-sm text-fg-muted">{t("wishlist.count", { count: wishlist.length })}</p>
         </div>
         <div className="flex gap-3">

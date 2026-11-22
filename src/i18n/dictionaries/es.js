@@ -341,7 +341,7 @@ const es = {
     updatePassword: "Actualizar contraseña",
     passwordChanged: "Contraseña actualizada",
     deleteTitle: "Eliminar cuenta",
-    deleteText: "Elimina para siempre tu cuenta, tu bolsa y tus favoritos. Conservamos los pedidos anteriores en nuestros registros.",
+    deleteText: "Elimina para siempre tu cuenta, tu bolsa, tus favoritos y tu historial de pedidos.",
     delete: "Eliminar cuenta",
     deleteConfirmTitle: "¿Eliminar tu cuenta?",
     deleteConfirmText: "Se eliminará tu cuenta de Wear Zara de forma permanente. No se puede deshacer.",
@@ -591,7 +591,7 @@ const es = {
       back: "Todos los clientes",
       delete: "Eliminar cliente",
       deleteTitle: "¿Eliminar este cliente?",
-      deleteText: "Se eliminarán la cuenta, la bolsa y los favoritos de {name}. Sus pedidos se conservan.",
+      deleteText: "Se eliminarán la cuenta, la bolsa, los favoritos y los pedidos de {name}.",
     },
     messages: {
       text: "Mensajes enviados desde el formulario de contacto.",

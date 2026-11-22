@@ -11,7 +11,7 @@ export default function SectionHeader({ eyebrow, title, as: Heading = "h2", chil
       <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:gap-10 lg:gap-16">
         <div>
           {eyebrow && <Eyebrow className="mb-2">{eyebrow}</Eyebrow>}
-          <Heading className="text-3xl font-semibold tracking-tight sm:text-4xl lg:text-[2.75rem] lg:leading-[1.1]">{title}</Heading>
+          <Heading className="text-2xl font-semibold tracking-tight sm:text-4xl lg:text-[2.75rem] lg:leading-[1.1]">{title}</Heading>
         </div>
         {children}
       </div>

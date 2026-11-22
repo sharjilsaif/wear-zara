@@ -15,7 +15,7 @@ export default async function OrdersPage({ params }) {
 
   return (
     <>
-      <h1 className="mb-6 text-3xl font-semibold tracking-tight">{t("account.orders")}</h1>
+      <h1 className="mb-6 text-2xl sm:text-3xl font-semibold tracking-tight">{t("account.orders")}</h1>
       {orders.length === 0 ? (
         <EmptyState icon={LuPackage} title={t("orders.emptyTitle")} description={t("orders.emptyText")} className="glass rounded-3xl">
           <Button href="/shop">{t("common.startShopping")}</Button>

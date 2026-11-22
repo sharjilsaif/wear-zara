@@ -27,7 +27,7 @@ export function StatCard({ label, value, hint, href, tone = "brand" }) {
     <Link href={href} className={cn("glass group relative overflow-hidden rounded-3xl p-5 transition-all duration-300 ease-apple hover:-translate-y-0.5")}>
       <div className={cn("pointer-events-none absolute -end-10 -top-10 h-32 w-32 rounded-full bg-radial to-transparent blur-xl", tones[tone])} />
       <p className="text-[13px] text-fg-muted">{label}</p>
-      <p className="mt-2 text-3xl font-semibold tracking-tight tabular-nums">{value}</p>
+      <p className="mt-2 text-2xl sm:text-3xl font-semibold tracking-tight tabular-nums">{value}</p>
       {hint && <p className="mt-1 text-xs text-fg-muted">{hint}</p>}
     </Link>
   );
@@ -38,7 +38,7 @@ export function AdminHeader({ title, description, actions }) {
   return (
     <div className="mb-6 flex flex-wrap items-end justify-between gap-4">
       <div>
-        <h1 className="text-3xl font-semibold tracking-tight">{title}</h1>
+        <h1 className="text-2xl sm:text-3xl font-semibold tracking-tight">{title}</h1>
         {description && <p className="mt-1 text-sm text-fg-muted">{description}</p>}
       </div>
       {actions}

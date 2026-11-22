@@ -40,7 +40,7 @@ export default function CartView() {
     <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_24rem] lg:items-start">
       <div>
         <div className="mb-6 flex items-end justify-between gap-4">
-          <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">{t("cart.title")}</h1>
+          <h1 className="text-2xl font-semibold tracking-tight sm:text-4xl">{t("cart.title")}</h1>
           <p className="text-sm text-fg-muted">{t("cart.itemCount", { count: totals.itemCount })}</p>
         </div>
 
