@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 
-import AdminCard, { Table } from "@/components/admin/adminCard";
+import AdminCard from "@/components/admin/adminCard";
 import DeleteButton from "@/components/admin/deleteButton";
 import Badge from "@/components/ui/badge";
 import Button from "@/components/ui/button";
@@ -16,47 +16,50 @@ const EMPTY = { code: "", description: "", type: "PERCENT", value: "", minSubtot
 
 function CouponRow({ coupon }) {
   const { t, format } = useI18n();
-  const { send, pending } = useRequest();
+  const { send } = useRequest();
+  const [active, setActive] = useState(coupon.active);
   const expired = coupon.expiresAt && new Date(coupon.expiresAt) < new Date();
+
+  // Optimistic: flip instantly, save in the background, flip back only if the save fails.
+  const toggle = async (next) => {
+    setActive(next);
+    const { ok } = await send(`/api/admin/coupons/${coupon.id}`, { method: "PATCH", body: { active: next }, refresh: false, success: t(next ? "admin.coupons.enabled" : "admin.coupons.disabled") });
+    if (!ok) setActive(!next);
+  };
   const usedUp = coupon.maxUses != null && coupon.usedCount >= coupon.maxUses;
 
+  // One self-contained row: wraps on narrow screens instead of scrolling sideways like a table.
   return (
-    <tr>
-      <td className="py-3 pe-4">
-        <p className="font-semibold" dir="ltr">
-          {coupon.code}
+    <li className="flex items-center gap-4 py-4">
+      <div className="min-w-0 flex-1">
+        <p className="flex flex-wrap items-baseline gap-x-2">
+          <span className="font-semibold" dir="ltr">{coupon.code}</span>
+          <span className="text-sm font-medium text-brand">{coupon.type === "PERCENT" ? `${coupon.value}%` : format.price(coupon.value)}</span>
         </p>
-        {coupon.description && <p className="text-xs text-fg-muted">{coupon.description}</p>}
-      </td>
-      <td className="py-3 pe-4 whitespace-nowrap">
-        {coupon.type === "PERCENT" ? `${coupon.value}%` : format.price(coupon.value)}
-        {coupon.minSubtotal > 0 && <p className="text-xs text-fg-muted">{t("admin.coupons.minShort", { amount: format.price(coupon.minSubtotal) })}</p>}
-      </td>
-      <td className="py-3 pe-4 tabular-nums">
-        {coupon.usedCount}
-        {coupon.maxUses != null && <span className="text-fg-muted"> / {coupon.maxUses}</span>}
-      </td>
-      <td className="py-3 pe-4 text-xs">{coupon.expiresAt ? <DateText value={coupon.expiresAt} /> : <span className="text-fg-muted">{t("admin.coupons.never")}</span>}</td>
-      <td className="py-3 pe-4">
+        {coupon.description && <p className="truncate text-xs text-fg-muted">{coupon.description}</p>}
+        <p className="mt-1.5 flex flex-wrap gap-x-3 gap-y-0.5 text-xs text-fg-muted">
+          {coupon.minSubtotal > 0 && <span>{t("admin.coupons.minShort", { amount: format.price(coupon.minSubtotal) })}</span>}
+          <span className="tabular-nums">
+            {t("admin.coupons.uses")}: {coupon.usedCount}
+            {coupon.maxUses != null && ` / ${coupon.maxUses}`}
+          </span>
+          <span>
+            {t("admin.coupons.expires")}: {coupon.expiresAt ? <DateText value={coupon.expiresAt} /> : t("admin.coupons.never")}
+          </span>
+        </p>
+      </div>
+      <div className="flex shrink-0 items-center gap-1">
         {expired ? <Badge tone="danger">{t("admin.coupons.expired")}</Badge> : usedUp ? <Badge tone="warning">{t("admin.coupons.usedUp")}</Badge> : (
-          <Switch
-            checked={coupon.active}
-            disabled={pending}
-            label={t("admin.coupons.active")}
-            onChange={(active) => send(`/api/admin/coupons/${coupon.id}`, { method: "PATCH", body: { active }, success: t(active ? "admin.coupons.enabled" : "admin.coupons.disabled") })}
-          />
+          <Switch checked={active} label={t("admin.coupons.active")} onChange={toggle} />
         )}
-      </td>
-      <td className="py-3 text-end">
         <DeleteButton
           url={`/api/admin/coupons/${coupon.id}`}
-         
           title={t("admin.coupons.deleteTitle")}
           description={t("admin.coupons.deleteText", { code: coupon.code })}
           success={t("admin.deleted")}
         />
-      </td>
-    </tr>
+      </div>
+    </li>
   );
 }
 
@@ -83,7 +86,6 @@ export default function CouponManager({ coupons }) {
           <Select
             label={t("admin.coupons.type")}
             value={form.type}
-           
             onChange={(type) => setForm({ ...form, type })}
             options={[
               { value: "PERCENT", label: t("admin.coupons.percent") },
@@ -101,14 +103,15 @@ export default function CouponManager({ coupons }) {
       </AdminCard>
 
       <AdminCard title={t("admin.coupons.all", { count: coupons.length })}>
-        <Table
-          head={[t("admin.coupons.code"), t("admin.coupons.discount"), t("admin.coupons.uses"), t("admin.coupons.expires"), t("admin.coupons.status"), ""]}
-          empty={coupons.length === 0 && <p className="py-10 text-center text-sm text-fg-muted">{t("admin.coupons.empty")}</p>}
-        >
-          {coupons.map((coupon) => (
-            <CouponRow key={coupon.id} coupon={coupon} />
-          ))}
-        </Table>
+        {coupons.length === 0 ? (
+          <p className="py-10 text-center text-sm text-fg-muted">{t("admin.coupons.empty")}</p>
+        ) : (
+          <ul className="-mt-2 divide-y divide-line">
+            {coupons.map((coupon) => (
+              <CouponRow key={coupon.id} coupon={coupon} />
+            ))}
+          </ul>
+        )}
       </AdminCard>
     </div>
   );

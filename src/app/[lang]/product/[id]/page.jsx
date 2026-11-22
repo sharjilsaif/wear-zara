@@ -17,6 +17,11 @@ import { FREE_SHIPPING_THRESHOLD, MERCH_CATEGORY_SLUGS, RETURN_DAYS, SITE, categ
 
 export const revalidate = 300;
 
+// Empty list = build each product page on its first visit, then serve it from cache (ISR).
+export async function generateStaticParams() {
+  return [];
+}
+
 export async function generateMetadata({ params }) {
   const { lang, id } = await params;
   const [{ t, format }, product] = await Promise.all([getI18n(lang), getProduct(id)]);

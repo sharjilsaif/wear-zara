@@ -72,18 +72,16 @@ export default function CookieConsent() {
                 </Link>
               </p>
             </div>
-            <div className="flex flex-wrap gap-2 sm:flex-col">
-              <Button size="sm" onClick={() => decide({ analytics: true, marketing: true })} className="flex-1">
+            <div className="grid shrink-0 grid-cols-2 gap-2 sm:w-64">
+              <Button size="sm" onClick={() => decide({ analytics: true, marketing: true })} className="col-span-2">
                 {t("cookies.acceptAll")}
               </Button>
-              <div className="flex flex-1 gap-2">
-                <Button size="sm" variant="secondary" onClick={() => decide({ analytics: false, marketing: false })} className="flex-1">
-                  {t("cookies.decline")}
-                </Button>
-                <Button size="sm" variant="ghost" onClick={() => (setBanner(false), setSettings(true))} className="flex-1">
-                  {t("cookies.customize")}
-                </Button>
-              </div>
+              <Button size="sm" variant="secondary" onClick={() => decide({ analytics: false, marketing: false })}>
+                {t("cookies.decline")}
+              </Button>
+              <Button size="sm" variant="ghost" onClick={() => (setBanner(false), setSettings(true))}>
+                {t("cookies.customize")}
+              </Button>
             </div>
           </div>
         </div>

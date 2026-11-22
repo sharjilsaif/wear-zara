@@ -186,6 +186,8 @@
 @layer base {
   html {
     scroll-behavior: smooth;
+    /* Keep anything scrolled into view clear of the sticky header (promo bar + nav). */
+    scroll-padding-top: 7rem;
     -webkit-tap-highlight-color: transparent;
   }
 
