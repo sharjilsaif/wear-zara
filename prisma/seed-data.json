@@ -1,0 +1,689 @@
+{
+  "categories": [
+    {
+      "id": "cmrlloai2000gtry8tux7rynh",
+      "name": "Active & Gymwear",
+      "slug": "active-gymwear"
+    },
+    {
+      "id": "cmrllu4g6000mtry8rpsvlsvl",
+      "name": "Bags & Accessories",
+      "slug": "bags-accessories"
+    },
+    {
+      "id": "cmrlmhgpq0000trjkbznr6pzd",
+      "name": "Best Selling",
+      "slug": "best-selling"
+    },
+    {
+      "id": "cmrllz502000ptry8m3niyurx",
+      "name": "Explore Products",
+      "slug": "explore-products"
+    },
+    {
+      "id": "cmrlluhn1000ntry8bo5o44rr",
+      "name": "Flash Sales",
+      "slug": "flash-sales"
+    },
+    {
+      "id": "cmrlltyhj000ltry8uoq6g50u",
+      "name": "Footwear & Shoes",
+      "slug": "footwear-shoes"
+    },
+    {
+      "id": "cmrllt9gz000itry8bn0vtgx5",
+      "name": "Kids & Baby Wear",
+      "slug": "kids-baby-wear"
+    },
+    {
+      "id": "cmrlltjo1000jtry8jsah4l1p",
+      "name": "Loungewear & Sleepwear",
+      "slug": "loungewear-sleepwear"
+    },
+    {
+      "id": "cmrkzrxcf000etry8hl09ipke",
+      "name": "Men's Fashion",
+      "slug": "mens-fashion"
+    },
+    {
+      "id": "cmrllt1an000htry82b1f9xhf",
+      "name": "Outerwear & Jackets",
+      "slug": "outerwear-jackets"
+    },
+    {
+      "id": "cmrlltoyh000ktry87eaetmdd",
+      "name": "Swim & Beachwear",
+      "slug": "swim-beachwear"
+    },
+    {
+      "id": "cmrlln4ia000ftry8ltrl93cu",
+      "name": "Women's Fashion",
+      "slug": "womens-fashion"
+    }
+  ],
+  "products": [
+    {
+      "id": "cmrm8nj530000if04um67mch4",
+      "name": "UNISEX PLAIN SHIRT",
+      "price": 4.99,
+      "imageUrl": "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?q=80&w=880&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "rating": 5,
+      "reviews": 69,
+      "discountPrice": 14.99,
+      "discountPercentage": 75,
+      "categories": [
+        "flash-sales"
+      ]
+    },
+    {
+      "id": "cmrm8pq8r0000l104wqtjvuaa",
+      "name": "PRINTED SHIRT",
+      "price": 5.99,
+      "imageUrl": "https://images.unsplash.com/photo-1714070700737-24acfe6b957c?q=80&w=2080&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "rating": 5,
+      "reviews": 0,
+      "discountPrice": 11.99,
+      "discountPercentage": 50,
+      "categories": [
+        "flash-sales"
+      ]
+    },
+    {
+      "id": "cmrm8rork0000jo04di8p0fwb",
+      "name": "PACK OF JEANS",
+      "price": 29.94,
+      "imageUrl": "https://images.unsplash.com/photo-1604176354204-9268737828e4?q=80&w=880&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "rating": 5,
+      "reviews": 0,
+      "discountPrice": 69.99,
+      "discountPercentage": 33,
+      "categories": [
+        "flash-sales"
+      ]
+    },
+    {
+      "id": "cmrm8sf4e0001jo04x1kjqumy",
+      "name": "PACK OF PLAIN SHIRTS",
+      "price": 9.95,
+      "imageUrl": "https://images.unsplash.com/photo-1717127251642-869277aa5929?q=80&w=880&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "rating": 5,
+      "reviews": 0,
+      "discountPrice": 24.99,
+      "discountPercentage": 45,
+      "categories": [
+        "flash-sales"
+      ]
+    },
+    {
+      "id": "cmrm8txw50002jo048wjcnnvq",
+      "name": "FORMAL WOMEN'S COAT",
+      "price": 22,
+      "imageUrl": "https://images.unsplash.com/photo-1633821879282-0c4e91f96232?q=80&w=880&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "rating": 5,
+      "reviews": 0,
+      "discountPrice": 44,
+      "discountPercentage": 49,
+      "categories": [
+        "womens-fashion",
+        "flash-sales"
+      ]
+    },
+    {
+      "id": "cmrm8usny0003jo04622opypc",
+      "name": "BLACK PLAIN COAT FOR WOMEN",
+      "price": 17.97,
+      "imageUrl": "https://images.unsplash.com/photo-1592833578500-1082e18665a3?q=80&w=880&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "rating": 5,
+      "reviews": 0,
+      "discountPrice": 28,
+      "discountPercentage": 66,
+      "categories": [
+        "womens-fashion",
+        "flash-sales"
+      ]
+    },
+    {
+      "id": "cmrm8vxi70004jo04zg0gk3np",
+      "name": "PLAIN BLACK SHIRT",
+      "price": 6.94,
+      "imageUrl": "https://plus.unsplash.com/premium_photo-1688497831040-753ea826d174?q=80&w=832&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "rating": 5,
+      "reviews": 88,
+      "discountPrice": null,
+      "discountPercentage": null,
+      "categories": [
+        "mens-fashion",
+        "active-gymwear",
+        "swim-beachwear",
+        "flash-sales"
+      ]
+    },
+    {
+      "id": "cmrm8x37j0005jo04zddh4d0w",
+      "name": "TRADITIONAL FOR WINTERS",
+      "price": 49.99,
+      "imageUrl": "https://images.unsplash.com/photo-1679847628912-4c3e7402abc7?q=80&w=880&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "rating": 5,
+      "reviews": 95,
+      "discountPrice": null,
+      "discountPercentage": null,
+      "categories": [
+        "womens-fashion",
+        "outerwear-jackets",
+        "flash-sales",
+        "best-selling"
+      ]
+    },
+    {
+      "id": "cmrm8ybdk0001if04j5noro22",
+      "name": "OUTFITS BY AIR ZARA",
+      "price": 79.99,
+      "imageUrl": "https://images.unsplash.com/photo-1617178388553-a9d022974a5c?q=80&w=880&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "rating": 5,
+      "reviews": 99,
+      "discountPrice": null,
+      "discountPercentage": null,
+      "categories": [
+        "womens-fashion",
+        "outerwear-jackets",
+        "bags-accessories",
+        "explore-products",
+        "best-selling"
+      ]
+    },
+    {
+      "id": "cmrm8zio90002if0416ike7j3",
+      "name": "FORMAL DRESS COAT AIR ZARA",
+      "price": 59.97,
+      "imageUrl": "https://images.unsplash.com/photo-1593030942428-a5451dca4b42?q=80&w=880&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "rating": 5,
+      "reviews": 78,
+      "discountPrice": null,
+      "discountPercentage": null,
+      "categories": [
+        "mens-fashion",
+        "outerwear-jackets",
+        "explore-products",
+        "best-selling"
+      ]
+    },
+    {
+      "id": "cmrm90kgr0003if04pzo63sc0",
+      "name": "SHIRT FOR ALL GIRLS",
+      "price": 19.99,
+      "imageUrl": "https://images.unsplash.com/photo-1589810635657-232948472d98?q=80&w=880&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "rating": 5,
+      "reviews": 66,
+      "discountPrice": null,
+      "discountPercentage": null,
+      "categories": [
+        "womens-fashion",
+        "outerwear-jackets",
+        "kids-baby-wear",
+        "explore-products",
+        "best-selling"
+      ]
+    },
+    {
+      "id": "cmrm91k9b0004if04coi7eh14",
+      "name": "PREMIUM BY AIR ZARA",
+      "price": 58.99,
+      "imageUrl": "https://images.unsplash.com/photo-1590159983013-d4ff5fc71c1d?q=80&w=880&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "rating": 5,
+      "reviews": 77,
+      "discountPrice": null,
+      "discountPercentage": null,
+      "categories": [
+        "womens-fashion",
+        "outerwear-jackets",
+        "bags-accessories",
+        "explore-products",
+        "best-selling"
+      ]
+    },
+    {
+      "id": "cmrm92isc0005if04kvby8l8q",
+      "name": "PREMIUM SHIRTS BY AIRZARA",
+      "price": 44.99,
+      "imageUrl": "https://images.unsplash.com/photo-1717127354833-e4d10625d3e7?q=80&w=880&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "rating": 5,
+      "reviews": 46,
+      "discountPrice": null,
+      "discountPercentage": null,
+      "categories": [
+        "mens-fashion",
+        "active-gymwear",
+        "outerwear-jackets",
+        "loungewear-sleepwear",
+        "explore-products",
+        "best-selling"
+      ]
+    },
+    {
+      "id": "cmrm9456z0006if04eonq0f8l",
+      "name": "PACK OF 4 PLAIN SHIRTS",
+      "price": 17.99,
+      "imageUrl": "https://images.unsplash.com/photo-1717127248655-ef430d29338f?q=80&w=880&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "rating": 5,
+      "reviews": 54,
+      "discountPrice": 28.99,
+      "discountPercentage": 18,
+      "categories": [
+        "mens-fashion",
+        "active-gymwear",
+        "loungewear-sleepwear",
+        "flash-sales",
+        "explore-products"
+      ]
+    },
+    {
+      "id": "cmrm957jn0007if04kj6r1486",
+      "name": "OUTFITS BY WEAR ZARA",
+      "price": 59.99,
+      "imageUrl": "https://images.unsplash.com/photo-1739169585918-84f6fba6c6f7?q=80&w=880&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "rating": 5,
+      "reviews": 89,
+      "discountPrice": null,
+      "discountPercentage": null,
+      "categories": [
+        "mens-fashion",
+        "active-gymwear",
+        "outerwear-jackets",
+        "loungewear-sleepwear",
+        "explore-products",
+        "best-selling"
+      ]
+    },
+    {
+      "id": "cmrm969vf0008if046a7skygl",
+      "name": "PACK OF 4 PLAIN SHIRTS",
+      "price": 44.96,
+      "imageUrl": "https://images.unsplash.com/photo-1717127412108-ed8a5d68338f?q=80&w=880&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "rating": 5,
+      "reviews": 94,
+      "discountPrice": 55.99,
+      "discountPercentage": 20,
+      "categories": [
+        "mens-fashion",
+        "active-gymwear",
+        "outerwear-jackets",
+        "flash-sales",
+        "explore-products"
+      ]
+    },
+    {
+      "id": "cmrm97awi0009if04fklw5jjx",
+      "name": "PREMIUM BLACK PRINTED",
+      "price": 15.93,
+      "imageUrl": "https://images.unsplash.com/photo-1627913363993-95b23378265e?q=80&w=880&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "rating": 5,
+      "reviews": 80,
+      "discountPrice": null,
+      "discountPercentage": null,
+      "categories": [
+        "mens-fashion",
+        "active-gymwear",
+        "outerwear-jackets",
+        "swim-beachwear",
+        "explore-products",
+        "best-selling"
+      ]
+    },
+    {
+      "id": "cmrm98by1000aif04e9dsm0pv",
+      "name": "COMPLETE OUTFITS BY WEAR ZARA",
+      "price": 89.99,
+      "imageUrl": "https://images.unsplash.com/photo-1606844128209-80ba0f9afd34?q=80&w=880&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "rating": 5,
+      "reviews": 202,
+      "discountPrice": null,
+      "discountPercentage": null,
+      "categories": [
+        "mens-fashion",
+        "outerwear-jackets",
+        "footwear-shoes",
+        "explore-products",
+        "best-selling"
+      ]
+    },
+    {
+      "id": "cmrm99czs000bif045yyb6kk8",
+      "name": "PACK OF 3 PRINTED SHIRTS",
+      "price": 55.99,
+      "imageUrl": "https://images.unsplash.com/photo-1717127491253-5ecd4536447e?q=80&w=880&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "rating": 5,
+      "reviews": 78,
+      "discountPrice": 89.99,
+      "discountPercentage": 61,
+      "categories": [
+        "mens-fashion",
+        "active-gymwear",
+        "loungewear-sleepwear",
+        "flash-sales",
+        "explore-products"
+      ]
+    },
+    {
+      "id": "cmrm9a7ww000cif0484htxgde",
+      "name": "PREMIUM SHIRT FOR WOMEN",
+      "price": 55.99,
+      "imageUrl": "https://plus.unsplash.com/premium_photo-1668319915454-ee79c9f81f5e?q=80&w=880&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "rating": 5,
+      "reviews": 46,
+      "discountPrice": null,
+      "discountPercentage": null,
+      "categories": [
+        "womens-fashion",
+        "outerwear-jackets",
+        "explore-products",
+        "best-selling"
+      ]
+    },
+    {
+      "id": "cmrm9bj5u000dif04ctbehm22",
+      "name": "TRACK SUIT FOR KIDS",
+      "price": 44.99,
+      "imageUrl": "https://images.unsplash.com/photo-1602313306160-9d58a1d56390?q=80&w=880&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "rating": 5,
+      "reviews": 79,
+      "discountPrice": null,
+      "discountPercentage": null,
+      "categories": [
+        "kids-baby-wear",
+        "best-selling"
+      ]
+    },
+    {
+      "id": "cmrm9cw5o000eif04f9qd7ba3",
+      "name": "PLAIN BLACK JEANS",
+      "price": 18.99,
+      "imageUrl": "https://images.unsplash.com/photo-1718252540511-e958742e4165?q=80&w=880&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "rating": 5,
+      "reviews": 56,
+      "discountPrice": null,
+      "discountPercentage": null,
+      "categories": [
+        "mens-fashion",
+        "outerwear-jackets",
+        "flash-sales",
+        "explore-products"
+      ]
+    },
+    {
+      "id": "cmrm9fguc000fif04bikz2xka",
+      "name": "PACK OF PRINTED SHIRTS",
+      "price": 19.99,
+      "imageUrl": "https://images.unsplash.com/photo-1716951735063-3d60c2c288e4?q=80&w=898&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "rating": 5,
+      "reviews": 79,
+      "discountPrice": null,
+      "discountPercentage": null,
+      "categories": [
+        "mens-fashion",
+        "active-gymwear",
+        "loungewear-sleepwear",
+        "explore-products",
+        "best-selling"
+      ]
+    },
+    {
+      "id": "cmrm9ho8y000gif04txwciqev",
+      "name": "PREMIUM BAG FOR WOMEN",
+      "price": 59.99,
+      "imageUrl": "https://images.unsplash.com/photo-1569988102006-d02305b3ec23?q=80&w=880&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "rating": 5,
+      "reviews": 69,
+      "discountPrice": null,
+      "discountPercentage": null,
+      "categories": [
+        "womens-fashion",
+        "bags-accessories",
+        "explore-products",
+        "best-selling"
+      ]
+    },
+    {
+      "id": "cmrm9isjt000hif04qg6267zs",
+      "name": "BAG WITH FULL ACCESSORIES",
+      "price": 88.99,
+      "imageUrl": "https://plus.unsplash.com/premium_photo-1670963025497-d6d582ea9319?q=80&w=880&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "rating": 5,
+      "reviews": 155,
+      "discountPrice": null,
+      "discountPercentage": null,
+      "categories": [
+        "womens-fashion",
+        "bags-accessories",
+        "explore-products",
+        "best-selling"
+      ]
+    },
+    {
+      "id": "cmrm9k63x000iif0405z3axaw",
+      "name": "ACCESSORIES FOR WOMEN",
+      "price": 43,
+      "imageUrl": "https://images.unsplash.com/photo-1589988071674-c4a2004d2336?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OHx8YmFncyUyMGFjY2Vzc29yaWVzfGVufDB8MnwwfHx8MA%3D%3D",
+      "rating": 5,
+      "reviews": 63,
+      "discountPrice": null,
+      "discountPercentage": null,
+      "categories": [
+        "womens-fashion",
+        "bags-accessories",
+        "explore-products",
+        "best-selling"
+      ]
+    },
+    {
+      "id": "cmrm9l9m3000jif04mtk0habc",
+      "name": "PREMIUM RED COLORED BAG",
+      "price": 33.99,
+      "imageUrl": "https://images.unsplash.com/photo-1705329584488-754dbb077310?q=80&w=880&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "rating": 5,
+      "reviews": 103,
+      "discountPrice": null,
+      "discountPercentage": null,
+      "categories": [
+        "womens-fashion",
+        "bags-accessories",
+        "explore-products",
+        "best-selling"
+      ]
+    },
+    {
+      "id": "cmrma194f0000l604gl74aslp",
+      "name": "PREMIUM SHOES",
+      "price": 16.99,
+      "imageUrl": "https://images.unsplash.com/photo-1491553895911-0055eca6402d?q=80&w=880&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "rating": 5,
+      "reviews": 80,
+      "discountPrice": null,
+      "discountPercentage": null,
+      "categories": [
+        "mens-fashion",
+        "active-gymwear",
+        "footwear-shoes",
+        "explore-products",
+        "best-selling"
+      ]
+    },
+    {
+      "id": "cmrma2ck70001l604uix8krl6",
+      "name": "PRINTED SHOES FOR WOMEN",
+      "price": 19.93,
+      "imageUrl": "https://images.unsplash.com/photo-1543163521-1bf539c55dd2?q=80&w=880&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "rating": 5,
+      "reviews": 55,
+      "discountPrice": null,
+      "discountPercentage": null,
+      "categories": [
+        "womens-fashion",
+        "footwear-shoes",
+        "explore-products",
+        "best-selling"
+      ]
+    },
+    {
+      "id": "cmrma3kq00002l6044f1m2hz4",
+      "name": "GREEN SPORTS SHOES",
+      "price": 62.97,
+      "imageUrl": "https://images.unsplash.com/photo-1529810313688-44ea1c2d81d3?q=80&w=941&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "rating": 5,
+      "reviews": 61,
+      "discountPrice": null,
+      "discountPercentage": null,
+      "categories": [
+        "mens-fashion",
+        "active-gymwear",
+        "footwear-shoes",
+        "explore-products",
+        "best-selling"
+      ]
+    },
+    {
+      "id": "cmrma4hza0003l604qftghprv",
+      "name": "CASUAL SHOES FOR MEN",
+      "price": 17.99,
+      "imageUrl": "https://images.unsplash.com/photo-1561909848-977d0617f275?q=80&w=880&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "rating": 5,
+      "reviews": 41,
+      "discountPrice": null,
+      "discountPercentage": null,
+      "categories": [
+        "mens-fashion",
+        "active-gymwear",
+        "footwear-shoes",
+        "explore-products",
+        "best-selling"
+      ]
+    },
+    {
+      "id": "cmrma5eky0004l604ezj0vj9h",
+      "name": "PREMIUM SHOES FOR MAN",
+      "price": 51.99,
+      "imageUrl": "https://images.unsplash.com/photo-1605034313761-73ea4a0cfbf3?q=80&w=880&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "rating": 5,
+      "reviews": 36,
+      "discountPrice": null,
+      "discountPercentage": null,
+      "categories": [
+        "mens-fashion",
+        "active-gymwear",
+        "footwear-shoes",
+        "explore-products",
+        "best-selling"
+      ]
+    },
+    {
+      "id": "cmrma6gxf0005l604a41isa1g",
+      "name": "GYM SPORTS SHOES",
+      "price": 43.99,
+      "imageUrl": "https://images.unsplash.com/photo-1631984564919-1f6b2313a71c?q=80&w=846&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "rating": 5,
+      "reviews": 63,
+      "discountPrice": null,
+      "discountPercentage": null,
+      "categories": [
+        "active-gymwear",
+        "footwear-shoes",
+        "explore-products",
+        "best-selling"
+      ]
+    },
+    {
+      "id": "cmrma7ve00000kv04y9ilsgha",
+      "name": "PARTY SHOES FOR WOMEN",
+      "price": 29.99,
+      "imageUrl": "https://images.unsplash.com/photo-1581101767113-1677fc2beaa8?q=80&w=880&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "rating": 5,
+      "reviews": 77,
+      "discountPrice": null,
+      "discountPercentage": null,
+      "categories": [
+        "womens-fashion",
+        "outerwear-jackets",
+        "footwear-shoes",
+        "explore-products",
+        "best-selling"
+      ]
+    },
+    {
+      "id": "cmrma8ub40001kv04h0x1d81a",
+      "name": "BLACK PREMIUM SHOES",
+      "price": 78.99,
+      "imageUrl": "https://plus.unsplash.com/premium_photo-1689245691840-2ab8b3bf9cd2?q=80&w=914&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "rating": 5,
+      "reviews": 25,
+      "discountPrice": null,
+      "discountPercentage": null,
+      "categories": [
+        "womens-fashion",
+        "footwear-shoes",
+        "explore-products",
+        "best-selling"
+      ]
+    },
+    {
+      "id": "cmrma9tac0002kv04f03rinh9",
+      "name": "FORMAL SHOES FOR MEN",
+      "price": 99.92,
+      "imageUrl": "https://images.unsplash.com/photo-1616696038562-574c18066055?q=80&w=940&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "rating": 5,
+      "reviews": 82,
+      "discountPrice": null,
+      "discountPercentage": null,
+      "categories": [
+        "mens-fashion",
+        "footwear-shoes",
+        "explore-products",
+        "best-selling"
+      ]
+    },
+    {
+      "id": "cmrmaaowm0003kv049co1vjy3",
+      "name": "SPORTS SHOES FOR GYM",
+      "price": 66.99,
+      "imageUrl": "https://images.unsplash.com/photo-1659785568847-2c9581fe7d98?q=80&w=880&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "rating": 5,
+      "reviews": 88,
+      "discountPrice": null,
+      "discountPercentage": null,
+      "categories": [
+        "mens-fashion",
+        "active-gymwear",
+        "footwear-shoes",
+        "explore-products",
+        "best-selling"
+      ]
+    },
+    {
+      "id": "cmrmad4bs0004kv04pulc2xg0",
+      "name": "OUTFITS BY WEAR ZARA",
+      "price": 39.94,
+      "imageUrl": "https://images.unsplash.com/photo-1705329584787-09f5981f74d1?q=80&w=880&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "rating": 5,
+      "reviews": 38,
+      "discountPrice": null,
+      "discountPercentage": null,
+      "categories": [
+        "kids-baby-wear",
+        "explore-products",
+        "best-selling"
+      ]
+    },
+    {
+      "id": "cmrmaid4z0005kv04fot8g589",
+      "name": "FORMAL FOR KIDS",
+      "price": 22.99,
+      "imageUrl": "https://images.unsplash.com/photo-1777397660834-67c6d0eabe15?q=80&w=2080&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "rating": 5,
+      "reviews": 49,
+      "discountPrice": null,
+      "discountPercentage": null,
+      "categories": [
+        "kids-baby-wear",
+        "explore-products"
+      ]
+    }
+  ]
+}

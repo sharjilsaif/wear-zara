@@ -1,107 +1,84 @@
-// app/api/products/route.js
-import { NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
+
+import { getProducts, productSelect, SORT_OPTIONS } from "@/lib/catalog";
 import { prisma } from "@/lib/prisma";
+import { requireAdmin } from "@/lib/requireAdmin";
 
+const MAX_PAGE_SIZE = 50;
+
+/** GET /api/products?category=&q=&sort=&page=&limit= */
 export async function GET(request) {
+  const params = new URL(request.url).searchParams;
+  const sort = params.get("sort");
+
   try {
-    const { searchParams } = new URL(request.url);
-    const categorySlug = searchParams.get("category");
-    const page = parseInt(searchParams.get("page") || "1", 10);
-    const limit = parseInt(searchParams.get("limit") || "0", 10);
-
-    const whereClause = categorySlug
-      ? { categories: { some: { slug: categorySlug } } }
-      : {};
-
-    const queryOptions = {
-      where: whereClause,
-      include: { categories: true },
-      orderBy: { createdAt: "desc" },
-    };
-
-    if (limit > 0) {
-      queryOptions.skip = (page - 1) * limit;
-      queryOptions.take = limit;
-    }
-
-    const products = await prisma.product.findMany(queryOptions);
-
-    return NextResponse.json(products);
+    const result = await getProducts({
+      category: params.get("category") || undefined,
+      q: params.get("q")?.trim().slice(0, 80) || undefined,
+      sort: SORT_OPTIONS[sort] ? sort : "newest",
+      page: parseInt(params.get("page") ?? "1", 10) || 1,
+      pageSize: Math.min(MAX_PAGE_SIZE, Math.max(1, parseInt(params.get("limit") ?? "12", 10) || 12)),
+    });
+    return Response.json(result);
   } catch (error) {
-    console.error("Prisma Fetch Error:", error);
-    return NextResponse.json({ error: "Failed to fetch products" }, { status: 500 });
+    console.error("Fetch products failed:", error);
+    return Response.json({ error: "Failed to fetch products." }, { status: 500 });
   }
 }
 
-export async function POST(request) {
+function parseOptionalNumber(value, parse) {
+  if (value === null || value === undefined || value === "") return null;
+  const number = parse(value);
+  return Number.isFinite(number) ? number : NaN;
+}
+
+function validateProduct(body) {
+  const name = String(body?.name ?? "").trim();
+  const imageUrl = String(body?.imageUrl ?? "").trim();
+  const price = Number.parseFloat(body?.price);
+  const categoryIds = Array.isArray(body?.categoryIds) ? body.categoryIds.filter((id) => typeof id === "string") : [];
+  const discountPrice = parseOptionalNumber(body?.discountPrice, Number.parseFloat);
+  const reviews = parseOptionalNumber(body?.reviews, (value) => Number.parseInt(value, 10)) ?? 0;
+  const rating = Math.min(5, Math.max(1, Number.parseInt(body?.rating, 10) || 5));
+
+  if (name.length < 2 || name.length > 80) return { error: "Name must be 2–80 characters." };
+  if (!Number.isFinite(price) || price <= 0) return { error: "Price must be a positive number." };
+
   try {
-    const body = await request.json();
-    const { 
-      name, 
-      price, 
-      imageUrl, 
-      categoryIds, 
-      rating, 
-      reviews, 
-      discountPrice, 
-      discountPercentage 
-    } = body;
+    if (new URL(imageUrl).protocol !== "https:") throw new Error();
+  } catch {
+    return { error: "Image URL must be a valid https:// link." };
+  }
 
-    // 1. Validate mandatory fields
-    if (!name || !price || !imageUrl) {
-      return NextResponse.json({ error: "Name, price, and imageUrl are required fields." }, { status: 400 });
-    }
+  if (categoryIds.length === 0) return { error: "Select at least one category." };
+  if (Number.isNaN(discountPrice) || (discountPrice !== null && discountPrice <= price)) {
+    return { error: "Original price must be higher than the sale price." };
+  }
+  if (Number.isNaN(reviews) || reviews < 0) return { error: "Reviews must be zero or more." };
 
-    if (!categoryIds || !Array.isArray(categoryIds) || categoryIds.length === 0) {
-      return NextResponse.json({ error: "At least one category must be selected." }, { status: 400 });
-    }
+  const discountPercentage = discountPrice ? Math.round((1 - price / discountPrice) * 100) : null;
 
-    // 2. Safely parse numbers to prevent NaN database crashes
-    const parsedPrice = parseFloat(price);
-    if (isNaN(parsedPrice)) {
-      return NextResponse.json({ error: "Invalid price format." }, { status: 400 });
-    }
+  return { data: { name, imageUrl, price, discountPrice, discountPercentage, reviews, rating, categoryIds } };
+}
 
-    // Safely handle optional numbers (convert empty strings to null instead of NaN)
-    const parsedDiscountPrice = (discountPrice && discountPrice !== "") ? parseFloat(discountPrice) : null;
-    const parsedDiscountPercentage = (discountPercentage && discountPercentage !== "") ? parseInt(discountPercentage, 10) : null;
-    
-    // Fallback to default rating of 5.0
-    const parsedRating = (rating && rating !== "") ? parseFloat(rating) : 5.0;
-    const parsedReviews = (reviews && reviews !== "") ? parseInt(reviews, 10) : 0;
+export async function POST(request) {
+  const denied = await requireAdmin();
+  if (denied) return denied;
 
-    // Double-check if we generated NaN on any optional values
-    if (parsedDiscountPrice !== null && isNaN(parsedDiscountPrice)) {
-      return NextResponse.json({ error: "Invalid discount price format." }, { status: 400 });
-    }
-    if (parsedDiscountPercentage !== null && isNaN(parsedDiscountPercentage)) {
-      return NextResponse.json({ error: "Invalid discount percentage format." }, { status: 400 });
-    }
+  const body = await request.json().catch(() => null);
+  const { data, error } = validateProduct(body);
+  if (error) return Response.json({ error }, { status: 400 });
 
-    // 3. Save clean, parsed product data to database
-    const newProduct = await prisma.product.create({
-      data: {
-        name,
-        price: parsedPrice,
-        imageUrl,
-        rating: isNaN(parsedRating) ? 5.0 : parsedRating,
-        reviews: isNaN(parsedReviews) ? 0 : parsedReviews,
-        discountPrice: parsedDiscountPrice,
-        discountPercentage: parsedDiscountPercentage,
-        // Connect the product to all selected category IDs
-        categories: {
-          connect: categoryIds.map(id => ({ id }))
-        }
-      },
+  try {
+    const { categoryIds, ...fields } = data;
+    const product = await prisma.product.create({
+      data: { ...fields, categories: { connect: categoryIds.map((id) => ({ id })) } },
+      select: productSelect,
     });
-
-    return NextResponse.json({ success: true, product: newProduct });
-  } catch (error) {
-    // This will log the exact Prisma database error inside your backend terminal!
-    console.error("CRITICAL ERROR SAVING PRODUCT:", error);
-    return NextResponse.json({ 
-      error: "Failed to save product", 
-      details: error.message 
-    }, { status: 500 });
+    revalidatePath("/", "layout");
+    return Response.json({ product }, { status: 201 });
+  } catch (err) {
+    console.error("Create product failed:", err);
+    return Response.json({ error: "Failed to save product." }, { status: 500 });
   }
 }

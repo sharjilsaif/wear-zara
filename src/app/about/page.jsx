@@ -1,148 +1,100 @@
-"use client";
-
-import { useState, useEffect } from "react";
-import Link from "next/link";
-
-import Skeleton from "@/components/shimmer/shimmer";
-import Description from "@/pages/mainHomePage/description/description";
-
+import Image from "next/image";
 import { AiOutlineShop } from "react-icons/ai";
-import { FaSackDollar, FaLinkedinIn, FaXTwitter } from "react-icons/fa6";
-import { FaShoppingBag, FaInstagram, FaDollarSign } from "react-icons/fa";
+import { FaDollarSign, FaShoppingBag } from "react-icons/fa";
+import { FaSackDollar } from "react-icons/fa6";
 
-export default function About() {
-  const [shimmer, setShimmer] = useState(true);
+import ServiceHighlights from "@/components/home/serviceHighlights";
+import Breadcrumb from "@/components/ui/breadcrumb";
+import SectionHeader from "@/components/ui/sectionHeader";
+import { cn } from "@/lib/format";
 
-  useEffect(() => {
-    const timer = setTimeout(() => setShimmer(false), 400);
-    return () => clearTimeout(timer);
-  }, []);
+import ourStory from "../../../public/ourStory.png";
+import ethan from "../../../public/malePic-2.png";
+import emma from "../../../public/femalePic.png";
+import lucas from "../../../public/malePic-1.png";
 
-  const aboutItems = [
-    { icon: AiOutlineShop, rating: "10.5K", data: "Sellers active on our site" },
-    { icon: FaDollarSign, rating: "33K", data: "Monthly product sales" },
-    { icon: FaShoppingBag, rating: "45.5K", data: "Customers shopping daily" },
-    { icon: FaSackDollar, rating: "25K", data: "Annual gross revenue" },
-  ];
+export const metadata = {
+  title: "About Us",
+  description: "The story behind Wear Zara — curated fashion for modern shoppers, delivered with care.",
+};
 
-  const teamMembers = [
-    { name: "Ethan Carter", role: "Founder & Chairman", image: "malePic-2.png" },
-    { name: "Emma Collins", role: "Managing Director", image: "femalePic.png" },
-    { name: "Lucas Bennett", role: "Product Designer", image: "malePic-1.png" },
-  ];
+const STATS = [
+  { icon: AiOutlineShop, value: "10.5K", label: "Brands & sellers on our platform" },
+  { icon: FaDollarSign, value: "33K", label: "Monthly product sales" },
+  { icon: FaShoppingBag, value: "45.5K", label: "Customers shopping every day" },
+  { icon: FaSackDollar, value: "25K", label: "Five-star reviews collected" },
+];
 
+const TEAM = [
+  { name: "Ethan Carter", role: "Founder & Chairman", image: ethan },
+  { name: "Emma Collins", role: "Managing Director", image: emma },
+  { name: "Lucas Bennett", role: "Product Designer", image: lucas },
+];
+
+export default function AboutPage() {
   return (
-    <section className="px-4 py-8 sm:px-6 lg:px-8 lg:py-10 bg-white dark:bg-[#0f0f0f] transition-colors duration-300">
-      <div className="mx-auto max-w-7xl">
-        <div className="mb-6 text-sm text-[#6b7280] dark:text-[#888]">
-          <Link className="transition-all duration-300 hover:text-[#111111] dark:hover:text-white" href="/">Home</Link>
-          <span className="mx-2">/</span>
-          <span className="font-medium text-[#111111] dark:text-white">About</span>
-        </div>
+    <div className="container-page py-10">
+      <Breadcrumb items={[{ label: "About" }]} />
 
-        <div className="grid items-center gap-8 rounded-4xl border border-[#ececec] dark:border-[#1f1f1f] bg-white dark:bg-[#141414] p-6 shadow-[0_20px_60px_rgba(0,0,0,0.06)] dark:shadow-[0_20px_60px_rgba(0,0,0,0.4)] lg:grid-cols-[1.05fr_0.95fr] lg:p-10 transition-colors duration-300">
-          <div className="space-y-5">
-            <div className="inline-flex rounded-full bg-[#fff5f5] dark:bg-[#2a1010] px-3 py-1 text-sm font-medium text-(--brand-red)">
-              Our story
-            </div>
-            <h1 className="text-3xl font-semibold tracking-tight text-[#111111] dark:text-white sm:text-4xl">
-              Crafting a smarter, more personal shopping experience.
-            </h1>
-            {shimmer ? (
-              <div className="space-y-3">
-                <Skeleton className="h-4 w-full rounded-full" />
-                <Skeleton className="h-4 w-[92%] rounded-full" />
-                <Skeleton className="h-4 w-[88%] rounded-full" />
-                <Skeleton className="h-4 w-[80%] rounded-full" />
-              </div>
-            ) : (
-              <div className="space-y-4 text-base leading-7 text-[#4b5563] dark:text-[#aaa]">
-                <p>Launched in 2015, Exclusive is South Asia&apos;s premier online shopping marketplace with an active presence in Bangladesh. We support brands and sellers with tailored marketing, data, and service solutions that scale with ambition.</p>
-                <p>Today, we offer more than a million products across categories that range from everyday essentials to statement pieces, all delivered with speed and care.</p>
-              </div>
-            )}
-          </div>
-
-          <div className="overflow-hidden rounded-[1.75rem] border border-[#f0f0f0] dark:border-[#1f1f1f] bg-[#f7f7f7] dark:bg-[#1a1a1a] p-3 shadow-sm">
-            {shimmer ? (
-              <Skeleton className="h-80 w-full rounded-[1.4rem]" />
-            ) : (
-              <img className="h-80 w-full rounded-[1.4rem] object-cover" src="ourStory.png" alt="Our story" />
-            )}
+      <section className="grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
+        <div>
+          <span className="inline-flex rounded-full bg-brand-soft px-3 py-1 text-sm font-medium text-brand">Our Story</span>
+          <h1 className="mt-5 text-3xl font-semibold tracking-tight sm:text-5xl">Crafting a smarter, more personal way to shop.</h1>
+          <div className="mt-6 space-y-4 leading-7 text-fg-muted">
+            <p>
+              Wear Zara started with a simple idea: great style shouldn&apos;t be complicated. We bring together
+              thoughtfully curated clothing, footwear and accessories for men, women and kids — all in one place.
+            </p>
+            <p>
+              From everyday essentials to statement pieces, every product is picked for quality, comfort and value,
+              then delivered quickly with free shipping on orders over $140 and hassle-free 30-day returns.
+            </p>
           </div>
         </div>
+        <div className="relative aspect-[705/609] overflow-hidden rounded-3xl">
+          <Image src={ourStory} alt="Two happy shoppers holding shopping bags" fill priority placeholder="blur" sizes="(min-width: 1024px) 600px, 100vw" className="object-cover" />
+        </div>
+      </section>
 
-        <div className="mt-8 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-          {aboutItems.map((item, index) => {
-            const Icon = item.icon;
-            const isActive = index === 1;
-            return (
-              <div key={index} className={`flex min-h-45 cursor-pointer flex-col items-center justify-center gap-3 rounded-[1.3rem] border p-5 text-center transition-all duration-300 ${isActive ? "border-[var(--brand-red)] bg-[var(--brand-red)] text-white shadow-lg shadow-[rgba(219, 68, 68, 0.12)] hover:bg-[var(--brand-red-hover)]" : "border-[#ececec] dark:border-[#1f1f1f] bg-white dark:bg-[#141414] hover:-translate-y-1 hover:bg-[#fafafa] dark:hover:bg-[#1a1a1a]"}`}>
-                <div className={`flex h-14 w-14 items-center justify-center rounded-full ${isActive ? "bg-white/20" : "bg-[#f3f4f6] dark:bg-[#252525]"}`}>
-                  <div className={`flex h-10 w-10 items-center justify-center rounded-full ${isActive ? "bg-white" : "bg-[#111111] dark:bg-white"}`}>
-                    <Icon className={`text-xl ${isActive ? "text-[#111111]" : "text-white dark:text-[#111]"}`} />
-                  </div>
-                </div>
-                <p className={`text-2xl font-semibold ${isActive ? "text-white" : "text-[#111] dark:text-white"}`}>{item.rating}</p>
-                <p className={`text-sm ${isActive ? "text-white/90" : "text-[#6b7280] dark:text-[#888]"}`}>{item.data}</p>
+      <section aria-label="Wear Zara in numbers" className="mt-20 grid gap-6 sm:grid-cols-2 xl:grid-cols-4">
+        {STATS.map(({ icon: Icon, value, label }, index) => {
+          const highlighted = index === 1;
+          return (
+            <div
+              key={label}
+              className={cn(
+                "flex flex-col items-center gap-4 rounded-xl border p-8 text-center transition-all duration-300 hover:-translate-y-1 hover:shadow-lg",
+                highlighted ? "border-brand bg-brand text-white" : "border-line",
+              )}
+            >
+              <span className={cn("flex h-20 w-20 items-center justify-center rounded-full", highlighted ? "bg-white/30" : "bg-neutral-300 dark:bg-neutral-700")}>
+                <span className={cn("flex h-14 w-14 items-center justify-center rounded-full", highlighted ? "bg-white text-black" : "bg-black text-white")}>
+                  <Icon aria-hidden className="text-2xl" />
+                </span>
+              </span>
+              <p className="text-3xl font-bold">{value}</p>
+              <p className={cn("text-sm", highlighted ? "text-white/90" : "text-fg-muted")}>{label}</p>
+            </div>
+          );
+        })}
+      </section>
+
+      <section className="mt-24">
+        <SectionHeader eyebrow="Meet the Team" title="The People Behind Wear Zara" />
+        <ul className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+          {TEAM.map((member) => (
+            <li key={member.name}>
+              <div className="relative flex aspect-4/5 items-end justify-center overflow-hidden rounded-xl bg-surface-muted pt-10">
+                <Image src={member.image} alt={member.name} placeholder="blur" sizes="(min-width: 1024px) 380px, (min-width: 640px) 45vw, 90vw" className="h-[90%] w-auto object-contain" />
               </div>
-            );
-          })}
-        </div>
+              <h3 className="mt-6 text-2xl font-medium">{member.name}</h3>
+              <p className="mt-1 text-fg-muted">{member.role}</p>
+            </li>
+          ))}
+        </ul>
+      </section>
 
-        <div className="mt-12">
-          <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
-            <div>
-              <p className="text-sm font-semibold uppercase tracking-[0.3em] text-[var(--brand-red)]">Meet the team</p>
-              <h2 className="text-2xl font-semibold text-[#111111] dark:text-white sm:text-3xl">People behind every great experience</h2>
-            </div>
-            <p className="text-sm text-[#6b7280] dark:text-[#888]">A passionate team building thoughtful products for modern shoppers.</p>
-          </div>
-
-            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 items-stretch">
-              {shimmer
-                ? [0, 1, 2].map((item) => (
-                    <div key={item} className="flex flex-col h-full rounded-3xl border border-[#ececec] dark:border-[#1f1f1f] bg-white dark:bg-[#141414] p-4 shadow-sm">
-                      <Skeleton className="h-72 w-full rounded-[1.2rem]" />
-                      <div className="mt-4 space-y-2">
-                        <Skeleton className="h-4 w-28 rounded-full" />
-                        <Skeleton className="h-4 w-36 rounded-full" />
-                      </div>
-                    </div>
-                  ))
-                : teamMembers.map((member, index) => (
-                    <div key={index} className="group flex flex-col h-full overflow-hidden rounded-3xl border border-[#ececec] dark:border-[#1f1f1f] bg-white dark:bg-[#141414] shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg dark:hover:shadow-[0_8px_30px_rgba(0,0,0,0.4)]">
-                      
-                      <div className="bg-[#f7f7f7] dark:bg-[#1a1a1a] p-4 flex items-center justify-center">
-                        <div className="h-72 w-full flex items-center justify-center">
-                          <img 
-                            className="max-h-full max-w-full w-auto h-auto object-contain transition-all duration-300 group-hover:scale-[1.02]" 
-                            src={member.image} 
-                            alt={member.name} 
-                          />
-                        </div>
-                      </div>
-                      
-                      <div className="flex flex-col flex-1 p-5">
-                        <h3 className="text-lg font-semibold text-[#111111] dark:text-white">{member.name}</h3>
-                        <p className="mt-1 text-sm text-[#6b7280] dark:text-[#888]">{member.role}</p>
-                        
-                        <div className="mt-auto pt-4 flex gap-3 text-[#6b7280] dark:text-[#666]">
-                          <FaXTwitter className="cursor-pointer transition-all duration-300 hover:text-(--brand-red)" />
-                          <FaInstagram className="cursor-pointer transition-all duration-300 hover:text-(--brand-red)" />
-                          <FaLinkedinIn className="cursor-pointer transition-all duration-300 hover:text-(--brand-red)" />
-                        </div>
-                      </div>
-
-                    </div>
-                  ))}
-            </div>
-        </div>
-
-        <div className="mt-12">
-          <Description />
-        </div>
-      </div>
-    </section>
+      <ServiceHighlights />
+    </div>
   );
 }

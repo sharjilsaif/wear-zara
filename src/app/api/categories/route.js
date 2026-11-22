@@ -1,80 +1,62 @@
-// app/api/categories/route.js
-import { NextResponse } from "next/server";
-import { prisma } from "@/lib/prisma";
+import { revalidatePath } from "next/cache";
 
-// 1. GET: Fetch all categories with dynamic live product counts
+import { getCategories } from "@/lib/catalog";
+import { slugify } from "@/lib/format";
+import { prisma } from "@/lib/prisma";
+import { requireAdmin } from "@/lib/requireAdmin";
+
 export async function GET() {
   try {
-    const categories = await prisma.category.findMany({
-      orderBy: { name: "asc" },
-      include: {
-        _count: {
-          select: { 
-            products: true // Must match the exact lowercase name 'products' from your Category schema!
-          }
-        }
-      }
-    });
-    return NextResponse.json(categories);
+    return Response.json(await getCategories());
   } catch (error) {
-    console.error("Error fetching categories:", error);
-    return NextResponse.json({ error: "Failed to fetch categories" }, { status: 500 });
+    console.error("Fetch categories failed:", error);
+    return Response.json({ error: "Failed to fetch categories." }, { status: 500 });
   }
 }
 
-// 2. POST: Create a new category
 export async function POST(request) {
+  const denied = await requireAdmin();
+  if (denied) return denied;
+
   try {
-    const { name } = await request.json();
-
-    if (!name) {
-      return NextResponse.json({ error: "Category name is required" }, { status: 400 });
+    const body = await request.json().catch(() => ({}));
+    const name = String(body?.name ?? "").trim();
+    if (name.length < 2 || name.length > 50) {
+      return Response.json({ error: "Category name must be 2–50 characters." }, { status: 400 });
     }
 
-    // Convert e.g., "Home & Kitchen" -> "home-kitchen"
-    const slug = name
-      .toLowerCase()
-      .trim()
-      .replace(/[^\w\s-]/g, "") 
-      .replace(/[\s_]+/g, "-")  
-      .replace(/^-+|-+$/g, ""); 
-
-    const existingCategory = await prisma.category.findUnique({
-      where: { slug }
+    const slug = slugify(name);
+    const existing = await prisma.category.findFirst({
+      where: { OR: [{ slug }, { name: { equals: name, mode: "insensitive" } }] },
+      select: { id: true },
     });
-
-    if (existingCategory) {
-      return NextResponse.json({ error: "A category with this name or slug already exists" }, { status: 400 });
+    if (existing) {
+      return Response.json({ error: "A category with this name already exists." }, { status: 409 });
     }
 
-    const newCategory = await prisma.category.create({
-      data: { name, slug }
-    });
-
-    return NextResponse.json({ success: true, category: newCategory });
+    const category = await prisma.category.create({ data: { name, slug } });
+    revalidatePath("/", "layout");
+    return Response.json({ category }, { status: 201 });
   } catch (error) {
-    console.error("Error creating category:", error);
-    return NextResponse.json({ error: "Failed to create category" }, { status: 500 });
+    console.error("Create category failed:", error);
+    return Response.json({ error: "Failed to create category." }, { status: 500 });
   }
 }
 
-// 3. DELETE: Delete a category
 export async function DELETE(request) {
+  const denied = await requireAdmin();
+  if (denied) return denied;
+
+  const id = new URL(request.url).searchParams.get("id");
+  if (!id) return Response.json({ error: "Category id is required." }, { status: 400 });
+
   try {
-    const { searchParams } = new URL(request.url);
-    const categoryId = searchParams.get("id");
-
-    if (!categoryId) {
-      return NextResponse.json({ error: "Category ID is required" }, { status: 400 });
-    }
-
-    await prisma.category.delete({
-      where: { id: categoryId }
-    });
-
-    return NextResponse.json({ success: true });
+    await prisma.category.delete({ where: { id } });
+    revalidatePath("/", "layout");
+    return Response.json({ success: true });
   } catch (error) {
-    console.error("Error deleting category:", error);
-    return NextResponse.json({ error: "Failed to delete category." }, { status: 500 });
+    if (error?.code === "P2025") return Response.json({ error: "Category not found." }, { status: 404 });
+    console.error("Delete category failed:", error);
+    return Response.json({ error: "Failed to delete category." }, { status: 500 });
   }
 }

@@ -1,9 +1,4 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Get a free hosted Postgres database in seconds: `npx create-db`
-
-
+// Prisma schema for Wear Zara — https://pris.ly/d/prisma-schema
 
 generator client {
   provider = "prisma-client-js"
@@ -14,44 +9,44 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+/// Customer account. Passwords are stored as bcrypt hashes.
 model User {
-  id          String   @id @default(cuid())
-  name        String
-  email       String   @unique
-  password    String
+  id       String @id @default(cuid())
+  name     String
+  email    String @unique
+  password String
 
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
-
-// This is your updated schema file
+/// Store department, e.g. "Men's Fashion" (slug: "mens-fashion").
+/// Merchandising groups such as "best-selling" and "flash-sales" are categories too.
 model Category {
-  id        String    @id @default(cuid())
-  name      String    @unique // e.g., "Men", "Women"
-  slug      String    @unique // e.g., "men", "women"
-  
-  // CHANGED: A category has many products
-  products  Product[] 
+  id       String    @id @default(cuid())
+  name     String    @unique
+  slug     String    @unique
+  products Product[]
 
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
+/// A product can belong to many categories (implicit many-to-many).
 model Product {
-  id                 String     @id @default(cuid())
-  name               String
-  price              Float
-  imageUrl           String   
-  rating             Int      @default(5)
-  reviews            Int        @default(0)
-  
+  id       String @id @default(cuid())
+  name     String
+  price    Float
+  imageUrl String
+  rating   Int    @default(5)
+  reviews  Int    @default(0)
+
+  /// Original (pre-sale) price, shown struck-through when higher than `price`.
   discountPrice      Float?
-  discountPercentage Int?     
+  discountPercentage Int?
 
-  // CHANGED: A product can now belong to multiple categories (Many-to-Many)
-  categories         Category[] 
+  categories Category[]
 
-  createdAt          DateTime   @default(now())
-  updatedAt          DateTime   @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
