@@ -3,11 +3,21 @@
 export const SITE = {
   name: "Wear Zara",
   url: "https://wear-zara.vercel.app",
-  email: "support@wearzara.com",
-  phone: "+1 (234) 567-890",
-  address: ["12 Baker Street", "London, United Kingdom"],
+  // Real contact details are set per deployment; anything unset is hidden (never placeholder data).
+  email: process.env.NEXT_PUBLIC_STORE_EMAIL || null,
+  phone: process.env.NEXT_PUBLIC_STORE_PHONE || null,
+  address: process.env.NEXT_PUBLIC_STORE_ADDRESS || null,
   author: { name: "Sharjil Malik", url: "https://github.com/sharjilsaif" },
 };
+
+/** Contact channels that are actually configured, for the footer and contact page. */
+export function contactChannels() {
+  return [
+    SITE.phone && { kind: "phone", label: SITE.phone, href: `tel:${SITE.phone.replace(/[^d+]/g, "")}` },
+    SITE.email && { kind: "email", label: SITE.email, href: `mailto:${SITE.email}` },
+    SITE.address && { kind: "address", label: SITE.address, href: `https://maps.google.com/?q=${encodeURIComponent(SITE.address)}` },
+  ].filter(Boolean);
+}
 
 export const FREE_SHIPPING_THRESHOLD = 140;
 export const SHIPPING_FEE = 9.99;

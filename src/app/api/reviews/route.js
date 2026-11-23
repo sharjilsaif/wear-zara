@@ -1,4 +1,5 @@
 import { fail, readJson, requireUser, revalidateStore } from "@/lib/api";
+import { refreshRating } from "@/lib/catalog";
 import { prisma } from "@/lib/prisma";
 import { rateLimit } from "@/lib/rateLimit";
 
@@ -23,17 +24,9 @@ export async function POST(request) {
   if (Object.keys(fields).length) return fail("validation", 422, { fields });
 
   try {
-    const product = await prisma.product.findUnique({ where: { id: productId }, select: { rating: true, reviews: true } });
-    if (!product) return fail("productUnavailable", 404);
-
-    // Fold the new rating into the product's running average.
-    const count = product.reviews + 1;
-    const average = Math.round((product.rating * product.reviews + rating) / count);
-
-    await prisma.$transaction([
-      prisma.review.create({ data: { productId, userId: user.id, rating, title, body } }),
-      prisma.product.update({ where: { id: productId }, data: { reviews: count, rating: Math.min(5, Math.max(1, average)) } }),
-    ]);
+    if (!(await prisma.product.count({ where: { id: productId } }))) return fail("productUnavailable", 404);
+    await prisma.review.create({ data: { productId, userId: user.id, rating, title, body } });
+    await refreshRating(productId);
     revalidateStore();
     return Response.json({ success: true }, { status: 201 });
   } catch (error) {

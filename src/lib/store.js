@@ -30,6 +30,7 @@ function toItem(product) {
     rating: Number(product.rating ?? 5),
     reviews: Number(product.reviews ?? 0),
     categories: Array.isArray(product.categories) ? product.categories : [],
+    stock: Number.isInteger(product.stock) ? product.stock : null,
     qty: Math.min(MAX_QTY, Math.max(1, Number(product.qty) || 1)),
   };
 }
@@ -105,6 +106,13 @@ function remote(url, method, body) {
   }).catch(() => {});
 }
 
+/*
+ * While the account sync is in flight its response will overwrite the local lists, so changes made
+ * meanwhile (e.g. "Add to Bag" right after the page loads) are queued here and replayed once it lands.
+ */
+let pending = null;
+const replayAfterSync = (change) => pending?.push(change);
+
 const cart = () => read(KEYS.cart, parseList);
 const wishlist = () => read(KEYS.wishlist, parseList);
 
@@ -112,18 +120,22 @@ const wishlist = () => read(KEYS.wishlist, parseList);
 
 export const useCart = () => useKey(KEYS.cart, parseList, EMPTY);
 
+/** Most of one product a shopper may hold (stock is re-checked on the server at checkout). */
+export const maxQty = (product) => Math.min(MAX_QTY, product?.stock ?? MAX_QTY);
+
 export function setCartQty(product, qty) {
-  const quantity = Math.min(MAX_QTY, Math.max(0, qty));
+  const quantity = Math.min(maxQty(product), Math.max(0, qty));
   const items = cart();
   const exists = items.some((item) => item.id === product.id);
   const next =
     quantity === 0
       ? items.filter((item) => item.id !== product.id)
       : exists
-        ? items.map((item) => (item.id === product.id ? { ...item, qty: quantity } : item))
+        ? items.map((item) => (item.id === product.id ? toItem({ ...item, ...product, qty: quantity }) : item))
         : [...items, toItem({ ...product, qty: quantity })];
   write(KEYS.cart, next);
   remote("/api/cart", "PUT", { productId: product.id, quantity });
+  replayAfterSync(() => setCartQty(product, quantity));
 }
 
 export function addToCart(product, qty = 1) {
@@ -137,6 +149,7 @@ export const removeFromCart = (product) => setCartQty(product, 0);
 export function clearCart({ local = false } = {}) {
   write(KEYS.cart, []);
   if (!local) remote("/api/cart", "DELETE");
+  replayAfterSync(() => clearCart({ local }));
 }
 
 /* --------------------------- Wishlist --------------------------- */
@@ -145,17 +158,23 @@ export const useWishlist = () => useKey(KEYS.wishlist, parseList, EMPTY);
 
 /** Returns `true` when the product was added, `false` when it was removed. */
 export function toggleWishlist(product) {
-  const items = wishlist();
-  const exists = items.some((item) => item.id === product.id);
-  write(KEYS.wishlist, exists ? items.filter((item) => item.id !== product.id) : [...items, toItem(product)]);
-  if (exists) remote(`/api/wishlist?productId=${encodeURIComponent(product.id)}`, "DELETE");
-  else remote("/api/wishlist", "POST", { productId: product.id });
-  return !exists;
+  const on = !wishlist().some((item) => item.id === product.id);
+  setWishlisted(product, on);
+  return on;
+}
+
+function setWishlisted(product, on) {
+  const others = wishlist().filter((item) => item.id !== product.id);
+  write(KEYS.wishlist, on ? [...others, toItem(product)] : others);
+  if (on) remote("/api/wishlist", "POST", { productId: product.id });
+  else remote(`/api/wishlist?productId=${encodeURIComponent(product.id)}`, "DELETE");
+  replayAfterSync(() => setWishlisted(product, on));
 }
 
 export function clearWishlist() {
   write(KEYS.wishlist, []);
   remote("/api/wishlist", "DELETE");
+  replayAfterSync(clearWishlist);
 }
 
 /* ---------------------------- Coupon ---------------------------- */
@@ -172,14 +191,22 @@ export async function syncWithAccount(userId) {
     ? { mode: "merge", cart: cart().map((item) => ({ productId: item.id, quantity: item.qty })), wishlist: wishlist().map((item) => item.id) }
     : { mode: "pull" };
 
-  const response = await fetch("/api/sync", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
-  if (!response.ok) return;
-  const data = await response.json();
+  pending = [];
+  try {
+    const response = await fetch("/api/sync", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
+    if (!response.ok) return;
+    const data = await response.json();
 
-  write(KEYS.cart, data.cart);
-  write(KEYS.wishlist, data.wishlist);
-  write(KEYS.syncedUser, userId);
-  syncUser = userId;
+    write(KEYS.cart, data.cart);
+    write(KEYS.wishlist, data.wishlist);
+    write(KEYS.syncedUser, userId);
+    syncUser = userId;
+    const changes = pending;
+    pending = null; // before replaying, so replays save to the account instead of queueing again
+    changes.forEach((change) => change());
+  } finally {
+    pending = null;
+  }
 }
 
 /** On logout: the cart and wishlist belong to the account, so remove them from this device. */

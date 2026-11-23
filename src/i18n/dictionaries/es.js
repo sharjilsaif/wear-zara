@@ -141,7 +141,7 @@ const es = {
 
   services: {
     delivery: { title: "Envío rápido y gratis", text: "Envío gratis en pedidos superiores a {amount}." },
-    support: { title: "Atención 24/7", text: "Te ayudamos siempre que lo necesites." },
+    support: { title: "Atención al cliente", text: "¿Dudas sobre un pedido? Escríbenos." },
     guarantee: { title: "Garantía de devolución", text: "Reembolso completo en los {days} días siguientes a la entrega." },
   },
 
@@ -156,9 +156,6 @@ const es = {
     was: "Antes",
     rated: "Valoración de {value} sobre 5",
     inStock: "En stock",
-    shortDescription: "Un favorito de Wear Zara, pensado para la comodidad diaria y un estilo sin esfuerzo.",
-    description:
-      "Diseñado para la comodidad diaria y un estilo sin esfuerzo, {name} está hecho con materiales de calidad que mantienen su forma lavado tras lavado. Combínalo con tus prendas favoritas para un look que funciona de la mañana a la noche.",
     metaDescription: "Compra {name} en Wear Zara. Envío gratis en pedidos superiores a {amount} y devoluciones fáciles en {days} días.",
     freeDelivery: "Envío gratis",
     freeDeliveryText: "En pedidos superiores a {amount}. Entrega en 2–4 días laborables.",
@@ -351,11 +348,11 @@ const es = {
     eyebrow: "Estamos para ayudarte",
     title: "Ponte en contacto",
     call: "Llámanos",
-    callText: "Disponibles 24/7, los 7 días de la semana.",
+    callText: "Llámanos por un pedido o un producto.",
     write: "Escríbenos",
     writeText: "Rellena el formulario y te responderemos en 24 horas.",
     visit: "Visítanos",
-    visitText: "Nuestro estudio abre de lunes a sábado.",
+    visitText: "Dónde encontrarnos.",
     message: "Mensaje",
     messagePlaceholder: "¿En qué podemos ayudarte?",
     send: "Enviar mensaje",
@@ -375,7 +372,7 @@ const es = {
       coupons: { q: "¿Tenéis códigos de descuento?", a: "¡Sí! Los nuevos clientes pueden usar WELCOME10 para obtener un 10 % en su primer pedido. Suscríbete a la newsletter para enterarte de nuevas ofertas." },
       account: { q: "¿Necesito una cuenta para comprar?", a: "Sí. Una cuenta gratuita guarda tu bolsa en todos tus dispositivos y te permite seguir y cancelar pedidos cuando quieras." },
       tracking: { q: "¿Cómo sigo o cancelo mi pedido?", a: "Abre Mi cuenta → Pedidos para ver el estado al momento. Puedes cancelar un pedido hasta que se envíe." },
-      support: { q: "¿Cómo contacto con atención al cliente?", a: "Nuestro equipo está disponible 24/7 en {email} o {phone}. También puedes usar el formulario de contacto." },
+      support: { q: "¿Cómo contacto con atención al cliente?", a: "Escríbenos desde la página de contacto y te responderemos." },
     },
   },
 
@@ -385,16 +382,6 @@ const es = {
     p1: "Wear Zara nació de una idea sencilla: tener estilo no debería ser complicado. Reunimos ropa, calzado y accesorios cuidadosamente seleccionados para hombre, mujer y niños, todo en un solo lugar.",
     p2: "Desde básicos hasta prendas protagonistas, cada producto se elige por su calidad, comodidad y precio, y se entrega rápido, con envío gratis en pedidos grandes y devoluciones sin complicaciones.",
     imageAlt: "Dos clientas felices con bolsas de compra",
-    statsLabel: "Wear Zara en cifras",
-    stats: { brands: "Marcas y vendedores en la plataforma", sales: "Ventas de productos al mes", customers: "Clientes que compran cada día", reviews: "Reseñas de cinco estrellas" },
-    teamEyebrow: "El equipo",
-    teamTitle: "Las personas detrás de Wear Zara",
-    team: {
-      founder: { role: "Fundador y CEO", bio: "Pasó una década en el comercio minorista antes de crear Wear Zara para que vestir bien fuera fácil y asequible." },
-      creative: { role: "Directora creativa", bio: "Dirige cada colección y campaña, desde el primer boceto hasta la sesión final." },
-      design: { role: "Directora de diseño", bio: "Da forma a la experiencia de la tienda para que encontrar tu próxima prenda favorita sea sencillo." },
-      experience: { role: "Director de experiencia de cliente", bio: "Se asegura de que cada pedido, devolución y consulta se resuelva rápido y con amabilidad." },
-    },
   },
 
   footer: {
@@ -439,7 +426,6 @@ const es = {
     imageUrl: "Introduce un enlace de imagen https:// válido.",
     categories: "Selecciona al menos una categoría.",
     originalPrice: "El precio original debe ser mayor que el de oferta.",
-    reviews: "Las reseñas deben ser cero o más.",
     couponCode: "De 3 a 20 letras, números, - o _.",
     couponValue: "Introduce un valor (porcentajes hasta 100).",
     couponExists: "Ya existe un cupón con este código.",
@@ -522,8 +508,6 @@ const es = {
       originalPlaceholder: "Opcional, p. ej. 79.99",
       originalHint: "Se muestra tachado; el % de descuento se calcula solo.",
       imageUrl: "URL de la imagen",
-      rating: "Valoración",
-      reviews: "Número de reseñas",
       categories: "Categorías",
       preview: "Vista previa",
       previewHint: "Pega un enlace de imagen https:// para ver la vista previa.",

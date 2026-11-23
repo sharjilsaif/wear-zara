@@ -1,4 +1,5 @@
 import { fail, readJson, requireUser } from "@/lib/api";
+import { hasOpenOrders } from "@/lib/orders";
 import { prisma } from "@/lib/prisma";
 import { validateName, validatePhone } from "@/lib/validation";
 
@@ -33,12 +34,13 @@ export async function PATCH(request) {
   }
 }
 
-/** Permanently delete the signed-in user's account (orders are kept, anonymised). */
+/** Permanently delete the signed-in user's account and, with it, their orders, cart, wishlist and reviews. */
 export async function DELETE() {
   const { user, response } = await requireUser();
   if (response) return response;
 
   try {
+    if (await hasOpenOrders(user.id)) return fail("openOrders", 409);
     await prisma.user.delete({ where: { id: user.id } });
     return Response.json({ success: true });
   } catch (error) {

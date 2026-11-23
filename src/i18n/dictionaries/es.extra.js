@@ -39,9 +39,12 @@ const extra = {
     deleteText: "Esta opinión se quitará de la página del producto.",
   },
 
-  validation: { rating: "Elige una valoración.", reviewLong: "La opinión debe tener 1000 caracteres como máximo." },
+  validation: { stock: "El stock debe ser un número entero, 0 o más.", descriptionLong: "La descripción debe tener 2000 caracteres o menos.", rating: "Elige una valoración.", reviewLong: "La opinión debe tener 1000 caracteres como máximo." },
+
+  product: { outOfStock: "Agotado", lowStock: "Solo quedan {count}", limitReached: "Puedes añadir hasta {count} unidades de este artículo." },
 
   errors: {
+    outOfStock: "Algunos artículos no tienen suficiente stock. Hemos actualizado tu bolsa: revísala, por favor.", openOrders: "Tienes pedidos en camino. Podrás eliminar tu cuenta cuando se entreguen o se cancelen.", cannotReopen: "Un pedido cancelado no se puede reabrir.", orderChanged: "Este pedido acaba de cambiar. Actualiza la página e inténtalo de nuevo.",
     tooManyRequests: "Demasiados intentos. Espera un momento y vuelve a intentarlo.",
     alreadyReviewed: "Ya has opinado sobre este producto.",
     trackNotFound: "No encontramos ningún pedido con ese número y correo.",
@@ -49,7 +52,8 @@ const extra = {
 
   admin: {
     nav: { reviews: "Opiniones" },
-    products: { noCategory: "Sin categoría" },
+    orders: { cancelledFinal: "Este pedido se canceló. Los pedidos cancelados son definitivos." },
+    products: { stock: "Stock", stockPlaceholder: "Sin control", stockHint: "Unidades disponibles. Déjalo vacío si no controlas el stock.", description: "Descripción", descriptionHint: "Se muestra en la página del producto. Describe solo lo que sea cierto (materiales, corte, cuidados).", noCategory: "Sin categoría" },
     reviews: { text: "Lo que dicen los clientes. Elimina cualquier contenido inapropiado.", all: { one: "{count} opinión", other: "{count} opiniones" }, empty: "Aún no hay opiniones" },
   },
 
@@ -95,24 +99,7 @@ const extra = {
         { title: "Pecho", body: "Mide alrededor de la parte más ancha del pecho, con la cinta horizontal bajo los brazos." },
         { title: "Cintura", body: "Mide alrededor de tu cintura natural, la parte más estrecha del torso." },
         { title: "Cadera", body: "Con los pies juntos, mide alrededor de la parte más ancha de la cadera." },
-        { title: "¿Tienes dudas?", body: "Nuestro equipo te ayuda a elegir: escribe a {email} con tus medidas." },
-      ],
-    },
-    careers: {
-      title: "Empleo",
-      description: "Únete al equipo de Wear Zara.",
-      intro: "Somos un equipo pequeño creando una forma mejor de comprar moda. Si te encantan los buenos productos y cuidas los detalles, queremos conocerte.",
-      openRoles: "Puestos abiertos",
-      roles: [
-        { title: "Ingeniero/a frontend sénior", team: "Ingeniería", location: "Remoto" },
-        { title: "Comprador/a de moda — Mujer", team: "Producto", location: "Londres" },
-        { title: "Especialista en atención al cliente", team: "Soporte", location: "Lahore" },
-        { title: "Fotógrafo/a de contenido", team: "Creativo", location: "Londres" },
-      ],
-      sections: [
-        { title: "Cómo trabajamos", body: "Equipos pequeños, objetivos claros y mucha autonomía. La mayoría de puestos pueden ser en remoto." },
-        { title: "Beneficios", body: "Salario competitivo, presupuesto generoso para ropa, horario flexible y 30 días de vacaciones pagadas." },
-        { title: "¿No ves tu puesto?", body: "Envía tu CV y una breve nota a careers@wearzara.com: siempre nos alegra conocer a gente con talento." },
+        { title: "¿Tienes dudas?", body: "Nuestro equipo te ayuda a elegir: envíanos tus medidas desde la página de contacto." },
       ],
     },
     privacy: {
@@ -123,8 +110,8 @@ const extra = {
         { title: "Qué recogemos", body: "Datos de la cuenta (nombre, correo y contraseña guardada como hash seguro), datos de entrega del pago, tus pedidos, bolsa y favoritos, opiniones y mensajes que nos envías." },
         { title: "Para qué los usamos", body: "Para procesar y entregar pedidos, sincronizar tu cuenta y tu bolsa, responder a tus consultas y, solo si lo aceptas, enviarte ofertas." },
         { title: "Con quién los compartimos", body: "Solo con los transportistas y proveedores necesarios para operar la tienda. Nunca vendemos tus datos." },
-        { title: "Cuánto tiempo los guardamos", body: "Los datos de la cuenta se guardan hasta que la eliminas. Al eliminar tu cuenta también se elimina tu historial de pedidos." },
-        { title: "Tus derechos", body: "Puedes ver y actualizar tus datos en tu cuenta, eliminarla cuando quieras y escribir a {email} para cualquier solicitud de privacidad." },
+        { title: "Cuánto tiempo los guardamos", body: "Los datos de la cuenta se guardan hasta que la eliminas. Al eliminar tu cuenta también se elimina tu historial de pedidos. Puedes eliminarla cuando ningún pedido esté todavía en camino." },
+        { title: "Tus derechos", body: "Puedes ver y actualizar tus datos en tu cuenta, eliminarla cuando quieras y enviarnos cualquier solicitud de privacidad desde la página de contacto." },
         { title: "Seguridad", body: "Las contraseñas se cifran con bcrypt, las conexiones están cifradas y solo los administradores pueden acceder a los datos de clientes." },
       ],
     },

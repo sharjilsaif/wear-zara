@@ -15,9 +15,9 @@ import { useToast } from "@/components/ui/toast";
 import { useI18n } from "@/i18n/client";
 import { displayName } from "@/lib/format";
 import { getCartTotals } from "@/lib/pricing";
-import { clearCart, removeFromCart, setCoupon, useCart, useCoupon } from "@/lib/store";
+import { clearCart, removeFromCart, setCartQty, setCoupon, useCart, useCoupon } from "@/lib/store";
 import useMounted from "@/lib/useMounted";
-import useRequest from "@/lib/useRequest";
+import useRequest, { errorText } from "@/lib/useRequest";
 import { validateCheckout } from "@/lib/validation";
 
 /** `defaults` pre-fill the form from the account and the last order. */
@@ -75,11 +75,19 @@ export default function CheckoutForm({ defaults }) {
       cart.filter((item) => result.ids?.includes(item.id)).forEach((item) => removeFromCart(item));
       return toast({ type: "error", title: t("errors.productsUnavailable") });
     }
+    if (result.error === "outOfStock") {
+      // Bring the bag in line with what's left (0 removes the item) so the shopper can review and retry.
+      for (const { id, stock } of result.items ?? []) {
+        const item = cart.find((entry) => entry.id === id);
+        if (item) setCartQty({ ...item, stock }, stock);
+      }
+      return toast({ type: "error", title: t("errors.outOfStock") });
+    }
     if (result.error === "coupon") {
       setCoupon(null);
       return toast({ type: "error", title: t(`coupon.errors.${result.reason}`) });
     }
-    toast({ type: "error", title: t("errors.server") });
+    toast({ type: "error", title: errorText(t, result.error) });
   };
 
   return (

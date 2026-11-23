@@ -5,7 +5,7 @@ import Breadcrumb from "@/components/ui/breadcrumb";
 import OpenHashDetails from "@/components/ui/openHashDetails";
 import SectionHeader from "@/components/ui/sectionHeader";
 import { getI18n, pageMetadata } from "@/i18n/server";
-import { FREE_SHIPPING_THRESHOLD, RETURN_DAYS, SHIPPING_FEE, SITE } from "@/lib/site";
+import { FREE_SHIPPING_THRESHOLD, RETURN_DAYS, SHIPPING_FEE } from "@/lib/site";
 
 export const generateMetadata = pageMetadata("faq");
 
@@ -14,7 +14,7 @@ const FAQS = ["delivery", "returns", "payment", "coupons", "account", "tracking"
 
 export default async function FaqPage({ params }) {
   const { t, format } = await getI18n((await params).lang);
-  const vars = { amount: format.price(FREE_SHIPPING_THRESHOLD), fee: format.price(SHIPPING_FEE), days: RETURN_DAYS, email: SITE.email, phone: SITE.phone };
+  const vars = { amount: format.price(FREE_SHIPPING_THRESHOLD), fee: format.price(SHIPPING_FEE), days: RETURN_DAYS };
 
   return (
     <div className="container-page max-w-4xl py-10">

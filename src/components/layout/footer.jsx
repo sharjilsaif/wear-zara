@@ -6,7 +6,7 @@ import { LuGithub, LuMail, LuMapPin, LuPhone } from "react-icons/lu";
 import { openCookieSettings } from "@/components/layout/cookieConsent";
 import NewsletterForm from "@/components/layout/newsletterForm";
 import { useI18n } from "@/i18n/client";
-import { SHOP_CATEGORIES, SITE, categoryName, shopHref } from "@/lib/site";
+import { SHOP_CATEGORIES, SITE, categoryName, contactChannels, shopHref } from "@/lib/site";
 
 export default function Footer() {
   const { t } = useI18n();
@@ -35,7 +35,6 @@ export default function Footer() {
       title: t("footer.company"),
       links: [
         { href: "/about", label: t("nav.about") },
-        { href: "/careers", label: t("pages.careers.title") },
         { href: "/account", label: t("account.title") },
         { href: "/account/orders", label: t("account.orders") },
       ],
@@ -51,11 +50,8 @@ export default function Footer() {
     },
   ];
 
-  const contact = [
-    { icon: LuMapPin, label: SITE.address.join(", "), href: `https://maps.google.com/?q=${encodeURIComponent(SITE.address.join(", "))}` },
-    { icon: LuMail, label: SITE.email, href: `mailto:${SITE.email}` },
-    { icon: LuPhone, label: SITE.phone, href: `tel:${SITE.phone.replace(/[^\d+]/g, "")}` },
-  ];
+  const icons = { address: LuMapPin, email: LuMail, phone: LuPhone };
+  const contact = contactChannels().map((channel) => ({ ...channel, icon: icons[channel.kind] }));
 
   const linkClasses = "text-start transition-colors hover:text-fg";
 

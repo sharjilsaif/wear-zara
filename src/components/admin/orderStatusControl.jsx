@@ -15,6 +15,14 @@ export default function OrderStatusControl({ number, status }) {
   const { send, pending } = useRequest();
   const [value, setValue] = useState(status);
 
+  if (status === "CANCELLED") {
+    return (
+      <AdminCard title={t("admin.orders.updateStatus")}>
+        <p className="text-sm text-fg-muted">{t("admin.orders.cancelledFinal")}</p>
+      </AdminCard>
+    );
+  }
+
   return (
     <AdminCard title={t("admin.orders.updateStatus")}>
       <div className="flex flex-col gap-3">

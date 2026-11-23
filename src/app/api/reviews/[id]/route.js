@@ -1,5 +1,6 @@
 import { auth } from "@/auth";
 import { fail, revalidateStore } from "@/lib/api";
+import { refreshRating } from "@/lib/catalog";
 import { prisma } from "@/lib/prisma";
 
 /** The author or an admin can delete a review; the product's count is adjusted. */
@@ -12,10 +13,8 @@ export async function DELETE(request, { params }) {
   if (!review) return fail("notFound", 404);
   if (review.userId !== session.user.id && !session.user.isAdmin) return fail("forbidden", 403);
 
-  await prisma.$transaction([
-    prisma.review.delete({ where: { id } }),
-    prisma.product.updateMany({ where: { id: review.productId, reviews: { gt: 0 } }, data: { reviews: { decrement: 1 } } }),
-  ]);
+  await prisma.review.deleteMany({ where: { id } });
+  await refreshRating(review.productId);
   revalidateStore();
   return Response.json({ success: true });
 }

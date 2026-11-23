@@ -16,7 +16,7 @@ A production-grade online fashion store built with **Next.js 16 (App Router)**, 
 
 **Admin panel** (admins only) — overview stats, orders with status workflow, products (create / edit / delete), categories, coupons (percent or fixed, minimum spend, usage limit, expiry, on/off), customers with photos, carts and wishlists, review moderation, contact-form inbox, newsletter subscribers with CSV export.
 
-**Experience** — English / Urdu / Spanish with full RTL layout, art-directed hero images per screen size, glassmorphism UI, custom dropdowns, accessible dialogs, cookie consent with preferences, store policy pages, size guide, careers, SEO (metadata, sitemap, JSON-LD).
+**Experience** — English / Urdu / Spanish with full RTL layout, art-directed hero images per screen size, glassmorphism UI, custom dropdowns, accessible dialogs, cookie consent with preferences, store policy pages, size guide, SEO (metadata, sitemap, JSON-LD).
 
 **Security** — bcrypt passwords, JWT sessions, server-side authorisation on every write, admin gate with live session guard, rate limiting, CSRF origin check, strict security headers (CSP, HSTS, frame denial), prices and coupons always re-checked on the server.
 
@@ -52,7 +52,7 @@ src/
 │   │   ├── shop/ product/[id]/ cart/ wishlist/ checkout/ track-order/
 │   │   ├── account/       # Profile, orders, order detail
 │   │   ├── admin/         # Overview, orders, products, categories, coupons, customers, reviews, messages, subscribers
-│   │   └── [page]/        # Shipping, returns, size guide, careers, privacy, terms, cookies
+│   │   └── [page]/        # Shipping, returns, size guide, privacy, terms, cookies
 │   └── api/               # 25 route handlers (auth, account, cart, wishlist, orders, coupons, reviews, admin…)
 ├── components/            # ui/ layout/ home/ product/ cart/ orders/ account/ admin/ auth/ shop/
 ├── i18n/                  # config, translator, dictionaries (en / ur / es)
@@ -90,6 +90,7 @@ Open http://localhost:3000. Sign up with an email listed in `ADMIN_EMAILS` to un
 | `DATABASE_URL` | PostgreSQL connection string |
 | `AUTH_SECRET` | Secret for signing sessions — generate with `npx auth secret` |
 | `ADMIN_EMAILS` | Comma-separated emails that can open the admin panel |
+| `NEXT_PUBLIC_STORE_EMAIL` / `NEXT_PUBLIC_STORE_PHONE` / `NEXT_PUBLIC_STORE_ADDRESS` | Optional real contact details shown in the footer and on the contact page. Anything unset is hidden. |
 
 ### Scripts
 
@@ -100,6 +101,8 @@ Open http://localhost:3000. Sign up with an email listed in `ADMIN_EMAILS` to un
 | `npm run lint` | ESLint |
 | `npm run db:migrate` | Apply database migrations |
 | `npm run db:seed` | Seed categories and products |
+| `npm test` | Unit tests (pricing, coupons, validation, uploads, translation completeness) |
+| `npm run test:e2e` | Playwright end-to-end tests. They run against a throwaway in-memory database, never the one in `.env`. Needs Chrome (set `E2E_BROWSER=msedge` for Edge). |
 
 ---
 

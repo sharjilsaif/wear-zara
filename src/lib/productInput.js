@@ -1,4 +1,5 @@
 // Validates the admin product form (create + edit). Returns { data } or { fields } with error codes.
+// Rating and review count are not accepted here: they are derived from real customer reviews.
 
 function optionalNumber(value, parse) {
   if (value === null || value === undefined || value === "") return null;
@@ -9,11 +10,12 @@ function optionalNumber(value, parse) {
 export function validateProductInput(body) {
   const name = String(body?.name ?? "").trim();
   const imageUrl = String(body?.imageUrl ?? "").trim();
+  const description = String(body?.description ?? "").trim() || null;
   const price = Number.parseFloat(body?.price);
   const categoryIds = Array.isArray(body?.categoryIds) ? body.categoryIds.filter((id) => typeof id === "string") : [];
   const discountPrice = optionalNumber(body?.discountPrice, Number.parseFloat);
-  const reviews = optionalNumber(body?.reviews, (value) => Number.parseInt(value, 10)) ?? 0;
-  const rating = Math.min(5, Math.max(1, Number.parseInt(body?.rating, 10) || 5));
+  // Empty = stock not tracked. Number() (not parseInt) so "2.5" or "3abc" are rejected.
+  const stock = optionalNumber(body?.stock, Number);
 
   const fields = {};
   if (name.length < 2 || name.length > 80) fields.name = "productName";
@@ -31,10 +33,11 @@ export function validateProductInput(body) {
   if (Number.isNaN(discountPrice) || (discountPrice !== null && Number.isFinite(price) && discountPrice <= price)) {
     fields.discountPrice = "originalPrice";
   }
-  if (Number.isNaN(reviews) || reviews < 0) fields.reviews = "reviews";
+  if (stock !== null && !(Number.isInteger(stock) && stock >= 0 && stock <= 1_000_000)) fields.stock = "stock";
+  if (description && description.length > 2000) fields.description = "descriptionLong";
 
   if (Object.keys(fields).length > 0) return { fields };
 
   const discountPercentage = discountPrice ? Math.round((1 - price / discountPrice) * 100) : null;
-  return { data: { name, imageUrl, price, discountPrice, discountPercentage, reviews, rating, categoryIds } };
+  return { data: { name, imageUrl, description, price, discountPrice, discountPercentage, stock, categoryIds } };
 }

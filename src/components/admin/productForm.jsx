@@ -7,7 +7,6 @@ import AdminCard from "@/components/admin/adminCard";
 import ProductImage from "@/components/product/productImage";
 import Button from "@/components/ui/button";
 import FormField from "@/components/ui/formField";
-import Select from "@/components/ui/select";
 import { useI18n } from "@/i18n/client";
 import { cn } from "@/lib/format";
 import useRequest from "@/lib/useRequest";
@@ -31,8 +30,8 @@ export default function ProductForm({ categories, product }) {
     price: product?.price?.toString() ?? "",
     discountPrice: product?.discountPrice?.toString() ?? "",
     imageUrl: product?.imageUrl ?? "",
-    rating: String(product?.rating ?? 5),
-    reviews: product?.reviews?.toString() ?? "",
+    stock: product?.stock?.toString() ?? "",
+    description: product?.description ?? "",
     categoryIds: product?.categories.map((category) => category.id) ?? [],
   });
 
@@ -63,14 +62,8 @@ export default function ProductForm({ categories, product }) {
           <FormField label={t("admin.products.price")} required type="number" min="0.01" step="0.01" placeholder="49.99" dir="ltr" {...field("price")} />
           <FormField label={t("admin.products.originalPrice")} type="number" min="0" step="0.01" placeholder={t("admin.products.originalPlaceholder")} hint={t("admin.products.originalHint")} dir="ltr" {...field("discountPrice")} />
           <FormField label={t("admin.products.imageUrl")} required type="url" placeholder="https://images.unsplash.com/…" className="sm:col-span-2" dir="ltr" {...field("imageUrl")} />
-          <Select
-            label={t("admin.products.rating")}
-            value={form.rating}
-           
-            onChange={(rating) => setForm({ ...form, rating })}
-            options={["5", "4", "3", "2", "1"].map((stars) => ({ value: stars, label: `${"★".repeat(stars)} (${stars})` }))}
-          />
-          <FormField label={t("admin.products.reviews")} type="number" min="0" placeholder="0" dir="ltr" {...field("reviews")} />
+          <FormField label={t("admin.products.stock")} type="number" min="0" step="1" placeholder={t("admin.products.stockPlaceholder")} hint={t("admin.products.stockHint")} dir="ltr" {...field("stock")} />
+          <FormField as="textarea" label={t("admin.products.description")} rows={4} maxLength={2000} hint={t("admin.products.descriptionHint")} className="sm:col-span-2" inputClassName="resize-y" {...field("description")} />
 
           <fieldset className="sm:col-span-2">
             <legend className="mb-2 text-[13px] font-medium">

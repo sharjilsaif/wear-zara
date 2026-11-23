@@ -16,15 +16,15 @@ export default function ProductPurchase({ product }) {
   const { t } = useI18n();
   const router = useRouter();
   const [qty, setQty] = useState(1);
-  const { inWishlist, addToCart, toggleWishlist } = useProductActions(product);
+  const { inWishlist, soldOut, maxQty, addToCart, toggleWishlist } = useProductActions(product);
 
   return (
     <div className="flex flex-wrap items-center gap-3">
-      <QuantityStepper value={qty} onChange={setQty} />
-      <Button variant="secondary" size="lg" className="min-w-36 flex-1 sm:flex-none" onClick={() => addToCart(qty)}>
-        {t("product.addToCart")}
+      {!soldOut && <QuantityStepper value={Math.min(qty, maxQty)} onChange={setQty} max={maxQty} />}
+      <Button variant="secondary" size="lg" className="min-w-36 flex-1 sm:flex-none" disabled={soldOut} onClick={() => addToCart(qty)}>
+        {t(soldOut ? "product.outOfStock" : "product.addToCart")}
       </Button>
-      <Button size="lg" className="min-w-36 flex-1 sm:flex-none" onClick={() => (addToCart(qty), router.push("/checkout"))}>
+      <Button size="lg" className="min-w-36 flex-1 sm:flex-none" disabled={soldOut} onClick={() => (addToCart(qty), router.push("/checkout"))}>
         {t("product.buyNow")}
       </Button>
       <IconButton label={t(inWishlist ? "product.removeFromWishlist" : "product.addToWishlist")} aria-pressed={inWishlist} size="lg" onClick={toggleWishlist}>

@@ -1,17 +1,15 @@
 import Link from "next/link";
-import { LuArrowUpRight, LuBriefcase, LuMapPin } from "react-icons/lu";
 
 import Breadcrumb from "@/components/ui/breadcrumb";
 import SectionHeader from "@/components/ui/sectionHeader";
 import { getI18n } from "@/i18n/server";
-import { FREE_SHIPPING_THRESHOLD, RETURN_DAYS, SHIPPING_FEE, SITE } from "@/lib/site";
+import { FREE_SHIPPING_THRESHOLD, RETURN_DAYS, SHIPPING_FEE } from "@/lib/site";
 
 // URL slug -> dictionary key under `pages.*`. Any other slug is a 404.
 const PAGES = {
   shipping: "shipping",
   returns: "returns",
   "size-guide": "sizeGuide",
-  careers: "careers",
   privacy: "privacy",
   terms: "terms",
   cookies: "cookies",
@@ -81,43 +79,12 @@ function SizeTables({ t }) {
   ));
 }
 
-function OpenRoles({ t, dict }) {
-  return (
-    <section className="glass rounded-3xl p-6">
-      <h2 className="mb-4 text-lg font-semibold">{t("pages.careers.openRoles")}</h2>
-      <ul className="divide-y divide-line">
-        {dict.pages.careers.roles.map((role, index) => (
-          <li key={index}>
-            <a
-              href={`mailto:careers@wearzara.com?subject=${encodeURIComponent(role.title)}`}
-              className="group flex items-center justify-between gap-4 py-4 transition-colors hover:text-brand"
-            >
-              <div>
-                <p className="font-medium">{role.title}</p>
-                <p className="mt-1 flex flex-wrap items-center gap-3 text-xs text-fg-muted">
-                  <span className="inline-flex items-center gap-1">
-                    <LuBriefcase aria-hidden /> {role.team}
-                  </span>
-                  <span className="inline-flex items-center gap-1">
-                    <LuMapPin aria-hidden /> {role.location}
-                  </span>
-                </p>
-              </div>
-              <LuArrowUpRight aria-hidden className="shrink-0 text-fg-muted transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-brand rtl:-scale-x-100" />
-            </a>
-          </li>
-        ))}
-      </ul>
-    </section>
-  );
-}
-
 export default async function InfoPage({ params }) {
   const { lang, page } = await params;
   const { t, dict, format } = await getI18n(lang);
   const key = PAGES[page];
   const content = dict.pages[key];
-  const vars = { amount: format.price(FREE_SHIPPING_THRESHOLD), fee: format.price(SHIPPING_FEE), days: RETURN_DAYS, email: SITE.email, phone: SITE.phone };
+  const vars = { amount: format.price(FREE_SHIPPING_THRESHOLD), fee: format.price(SHIPPING_FEE), days: RETURN_DAYS };
 
   return (
     <div className="container-page max-w-4xl py-10">
@@ -127,7 +94,6 @@ export default async function InfoPage({ params }) {
 
       <div className="flex flex-col gap-6">
         {page === "size-guide" && <SizeTables t={t} />}
-        {page === "careers" && <OpenRoles t={t} dict={dict} />}
 
         <div className="glass divide-y divide-line rounded-3xl">
           {content.sections.map((section, index) => (

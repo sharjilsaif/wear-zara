@@ -4,26 +4,25 @@ import ContactForm from "@/components/contact/contactForm";
 import Breadcrumb from "@/components/ui/breadcrumb";
 import SectionHeader from "@/components/ui/sectionHeader";
 import { getI18n, pageMetadata } from "@/i18n/server";
-import { SITE } from "@/lib/site";
+import { contactChannels } from "@/lib/site";
+
+const ICONS = { phone: LuPhone, email: LuMail, address: LuMapPin };
+const TEXT = { phone: ["contact.call", "contact.callText"], email: ["contact.write", "contact.writeText"], address: ["contact.visit", "contact.visitText"] };
 
 export const generateMetadata = pageMetadata("contact");
 
 export default async function ContactPage({ params }) {
   const { t } = await getI18n((await params).lang);
 
-  const channels = [
-    { icon: LuPhone, title: t("contact.call"), text: t("contact.callText"), label: SITE.phone, href: `tel:${SITE.phone.replace(/[^\d+]/g, "")}` },
-    { icon: LuMail, title: t("contact.write"), text: t("contact.writeText"), label: SITE.email, href: `mailto:${SITE.email}` },
-    { icon: LuMapPin, title: t("contact.visit"), text: t("contact.visitText"), label: SITE.address.join(", "), href: `https://maps.google.com/?q=${encodeURIComponent(SITE.address.join(", "))}` },
-  ];
+  const channels = contactChannels().map(({ kind, label, href }) => ({ icon: ICONS[kind], title: t(TEXT[kind][0]), text: t(TEXT[kind][1]), label, href }));
 
   return (
     <div className="container-page py-10">
       <Breadcrumb items={[{ label: t("nav.contact") }]} />
       <SectionHeader as="h1" eyebrow={t("contact.eyebrow")} title={t("contact.title")} />
 
-      <div className="grid gap-6 lg:grid-cols-[22rem_minmax(0,1fr)]">
-        <ul className="flex flex-col gap-4">
+      <div className={channels.length ? "grid gap-6 lg:grid-cols-[22rem_minmax(0,1fr)]" : "mx-auto max-w-2xl"}>
+        <ul className="flex flex-col gap-4 empty:hidden">
           {channels.map(({ icon: Icon, title, text, label, href }) => (
             <li key={title}>
               <a href={href} target={href.startsWith("http") ? "_blank" : undefined} rel="noreferrer" className="glass group flex gap-4 rounded-3xl p-6 transition-all duration-300 ease-apple hover:-translate-y-0.5">

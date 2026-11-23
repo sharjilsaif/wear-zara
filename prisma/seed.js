@@ -16,7 +16,8 @@ async function main() {
   }
 
   // Insert oldest first so "Newest" sorting matches the live store.
-  for (const { categories, ...product } of data.products) {
+  // Ratings come only from real customer reviews, so seeded rating/review numbers are ignored.
+  for (const { categories, rating: _rating, reviews: _reviews, ...product } of data.products) {
     const connect = categories.map((slug) => ({ slug }));
     await prisma.product.upsert({
       where: { id: product.id },

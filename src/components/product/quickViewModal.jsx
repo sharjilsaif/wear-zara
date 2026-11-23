@@ -6,6 +6,7 @@ import { FaHeart } from "react-icons/fa6";
 import { LuArrowRight, LuHeart, LuRotateCcw, LuTruck } from "react-icons/lu";
 
 import ProductImage from "@/components/product/productImage";
+import StockStatus from "@/components/product/stockStatus";
 import useProductActions from "@/components/product/useProductActions";
 import Button from "@/components/ui/button";
 import IconButton from "@/components/ui/iconButton";
@@ -21,7 +22,7 @@ import { FREE_SHIPPING_THRESHOLD, RETURN_DAYS, categoryName, primaryCategory } f
 export default function QuickViewModal({ product, open, onClose }) {
   const { t, format } = useI18n();
   const [qty, setQty] = useState(1);
-  const { inWishlist, addToCart, toggleWishlist } = useProductActions(product);
+  const { inWishlist, soldOut, maxQty, addToCart, toggleWishlist } = useProductActions(product);
   const name = displayName(product.name);
   const category = primaryCategory(product);
   const discount = getDiscountPercent(product);
@@ -46,12 +47,11 @@ export default function QuickViewModal({ product, open, onClose }) {
             <div className="mt-3 flex flex-wrap items-center gap-3 text-sm">
               <Stars rating={product.rating} reviews={product.reviews} />
               <span aria-hidden className="h-4 w-px bg-line-strong" />
-              <span className="font-medium text-success">{t("product.inStock")}</span>
+              <StockStatus stock={product.stock} />
             </div>
           </div>
 
           <Price product={product} size="lg" />
-          <p className="text-[15px] leading-7 text-fg-muted">{t("product.shortDescription")}</p>
 
           <ul className="grid gap-2 sm:grid-cols-2">
             {perks.map(({ icon: Icon, text }) => (
@@ -66,9 +66,9 @@ export default function QuickViewModal({ product, open, onClose }) {
 
           <div className="mt-auto flex flex-col gap-4 border-t border-line pt-5">
             <div className="flex items-center gap-3">
-              <QuantityStepper value={qty} onChange={setQty} />
-              <Button size="lg" className="flex-1" onClick={() => (addToCart(qty), onClose())}>
-                {t("product.addToCart")}
+              {!soldOut && <QuantityStepper value={Math.min(qty, maxQty)} onChange={setQty} max={maxQty} />}
+              <Button size="lg" className="flex-1" disabled={soldOut} onClick={() => (addToCart(qty), onClose())}>
+                {t(soldOut ? "product.outOfStock" : "product.addToCart")}
               </Button>
               <IconButton label={t(inWishlist ? "product.removeFromWishlist" : "product.addToWishlist")} aria-pressed={inWishlist} size="lg" onClick={toggleWishlist}>
                 {inWishlist ? <FaHeart className="animate-pop text-sale" /> : <LuHeart />}

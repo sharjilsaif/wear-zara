@@ -10,7 +10,7 @@ export default async function sitemap() {
     return [];
   });
 
-  const staticRoutes = ["", "/shop", "/about", "/contact", "/faq", "/track-order", "/shipping", "/returns", "/size-guide", "/careers", "/privacy", "/terms", "/cookies", "/login", "/signup"].map((path) => ({
+  const staticRoutes = ["", "/shop", "/about", "/contact", "/faq", "/track-order", "/shipping", "/returns", "/size-guide", "/privacy", "/terms", "/cookies", "/login", "/signup"].map((path) => ({
     url: `${SITE.url}${path}`,
     changeFrequency: path === "" || path === "/shop" ? "daily" : "monthly",
     priority: path === "" ? 1 : 0.7,

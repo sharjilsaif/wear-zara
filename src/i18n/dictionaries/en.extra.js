@@ -39,9 +39,12 @@ const extra = {
     deleteText: "This review will be removed from the product page.",
   },
 
-  validation: { rating: "Please choose a rating.", reviewLong: "Reviews must be 1,000 characters or fewer." },
+  validation: { stock: "Stock must be a whole number, 0 or more.", descriptionLong: "Descriptions must be 2,000 characters or fewer.", rating: "Please choose a rating.", reviewLong: "Reviews must be 1,000 characters or fewer." },
+
+  product: { outOfStock: "Out of stock", lowStock: "Only {count} left", limitReached: "You can add up to {count} of this item." },
 
   errors: {
+    outOfStock: "Some items don't have enough stock left. Your bag has been updated — please review it.", openOrders: "You have orders on their way. You can delete your account once they're delivered or cancelled.", cannotReopen: "A cancelled order can't be reopened.", orderChanged: "This order was just updated. Refresh the page and try again.",
     tooManyRequests: "Too many attempts. Please wait a moment and try again.",
     alreadyReviewed: "You've already reviewed this product.",
     trackNotFound: "We couldn't find an order with that number and email.",
@@ -49,7 +52,8 @@ const extra = {
 
   admin: {
     nav: { reviews: "Reviews" },
-    products: { noCategory: "No category" },
+    orders: { cancelledFinal: "This order was cancelled. Cancelled orders are final." },
+    products: { stock: "Stock", stockPlaceholder: "Not tracked", stockHint: "Units available. Leave empty if you don't track stock.", description: "Description", descriptionHint: "Shown on the product page. Only describe what is true for this product (materials, fit, care).", noCategory: "No category" },
     reviews: { text: "What customers are saying. Remove anything inappropriate.", all: { one: "{count} review", other: "{count} reviews" }, empty: "No reviews yet" },
   },
 
@@ -95,24 +99,7 @@ const extra = {
         { title: "Chest / Bust", body: "Measure around the fullest part of your chest, keeping the tape horizontal under your arms." },
         { title: "Waist", body: "Measure around your natural waistline, the narrowest part of your torso." },
         { title: "Hips", body: "Stand with your feet together and measure around the fullest part of your hips." },
-        { title: "Still unsure?", body: "Our team is happy to help you choose — email {email} with your measurements." },
-      ],
-    },
-    careers: {
-      title: "Careers",
-      description: "Join the Wear Zara team.",
-      intro: "We're a small team building a better way to shop for fashion. If you love great products and care about the details, we'd like to meet you.",
-      openRoles: "Open positions",
-      roles: [
-        { title: "Senior Frontend Engineer", team: "Engineering", location: "Remote" },
-        { title: "Fashion Buyer — Womenswear", team: "Merchandising", location: "London" },
-        { title: "Customer Experience Specialist", team: "Support", location: "Lahore" },
-        { title: "Content Photographer", team: "Creative", location: "London" },
-      ],
-      sections: [
-        { title: "How we work", body: "Small teams, clear goals and plenty of room to own your work. Most roles can be done remotely." },
-        { title: "Benefits", body: "Competitive pay, a generous clothing allowance, flexible hours and 30 days of paid leave." },
-        { title: "Don't see your role?", body: "Send your CV and a short note to careers@wearzara.com — we're always happy to hear from great people." },
+        { title: "Still unsure?", body: "Our team is happy to help you choose — send us your measurements through the contact page." },
       ],
     },
     privacy: {
@@ -123,8 +110,8 @@ const extra = {
         { title: "What we collect", body: "Account details (name, email, password stored as a secure hash), delivery details you enter at checkout, your orders, bag and wishlist, reviews, and messages you send us." },
         { title: "How we use it", body: "To process and deliver orders, keep your account and bag in sync, answer your questions and — only if you opt in — send offers." },
         { title: "Who we share it with", body: "Only with the couriers and service providers needed to run the store. We never sell your personal data." },
-        { title: "How long we keep it", body: "Account data is kept until you delete your account. Deleting your account also deletes your order history." },
-        { title: "Your rights", body: "You can view and update your details in your account, delete your account at any time, and contact {email} with any privacy request." },
+        { title: "How long we keep it", body: "Account data is kept until you delete your account. Deleting your account also deletes your order history. An account can be deleted once none of its orders are still on their way." },
+        { title: "Your rights", body: "You can view and update your details in your account, delete your account at any time, and send any privacy request through the contact page." },
         { title: "Security", body: "Passwords are hashed with bcrypt, connections are encrypted, and access to customer data is limited to store administrators." },
       ],
     },

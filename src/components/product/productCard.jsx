@@ -23,7 +23,7 @@ import { categoryName, primaryCategory } from "@/lib/site";
 export default function ProductCard({ product, priority = false, onRemove, className }) {
   const { t } = useI18n();
   const [quickView, setQuickView] = useState(null); // null = never opened (modal not mounted yet)
-  const { inCart, inWishlist, addToCart, toggleWishlist } = useProductActions(product);
+  const { inCart, inWishlist, soldOut, addToCart, toggleWishlist } = useProductActions(product);
 
   const name = displayName(product.name);
   const href = `/product/${product.id}`;
@@ -68,7 +68,7 @@ export default function ProductCard({ product, priority = false, onRemove, class
           </CardAction>
         </div>
 
-        <CartButton inCart={inCart} onAdd={() => addToCart()} label={t(inCart ? "product.inCart" : "product.addToCart")} />
+        <CartButton inCart={inCart} soldOut={soldOut} onAdd={() => addToCart()} label={t(inCart ? "product.inCart" : soldOut ? "product.outOfStock" : "product.addToCart")} />
       </div>
 
       <div className="mt-3 flex flex-col gap-1 px-0.5 sm:mt-4 sm:px-1">
@@ -106,7 +106,7 @@ function CardAction({ label, className, children, ...props }) {
 }
 
 /** Touch: a round bag button. Mouse: a full-width pill that slides up on hover/focus. */
-function CartButton({ inCart, onAdd, label }) {
+function CartButton({ inCart, soldOut, onAdd, label }) {
   const classes =
     "absolute bottom-2 end-2 flex h-9 min-w-9 items-center sm:bottom-3 sm:end-3 sm:h-10 sm:min-w-10 justify-center gap-2 rounded-full bg-white/90 px-3 text-sm font-medium text-[#1d1d1f] shadow-[0_2px_10px_rgb(0_0_0/0.12)] backdrop-blur-md transition-all duration-300 ease-apple hover:bg-white active:scale-95 pointer-fine:start-3 pointer-fine:translate-y-3 pointer-fine:opacity-0 pointer-fine:group-hover/card:translate-y-0 pointer-fine:group-hover/card:opacity-100 pointer-fine:group-focus-within/card:translate-y-0 pointer-fine:group-focus-within/card:opacity-100";
   const content = (icon) => (
@@ -120,7 +120,7 @@ function CartButton({ inCart, onAdd, label }) {
       {content(<LuCheck className="text-success" />)}
     </Link>
   ) : (
-    <button type="button" aria-label={label} onClick={onAdd} className={classes}>
+    <button type="button" aria-label={label} onClick={onAdd} disabled={soldOut} className={cn(classes, "disabled:cursor-not-allowed disabled:opacity-60")}>
       {content(<LuShoppingBag />)}
     </button>
   );

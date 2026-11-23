@@ -2,6 +2,15 @@ import { NextResponse } from "next/server";
 
 import { DEFAULT_LOCALE, LOCALE_COOKIE, LOCALES } from "@/i18n/config";
 
+/** Host of an Origin header; null for "null" (sandboxed/opaque origins) or garbage, which then counts as cross-site. */
+function hostOf(origin) {
+  try {
+    return new URL(origin).host;
+  } catch {
+    return null;
+  }
+}
+
 /** Cookie choice first, then the browser's Accept-Language, then English. */
 function preferredLocale(request) {
   const saved = request.cookies.get(LOCALE_COOKIE)?.value;
@@ -30,7 +39,7 @@ export function proxy(request) {
   if (pathname.startsWith("/api/")) {
     const origin = request.headers.get("origin");
     const unsafe = !["GET", "HEAD", "OPTIONS"].includes(request.method);
-    if (unsafe && origin && new URL(origin).host !== request.headers.get("host")) {
+    if (unsafe && origin && hostOf(origin) !== request.headers.get("host")) {
       return Response.json({ error: "forbidden" }, { status: 403 });
     }
     return NextResponse.next();

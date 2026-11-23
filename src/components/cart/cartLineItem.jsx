@@ -8,7 +8,7 @@ import IconButton from "@/components/ui/iconButton";
 import QuantityStepper from "@/components/ui/quantityStepper";
 import { useI18n } from "@/i18n/client";
 import { displayName } from "@/lib/format";
-import { removeFromCart, setCartQty } from "@/lib/store";
+import { maxQty, removeFromCart, setCartQty } from "@/lib/store";
 
 /** One cart row: image, name, unit price, quantity, line total, remove. */
 export default function CartLineItem({ item }) {
@@ -30,7 +30,7 @@ export default function CartLineItem({ item }) {
         </div>
 
         <div className="flex items-center justify-between gap-4 sm:justify-end">
-          <QuantityStepper value={item.qty} onChange={(qty) => setCartQty(item, qty)} size="sm" label={t("cart.quantityOf", { name })} />
+          <QuantityStepper value={item.qty} onChange={(qty) => setCartQty(item, qty)} max={maxQty(item)} size="sm" label={t("cart.quantityOf", { name })} />
           <span className="w-20 text-end text-[15px] font-semibold tabular-nums">{format.price(item.price * item.qty)}</span>
           <IconButton label={t("cart.remove", { name })} variant="ghost" size="sm" className="hover:text-sale" onClick={() => removeFromCart(item)}>
             <LuTrash2 />

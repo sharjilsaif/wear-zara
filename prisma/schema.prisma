@@ -55,7 +55,12 @@ model Product {
   name     String
   price    Float
   imageUrl String
-  rating   Int    @default(5)
+  /// Shown on the product page only when set (no generic filler copy).
+  description String?
+  /// Units available. null = stock not tracked (always available).
+  stock    Int?
+  /// Cached from the Review table (see refreshRating) — never edited by hand.
+  rating   Int    @default(0)
   reviews  Int    @default(0)
 
   /// Original (pre-sale) price, shown struck-through when higher than `price`.

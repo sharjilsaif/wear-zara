@@ -3,6 +3,7 @@ import "server-only";
 import { revalidatePath } from "next/cache";
 
 import { auth } from "@/auth";
+import { LOCALES } from "@/i18n/config";
 
 /** Error responses carry a code the client translates (`errors.<code>`). */
 export function fail(error, status = 400, extra) {
@@ -30,6 +31,11 @@ export async function requireAdmin() {
   if (!session?.user?.id) return { response: fail("unauthorized", 401) };
   if (!session.user.isAdmin) return { response: fail("forbidden", 403) };
   return { user: session.user };
+}
+
+/** Refreshes cached product pages (all languages) after their stock changed. */
+export function revalidateProducts(ids) {
+  for (const id of ids) for (const lang of LOCALES) revalidatePath(`/${lang}/product/${id}`);
 }
 
 /** Refreshes every cached storefront page (all languages) after catalogue edits. */

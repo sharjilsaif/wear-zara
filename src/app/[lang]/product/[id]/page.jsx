@@ -5,13 +5,14 @@ import { LuRotateCcw, LuShieldCheck, LuTruck } from "react-icons/lu";
 import ProductGrid from "@/components/product/productGrid";
 import ProductImage from "@/components/product/productImage";
 import ProductPurchase from "@/components/product/productPurchase";
+import StockStatus from "@/components/product/stockStatus";
 import Reviews from "@/components/product/reviews";
 import Breadcrumb from "@/components/ui/breadcrumb";
 import Price from "@/components/ui/price";
 import SectionHeader from "@/components/ui/sectionHeader";
 import Stars from "@/components/ui/stars";
 import { getI18n } from "@/i18n/server";
-import { getProduct, getRelatedProducts, getReviews } from "@/lib/catalog";
+import { availability, getProduct, getRelatedProducts, getReviews } from "@/lib/catalog";
 import { displayName, getDiscountPercent } from "@/lib/format";
 import { FREE_SHIPPING_THRESHOLD, MERCH_CATEGORY_SLUGS, RETURN_DAYS, SITE, categoryName, shopHref } from "@/lib/site";
 
@@ -49,7 +50,8 @@ export default async function ProductPage({ params }) {
     "@type": "Product",
     name,
     image: product.imageUrl,
-    offers: { "@type": "Offer", priceCurrency: "USD", price: product.price, availability: "https://schema.org/InStock", url: `${SITE.url}/product/${product.id}` },
+    ...(product.description && { description: product.description }),
+    offers: { "@type": "Offer", priceCurrency: "USD", price: product.price, availability: availability(product.stock), url: `${SITE.url}/product/${product.id}` },
     ...(product.reviews > 0 && { aggregateRating: { "@type": "AggregateRating", ratingValue: product.rating, reviewCount: product.reviews } }),
   };
 
@@ -86,12 +88,12 @@ export default async function ProductPage({ params }) {
                 <Stars rating={product.rating} reviews={product.reviews} />
               </a>
               <span aria-hidden className="h-4 w-px bg-line-strong" />
-              <span className="font-medium text-success">{t("product.inStock")}</span>
+              <StockStatus stock={product.stock} />
             </div>
           </div>
 
           <Price product={product} size="lg" />
-          <p className="leading-7 text-fg-muted">{t("product.description", { name })}</p>
+          {product.description && <p className="whitespace-pre-line leading-7 text-fg-muted">{product.description}</p>}
 
           {tags.length > 0 && (
             <div className="flex flex-wrap items-center gap-2 text-sm">

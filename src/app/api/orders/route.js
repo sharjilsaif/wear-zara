@@ -1,4 +1,4 @@
-import { fail, readJson, requireUser } from "@/lib/api";
+import { fail, readJson, requireUser, revalidateProducts } from "@/lib/api";
 import { findCoupon, normalizeCode } from "@/lib/coupons";
 import { generateOrderNumber } from "@/lib/orders";
 import { couponProblem, getCartTotals } from "@/lib/pricing";
@@ -52,12 +52,15 @@ export async function POST(request) {
 
   const products = await prisma.product.findMany({
     where: { id: { in: [...requested.keys()] } },
-    select: { id: true, name: true, price: true, imageUrl: true },
+    select: { id: true, name: true, price: true, imageUrl: true, stock: true },
   });
   const missing = [...requested.keys()].filter((id) => !products.some((product) => product.id === id));
   if (missing.length > 0) return fail("productsUnavailable", 409, { ids: missing });
 
   const lines = products.map((product) => ({ ...product, qty: requested.get(product.id) }));
+  // Early, friendly check; the transaction below re-checks atomically.
+  const short = lines.filter((line) => line.stock !== null && line.qty > line.stock);
+  if (short.length > 0) return fail("outOfStock", 409, { items: short.map((line) => ({ id: line.id, stock: line.stock })) });
 
   let coupon = null;
   const code = normalizeCode(body.couponCode);
@@ -84,6 +87,19 @@ export async function POST(request) {
             data: { usedCount: { increment: 1 } },
           });
           if (claimed.count === 0) throw new CheckoutError("coupon", { reason: "usedUp" });
+        }
+
+        // Reserve stock with a conditional decrement, so two shoppers can never buy the last unit twice.
+        for (const line of lines) {
+          if (line.stock === null) continue;
+          const reserved = await tx.product.updateMany({
+            where: { id: line.id, stock: { gte: line.qty } },
+            data: { stock: { decrement: line.qty } },
+          });
+          if (reserved.count === 0) {
+            const current = await tx.product.findUnique({ where: { id: line.id }, select: { stock: true } });
+            throw new CheckoutError("outOfStock", { items: [{ id: line.id, stock: current?.stock ?? 0 }] });
+          }
         }
 
         const created = await tx.order.create({
@@ -122,6 +138,7 @@ export async function POST(request) {
         return created;
       });
 
+      revalidateProducts(lines.filter((line) => line.stock !== null).map((line) => line.id));
       return Response.json({ order }, { status: 201 });
     } catch (error) {
       if (error instanceof CheckoutError) return fail(error.code, 422, error.extra);

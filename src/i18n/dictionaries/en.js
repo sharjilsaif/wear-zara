@@ -204,8 +204,8 @@ const en = {
       text: "Free delivery on all orders over {amount}.",
     },
     support: {
-      title: "24/7 Customer Service",
-      text: "Friendly support whenever you need it.",
+      title: "Customer Support",
+      text: "Questions about an order? Send us a message.",
     },
     guarantee: {
       title: "Money-Back Guarantee",
@@ -224,10 +224,6 @@ const en = {
     was: "Was",
     rated: "Rated {value} out of 5",
     inStock: "In Stock",
-    shortDescription:
-      "A Wear Zara favourite crafted for everyday comfort and effortless style.",
-    description:
-      "Designed for everyday comfort and effortless style, the {name} is made from quality materials that keep their shape wash after wash. Pair it with your favourite pieces for a look that works from morning to night.",
     metaDescription:
       "Buy {name} at Wear Zara. Free delivery on orders over {amount} and easy {days}-day returns.",
     freeDelivery: "Free Delivery",
@@ -440,11 +436,11 @@ const en = {
     eyebrow: "We're here to help",
     title: "Get in Touch",
     call: "Call Us",
-    callText: "We're available 24/7, 7 days a week.",
+    callText: "Call us about an order or a product.",
     write: "Write to Us",
     writeText: "Fill in the form and we'll reply within 24 hours.",
     visit: "Visit Us",
-    visitText: "Our flagship studio is open Monday to Saturday.",
+    visitText: "Where to find us.",
     message: "Message",
     messagePlaceholder: "How can we help?",
     send: "Send Message",
@@ -484,7 +480,7 @@ const en = {
       },
       support: {
         q: "How can I contact customer support?",
-        a: "Our team is available 24/7 at {email} or {phone}. You can also use the contact form.",
+        a: "Send us a message through the contact page and we'll get back to you.",
       },
     },
   },
@@ -495,21 +491,6 @@ const en = {
     p1: "Wear Zara started with a simple idea: great style shouldn't be complicated. We bring together thoughtfully curated clothing, footwear and accessories for men, women and kids — all in one place.",
     p2: "From everyday essentials to statement pieces, every product is picked for quality, comfort and value, then delivered quickly with free shipping on bigger orders and hassle-free returns.",
     imageAlt: "Two happy shoppers holding shopping bags",
-    statsLabel: "Wear Zara in numbers",
-    stats: {
-      brands: "Brands & sellers on our platform",
-      sales: "Monthly product sales",
-      customers: "Customers shopping every day",
-      reviews: "Five-star reviews collected",
-    },
-    teamEyebrow: "Meet the Team",
-    teamTitle: "The People Behind Wear Zara",
-    team: {
-      founder: { role: "Founder & CEO", bio: "Spent a decade in retail before starting Wear Zara to make great style simple and affordable." },
-      creative: { role: "Creative Director", bio: "Leads every collection and campaign, from first sketch to the final shoot." },
-      design: { role: "Head of Design", bio: "Shapes the store experience so finding your next favourite piece feels effortless." },
-      experience: { role: "Head of Customer Experience", bio: "Makes sure every order, return and question is handled quickly and kindly." },
-    },
   },
 
   footer: {
@@ -562,7 +543,6 @@ const en = {
     imageUrl: "Enter a valid https:// image link.",
     categories: "Select at least one category.",
     originalPrice: "Original price must be higher than the sale price.",
-    reviews: "Reviews must be zero or more.",
     couponCode: "3–20 letters, numbers, - or _.",
     couponValue: "Enter a value (percentages up to 100).",
     couponExists: "A coupon with this code already exists.",
@@ -650,8 +630,6 @@ const en = {
       originalHint:
         "Shown struck-through; the discount % is calculated for you.",
       imageUrl: "Image URL",
-      rating: "Rating",
-      reviews: "Number of reviews",
       categories: "Categories",
       preview: "Preview",
       previewHint: "Paste an https:// image link to see a preview.",

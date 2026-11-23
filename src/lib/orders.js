@@ -42,3 +42,11 @@ export function getUserOrder(userId, number) {
 
 /** Statuses a customer may still cancel from. */
 export const CANCELLABLE = ["PENDING", "PROCESSING"];
+
+/**
+ * Deleting an account deletes its orders (cascade), so it's refused while an order is still
+ * being fulfilled — otherwise the store would lose an order it still has to deliver.
+ */
+export async function hasOpenOrders(userId) {
+  return (await prisma.order.count({ where: { userId, status: { in: ["PENDING", "PROCESSING", "SHIPPED"] } } })) > 0;
+}

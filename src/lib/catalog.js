@@ -14,6 +14,7 @@ export const productSelect = {
   reviews: true,
   discountPrice: true,
   discountPercentage: true,
+  stock: true,
   categories: { select: { name: true, slug: true } },
 };
 
@@ -69,8 +70,22 @@ export async function getProductsByCategory(slug, take) {
 
 export async function getProduct(id) {
   if (!id || typeof id !== "string") return null;
-  return prisma.product.findUnique({ where: { id }, select: productSelect });
+  return prisma.product.findUnique({ where: { id }, select: { ...productSelect, description: true } });
 }
+
+/**
+ * Recomputes a product's cached rating + review count from the Review table.
+ * Runs after the review write commits, so the last call always sees every committed review.
+ */
+export function refreshRating(productId) {
+  return prisma.$executeRaw`
+    UPDATE "Product" SET "reviews" = s.n, "rating" = s.avg
+    FROM (SELECT COUNT(*)::int AS n, COALESCE(ROUND(AVG("rating")), 0)::int AS avg FROM "Review" WHERE "productId" = ${productId}) s
+    WHERE "id" = ${productId}`;
+}
+
+/** schema.org availability for a product's stock (null = not tracked). */
+export const availability = (stock) => `https://schema.org/${stock === 0 ? "OutOfStock" : "InStock"}`;
 
 /** Products sharing a shopper-facing category with `product`. */
 export async function getRelatedProducts(product, take = 4) {
