@@ -100,6 +100,13 @@ export default async function AdminUser({ params }) {
         />
       </section>
 
+      {/* Admins run the store, so they have no shopping activity to show. */}
+      {user.isAdmin ? (
+        <AdminCard>
+          <p className="text-sm text-fg-muted">{t("admin.users.adminNote")}</p>
+        </AdminCard>
+      ) : (
+        <>
       <dl className="mb-6 grid grid-cols-2 gap-4 sm:grid-cols-4">
         {stats.map(([label, value]) => (
           <div key={label} className="glass rounded-3xl p-5">
@@ -136,6 +143,8 @@ export default async function AdminUser({ params }) {
           </AdminCard>
         </div>
       </div>
+        </>
+      )}
     </>
   );
 }

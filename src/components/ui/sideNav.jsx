@@ -1,12 +1,13 @@
 "use client";
 
 import Link from "next/link";
-import { LuBox, LuFolder, LuHeart, LuLayoutDashboard, LuMail, LuMessageSquare, LuPackage, LuShoppingCart, LuStar, LuTicket, LuUser, LuUsers } from "react-icons/lu";
+import { LuBell, LuBox, LuFolder, LuHeart, LuLayoutDashboard, LuMail, LuMessageSquare, LuPackage, LuShoppingCart, LuStar, LuTicket, LuUser, LuUsers } from "react-icons/lu";
 
 import { useI18n, useLocalPath } from "@/i18n/client";
 import { cn } from "@/lib/format";
 
 const ICONS = {
+  bell: LuBell,
   user: LuUser,
   package: LuPackage,
   heart: LuHeart,

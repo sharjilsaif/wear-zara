@@ -15,7 +15,8 @@ export default async function AccountLayout({ children, params }) {
   const [{ t }, session] = await Promise.all([getI18n((await params).lang), auth()]);
   if (!session?.user) redirect("/login?callbackUrl=/account");
 
-  const nav = session.user.isAdmin ? [...NAV, { href: "/admin", key: "admin.title", icon: "dashboard" }] : NAV;
+  // Admins only manage their profile here; orders and wishlist are for shoppers.
+  const nav = session.user.isAdmin ? [NAV[0], { href: "/admin", key: "admin.title", icon: "dashboard" }] : NAV;
 
   return (
     <div className="container-page py-10">

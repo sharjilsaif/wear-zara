@@ -1,5 +1,7 @@
 import { LuPackage } from "react-icons/lu";
 
+import { redirect } from "next/navigation";
+
 import { auth } from "@/auth";
 import OrderList from "@/components/orders/orderList";
 import Button from "@/components/ui/button";
@@ -11,6 +13,7 @@ export const generateMetadata = pageMetadata("orders", { robots: { index: false 
 
 export default async function OrdersPage({ params }) {
   const [{ t }, session] = await Promise.all([getI18n((await params).lang), auth()]);
+  if (session.user.isAdmin) redirect("/admin/orders"); // admins see every order in the console
   const orders = await getUserOrders(session.user.id);
 
   return (

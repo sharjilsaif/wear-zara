@@ -1,6 +1,6 @@
 // Store policies, help pages, cookies and reviews (merged into en.js).
 const extra = {
-  meta: { adminReviews: { title: "Reviews · Admin" } },
+  meta: { adminReviews: { title: "Reviews · Admin" }, adminNotifications: { title: "Notifications · Admin" } },
 
   auth: { welcomeBackName: "Welcome back, {name}!", welcomeAdmin: "Welcome back, admin!" },
 
@@ -41,9 +41,10 @@ const extra = {
 
   validation: { stock: "Stock must be a whole number, 0 or more.", descriptionLong: "Descriptions must be 2,000 characters or fewer.", rating: "Please choose a rating.", reviewLong: "Reviews must be 1,000 characters or fewer." },
 
-  product: { outOfStock: "Out of stock", lowStock: "Only {count} left", limitReached: "You can add up to {count} of this item." },
+  product: { editProduct: "Edit product", outOfStock: "Out of stock", lowStock: "Only {count} left", limitReached: "You can add up to {count} of this item." },
 
   errors: {
+    adminCannotShop: "Admin accounts manage the store and can't shop. Use a customer account to place orders.",
     outOfStock: "Some items don't have enough stock left. Your bag has been updated — please review it.", openOrders: "You have orders on their way. You can delete your account once they're delivered or cancelled.", cannotReopen: "A cancelled order can't be reopened.", orderChanged: "This order was just updated. Refresh the page and try again.",
     tooManyRequests: "Too many attempts. Please wait a moment and try again.",
     alreadyReviewed: "You've already reviewed this product.",
@@ -51,7 +52,11 @@ const extra = {
   },
 
   admin: {
-    nav: { reviews: "Reviews" },
+    viewStore: "View store",
+    groups: { sales: "Sales", catalog: "Catalog", people: "Customers" },
+    nav: { reviews: "Reviews", notifications: "Notifications" },
+    notifications: { text: "What needs your attention, newest first. Handled items disappear on their own.", empty: "You're all caught up.", needsAction: "Needs action", newOrder: "New order {number} from {name} · {total}", message: "Unread message from {name}", outOfStock: "{name} is out of stock", lowStock: "{name} is running low: {count} left", review: "{name} rated {product} {rating}/5", customer: "{name} created an account" },
+    users: { text: "Shoppers who have created an account.", admins: "Admins", adminsText: { one: "{count} person can manage the store.", other: "{count} people can manage the store." }, you: "You", adminNote: "This is an admin account. Admins manage the store, so there's no bag, wishlist or order history to show." },
     orders: { cancelledFinal: "This order was cancelled. Cancelled orders are final." },
     products: { stock: "Stock", stockPlaceholder: "Not tracked", stockHint: "Units available. Leave empty if you don't track stock.", description: "Description", descriptionHint: "Shown on the product page. Only describe what is true for this product (materials, fit, care).", noCategory: "No category" },
     reviews: { text: "What customers are saying. Remove anything inappropriate.", all: { one: "{count} review", other: "{count} reviews" }, empty: "No reviews yet" },

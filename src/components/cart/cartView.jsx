@@ -14,6 +14,7 @@ import { useI18n } from "@/i18n/client";
 import { getCartTotals } from "@/lib/pricing";
 import { clearCart, useCart, useCoupon } from "@/lib/store";
 import useMounted from "@/lib/useMounted";
+import useRedirectAdmin from "@/lib/useRedirectAdmin";
 
 export default function CartView() {
   const { t } = useI18n();
@@ -21,8 +22,9 @@ export default function CartView() {
   const cart = useCart();
   const coupon = useCoupon();
   const [confirmClear, setConfirmClear] = useState(false);
+  const redirecting = useRedirectAdmin();
 
-  if (!mounted) return <Skeleton className="h-96 w-full rounded-3xl" />;
+  if (!mounted || redirecting) return <Skeleton className="h-96 w-full rounded-3xl" />;
 
   if (cart.length === 0) {
     return (

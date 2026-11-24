@@ -1,4 +1,4 @@
-import { fail, readJson, requireUser } from "@/lib/api";
+import { fail, readJson, requireCustomer } from "@/lib/api";
 import { getUserLists, mergeUserLists } from "@/lib/userLists";
 
 /**
@@ -6,7 +6,7 @@ import { getUserLists, mergeUserLists } from "@/lib/userLists";
  * POST { mode: "pull" } — just fetch the saved cart and wishlist.
  */
 export async function POST(request) {
-  const { user, response } = await requireUser();
+  const { user, response } = await requireCustomer();
   if (response) return response;
 
   const body = (await readJson(request)) ?? {};

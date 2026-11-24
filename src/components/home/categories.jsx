@@ -10,7 +10,7 @@ import { useI18n } from "@/i18n/client";
 import { SHOP_CATEGORIES, categoryName, shopHref } from "@/lib/site";
 
 /** "Browse by Category" — every tile opens the shop filtered by that category. */
-export default function Categories({ counts = {} }) {
+export default function Categories() {
   const { t } = useI18n();
   const railRef = useRef(null);
 
@@ -29,9 +29,6 @@ export default function Categories({ counts = {} }) {
                 <CategoryIcon name={category.icon} />
               </span>
               <span className="text-[13px] font-semibold leading-tight">{categoryName(t, category)}</span>
-              {counts[category.slug] !== undefined && (
-                <span className="text-xs text-fg-muted transition-colors group-hover:text-white/80">{t("home.items", { count: counts[category.slug] })}</span>
-              )}
             </Link>
           </li>
         ))}

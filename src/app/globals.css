@@ -166,6 +166,12 @@
   box-shadow: var(--glass-shadow);
 }
 
+/* backdrop-filter gives every glass card its own stacking layer, so an open dropdown would sit under
+   the next card. Lift the card that holds the open dropdown (z-index works on flex/grid/sticky cards). */
+.glass:has([role="combobox"][aria-expanded="true"]) {
+  z-index: 30;
+}
+
 @utility glass-strong {
   background-color: var(--glass-strong);
   -webkit-backdrop-filter: saturate(180%) blur(30px);

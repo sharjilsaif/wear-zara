@@ -90,7 +90,7 @@ export default function Reviews({ productId, rating, count, reviews }) {
               </Link>{" "}
               {t("reviews.signIn")}
             </p>
-          ) : reviewed ? (
+          ) : viewer.isAdmin ? null : reviewed ? ( // admins moderate reviews; they don't write them
             <p className="glass rounded-3xl p-6 text-sm text-fg-muted">{t("reviews.alreadyReviewed")}</p>
           ) : (
             <ReviewForm productId={productId} />

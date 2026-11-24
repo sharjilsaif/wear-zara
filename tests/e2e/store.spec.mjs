@@ -20,7 +20,8 @@ async function signUp(page, user) {
   await main(page).getByLabel("Email").fill(user.email);
   await main(page).getByLabel("Password", { exact: true }).fill(user.password);
   await main(page).getByRole("button", { name: "Create Account" }).click();
-  await expect(page).not.toHaveURL(/\/signup/);
+  // Generous: the single-connection test database is slow when the machine is busy.
+  await expect(page).not.toHaveURL(/\/signup/, { timeout: 30_000 });
 }
 
 async function signIn(page, user, to = "/login") {
@@ -295,4 +296,64 @@ test("admin: product with stock and description, order status rules, coupons", a
 
   const coupon = await page.request.post("/api/admin/coupons", { data: { code: `E2E${runId}`.slice(0, 20).toUpperCase(), type: "FIXED", value: 5 } });
   expect(coupon.status()).toBe(201);
+});
+
+test("admin: no shopper UI, notifications, status dropdown above other cards, admins listed apart", async ({ page }) => {
+  await signIn(page, E2E.admin);
+  await expect(page).not.toHaveURL(/\/login/);
+  await expect(page.getByRole("link", { name: "Bag", exact: true })).toHaveCount(0);
+  await expect(page.getByRole("link", { name: "Wishlist", exact: true })).toHaveCount(0);
+
+  // Admins manage products instead of buying them, and the shop's endpoints refuse them.
+  await page.goto(`/product/${stocked}`);
+  await expect(main(page).getByRole("link", { name: "Edit product" })).toHaveAttribute("href", `/admin/products/${stocked}`);
+  await expect(main(page).getByRole("button", { name: "Add to Bag" })).toHaveCount(0);
+  const adminOrder = await page.request.post("/api/orders", { data: { name: "Admin", email: E2E.admin.email, ...address, items: [{ productId: stocked, quantity: 1 }] } });
+  expect(adminOrder.status()).toBe(403);
+  await page.goto("/cart");
+  await expect(page).toHaveURL(/\/admin$/);
+
+  // The console has its own layout: no shop header or footer.
+  await expect(page.getByRole("contentinfo")).toHaveCount(0);
+  await expect(page.getByRole("link", { name: "View store" })).toBeVisible();
+
+  await page.goto("/admin/notifications");
+  await expect(main(page).getByText("E2e Sold Out Cap is out of stock")).toBeVisible();
+  await main(page).getByRole("link", { name: /New order WZ-/ }).first().click();
+  await expect(page).toHaveURL(/\/admin\/orders\/WZ-/);
+  await main(page).getByRole("combobox").click();
+  // Playwright refuses to click an option that another card paints over, so this checks the z-index fix.
+  await main(page).getByRole("option", { name: "Processing" }).click();
+  await main(page).getByRole("button", { name: "Save Changes" }).click();
+  await expect(page.getByText("Order status updated").first()).toBeVisible();
+
+  await page.goto("/admin/users");
+  const admins = main(page).locator("section").filter({ has: page.getByRole("heading", { name: "Admins" }) });
+  await expect(admins.getByRole("link", { name: /Store Admin/ })).toContainText("You");
+  await expect(admins.getByRole("link", { name: new RegExp(E2E.coAdmin.name) })).not.toContainText("You");
+  const customers = main(page).locator("table");
+  await expect(customers.getByText(customer.email)).toBeVisible();
+  await expect(customers.getByText(E2E.admin.email)).toHaveCount(0);
+
+  await page.goto("/");
+  await expect(main(page).getByText(/^\d+ items?$/)).toHaveCount(0); // category tiles no longer show counts
+});
+
+test("changing pages scrolls back to the top smoothly", async ({ page }) => {
+  await page.goto("/shop");
+  await page.evaluate(() => window.scrollTo({ top: document.body.scrollHeight, behavior: "instant" }));
+  await page.waitForFunction(() => window.scrollY > 500);
+  await page.locator("footer").getByRole("link", { name: "FAQs" }).first().click();
+  await expect(page).toHaveURL(/\/faq/);
+  // Smooth: shortly after the route changes the page is still on its way up, then it reaches the top.
+  const positions = await page.evaluate(async () => {
+    const seen = [];
+    for (let i = 0; i < 20; i += 1) {
+      seen.push(window.scrollY);
+      await new Promise((resolve) => setTimeout(resolve, 25));
+    }
+    return seen;
+  });
+  expect(positions.some((y) => y > 0 && y < positions[0])).toBe(true);
+  await expect.poll(() => page.evaluate(() => window.scrollY)).toBe(0);
 });

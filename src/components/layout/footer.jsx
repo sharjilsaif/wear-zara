@@ -1,15 +1,18 @@
 "use client";
 
 import Link from "next/link";
+import { useSession } from "next-auth/react";
 import { LuGithub, LuMail, LuMapPin, LuPhone } from "react-icons/lu";
 
 import { openCookieSettings } from "@/components/layout/cookieConsent";
 import NewsletterForm from "@/components/layout/newsletterForm";
-import { useI18n } from "@/i18n/client";
+import { useI18n, useLocalPath } from "@/i18n/client";
 import { SHOP_CATEGORIES, SITE, categoryName, contactChannels, shopHref } from "@/lib/site";
 
 export default function Footer() {
   const { t } = useI18n();
+  const pathname = useLocalPath();
+  const isAdmin = Boolean(useSession().data?.user?.isAdmin);
 
   const columns = [
     {
@@ -36,7 +39,7 @@ export default function Footer() {
       links: [
         { href: "/about", label: t("nav.about") },
         { href: "/account", label: t("account.title") },
-        { href: "/account/orders", label: t("account.orders") },
+        ...(isAdmin ? [{ href: "/admin", label: t("admin.title") }] : [{ href: "/account/orders", label: t("account.orders") }]),
       ],
     },
     {
@@ -54,6 +57,7 @@ export default function Footer() {
   const contact = contactChannels().map((channel) => ({ ...channel, icon: icons[channel.kind] }));
 
   const linkClasses = "text-start transition-colors hover:text-fg";
+  if (pathname.startsWith("/admin")) return null; // the admin console has its own layout
 
   return (
     <footer className="mt-24 border-t border-line bg-glass backdrop-blur-xl">

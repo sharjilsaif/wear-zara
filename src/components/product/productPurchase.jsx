@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { FaHeart } from "react-icons/fa6";
-import { LuHeart } from "react-icons/lu";
+import { LuHeart, LuPencil } from "react-icons/lu";
 
 import useProductActions from "@/components/product/useProductActions";
 import Button from "@/components/ui/button";
@@ -16,7 +16,15 @@ export default function ProductPurchase({ product }) {
   const { t } = useI18n();
   const router = useRouter();
   const [qty, setQty] = useState(1);
-  const { inWishlist, soldOut, maxQty, addToCart, toggleWishlist } = useProductActions(product);
+  const { inWishlist, isAdmin, soldOut, maxQty, addToCart, toggleWishlist } = useProductActions(product);
+
+  if (isAdmin) {
+    return (
+      <Button href={`/admin/products/${product.id}`} size="lg" className="w-fit">
+        <LuPencil aria-hidden /> {t("product.editProduct")}
+      </Button>
+    );
+  }
 
   return (
     <div className="flex flex-wrap items-center gap-3">

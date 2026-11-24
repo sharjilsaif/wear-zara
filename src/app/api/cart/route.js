@@ -1,10 +1,10 @@
-import { fail, readJson, requireUser } from "@/lib/api";
+import { fail, readJson, requireCustomer } from "@/lib/api";
 import { prisma } from "@/lib/prisma";
 import { setCartQuantity } from "@/lib/userLists";
 
 /** PUT { productId, quantity } — sets the quantity (0 removes the item). */
 export async function PUT(request) {
-  const { user, response } = await requireUser();
+  const { user, response } = await requireCustomer();
   if (response) return response;
 
   const body = await readJson(request);
@@ -24,7 +24,7 @@ export async function PUT(request) {
 
 /** Empties the cart. */
 export async function DELETE() {
-  const { user, response } = await requireUser();
+  const { user, response } = await requireCustomer();
   if (response) return response;
 
   await prisma.cartItem.deleteMany({ where: { userId: user.id } });

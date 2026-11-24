@@ -11,6 +11,7 @@ export const generateMetadata = pageMetadata("checkout", { robots: { index: fals
 export default async function CheckoutPage({ params }) {
   const session = await auth();
   if (!session?.user) redirect("/login?callbackUrl=/checkout");
+  if (session.user.isAdmin) redirect("/admin"); // admins don't place orders
 
   const [{ t }, user, lastOrder] = await Promise.all([
     getI18n((await params).lang),

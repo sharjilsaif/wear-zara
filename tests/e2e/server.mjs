@@ -12,7 +12,7 @@ const env = {
   // pgbouncer=true: PGlite shares one session, so Prisma must not use named prepared statements.
   DATABASE_URL: `postgresql://postgres:postgres@127.0.0.1:${E2E.dbPort}/postgres?sslmode=disable&connection_limit=1&pgbouncer=true`,
   AUTH_SECRET: "e2e-only-secret-not-used-anywhere-else-0123456789",
-  ADMIN_EMAILS: E2E.admin.email,
+  ADMIN_EMAILS: `${E2E.admin.email},${E2E.coAdmin.email}`,
   NEXT_TELEMETRY_DISABLED: "1",
 };
 // Async on purpose: the database runs in this process, so it must keep serving while commands run.
@@ -49,6 +49,7 @@ await prisma.coupon.createMany({
   ],
 });
 await prisma.user.create({ data: { name: "Store Admin", email: E2E.admin.email, password: await bcrypt.hash(E2E.admin.password, 10) } });
+await prisma.user.create({ data: { name: E2E.coAdmin.name, email: E2E.coAdmin.email, password: await bcrypt.hash(E2E.admin.password, 10) } });
 await prisma.$disconnect();
 
 await run("npx next build"); // always rebuild: a previous build caches pages from a previous database

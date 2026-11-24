@@ -5,6 +5,7 @@ import OrderList from "@/components/orders/orderList";
 import Avatar from "@/components/ui/avatar";
 import DateText from "@/components/ui/dateText";
 import { pageMetadata } from "@/i18n/server";
+import { adminEmails } from "@/lib/admin";
 import { getAdminContext } from "@/lib/adminData";
 import { orderListSelect } from "@/lib/orders";
 import { prisma } from "@/lib/prisma";
@@ -14,16 +15,17 @@ export const generateMetadata = pageMetadata("admin");
 export default async function AdminOverview({ params }) {
   const { t, format, person } = await getAdminContext(params);
 
+  const customers = { email: { notIn: adminEmails() } };
   const [revenue, orders, pending, users, products, unread, subscribers, recentOrders, recentUsers] = await Promise.all([
     prisma.order.aggregate({ where: { status: { not: "CANCELLED" } }, _sum: { total: true } }),
     prisma.order.count(),
     prisma.order.count({ where: { status: "PENDING" } }),
-    prisma.user.count(),
+    prisma.user.count({ where: customers }),
     prisma.product.count(),
     prisma.contactMessage.count({ where: { read: false } }),
     prisma.newsletterSubscriber.count(),
     prisma.order.findMany({ orderBy: { createdAt: "desc" }, take: 5, select: orderListSelect }),
-    prisma.user.findMany({ orderBy: { createdAt: "desc" }, take: 5, select: { id: true, name: true, email: true, createdAt: true, avatar: { select: { updatedAt: true } } } }),
+    prisma.user.findMany({ where: customers, orderBy: { createdAt: "desc" }, take: 5, select: { id: true, name: true, email: true, createdAt: true, avatar: { select: { updatedAt: true } } } }),
   ]);
 
   const stats = [

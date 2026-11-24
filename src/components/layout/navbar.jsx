@@ -22,7 +22,8 @@ export default function Navbar() {
   const { t } = useI18n();
   const pathname = useLocalPath();
   const mounted = useMounted();
-  const { status } = useSession();
+  const { status, data: session } = useSession();
+  const isAdmin = Boolean(session?.user?.isAdmin); // admins run the store; they don't shop in it
   const cartCount = useCart().reduce((sum, item) => sum + item.qty, 0);
   const wishlistCount = useWishlist().length;
 
@@ -39,6 +40,8 @@ export default function Navbar() {
           { href: "/signup", label: t("nav.signUp") },
         ]
       : [];
+
+  if (pathname.startsWith("/admin")) return null; // the admin console has its own top bar
 
   return (
     <header className="sticky top-0 z-40">
@@ -93,12 +96,16 @@ export default function Navbar() {
             <span className="hidden md:block">
               <ThemeToggle />
             </span>
-            <IconButton href="/wishlist" label={t("nav.wishlist")} variant="ghost" badge={mounted ? wishlistCount : 0}>
-              <LuHeart />
-            </IconButton>
-            <IconButton href="/cart" label={t("nav.cart")} variant="ghost" badge={mounted ? cartCount : 0}>
-              <LuShoppingBag />
-            </IconButton>
+            {!isAdmin && (
+              <>
+                <IconButton href="/wishlist" label={t("nav.wishlist")} variant="ghost" badge={mounted ? wishlistCount : 0}>
+                  <LuHeart />
+                </IconButton>
+                <IconButton href="/cart" label={t("nav.cart")} variant="ghost" badge={mounted ? cartCount : 0}>
+                  <LuShoppingBag />
+                </IconButton>
+              </>
+            )}
             <div className="ms-1">
               <AccountMenu />
             </div>

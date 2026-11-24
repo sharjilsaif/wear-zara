@@ -1,6 +1,6 @@
 // پالیسیاں، مدد کے صفحات، کوکیز اور ریویوز (ur.js میں شامل ہوتے ہیں)۔
 const extra = {
-  meta: { adminReviews: { title: "ریویوز · ایڈمن" } },
+  meta: { adminReviews: { title: "ریویوز · ایڈمن" }, adminNotifications: { title: "اطلاعات · ایڈمن" } },
 
   auth: { welcomeBackName: "خوش آمدید، {name}!", welcomeAdmin: "خوش آمدید، ایڈمن!" },
 
@@ -41,9 +41,10 @@ const extra = {
 
   validation: { stock: "اسٹاک 0 یا اس سے زیادہ پورا عدد ہونا چاہیے۔", descriptionLong: "تفصیل 2000 حروف یا اس سے کم ہونی چاہیے۔", rating: "براہ کرم ریٹنگ منتخب کریں۔", reviewLong: "ریویو 1000 حروف سے زیادہ نہیں ہو سکتا۔" },
 
-  product: { outOfStock: "اسٹاک ختم", lowStock: "صرف {count} باقی", limitReached: "آپ یہ چیز زیادہ سے زیادہ {count} تک شامل کر سکتے ہیں۔" },
+  product: { editProduct: "پروڈکٹ میں ترمیم", outOfStock: "اسٹاک ختم", lowStock: "صرف {count} باقی", limitReached: "آپ یہ چیز زیادہ سے زیادہ {count} تک شامل کر سکتے ہیں۔" },
 
   errors: {
+    adminCannotShop: "ایڈمن اکاؤنٹس اسٹور سنبھالتے ہیں اور خریداری نہیں کر سکتے۔ آرڈر کے لیے کسٹمر اکاؤنٹ استعمال کریں۔",
     outOfStock: "کچھ اشیاء کا اسٹاک کافی نہیں۔ آپ کا بیگ اپ ڈیٹ کر دیا گیا ہے — براہ کرم دیکھ لیں۔", openOrders: "آپ کے آرڈرز ابھی راستے میں ہیں۔ ان کی ڈیلیوری یا منسوخی کے بعد آپ اکاؤنٹ حذف کر سکتے ہیں۔", cannotReopen: "منسوخ شدہ آرڈر دوبارہ نہیں کھولا جا سکتا۔", orderChanged: "یہ آرڈر ابھی تبدیل ہوا ہے۔ صفحہ ریفریش کر کے دوبارہ کوشش کریں۔",
     tooManyRequests: "بہت زیادہ کوششیں ہو گئیں۔ تھوڑی دیر بعد دوبارہ کوشش کریں۔",
     alreadyReviewed: "آپ اس پروڈکٹ کا ریویو دے چکے ہیں۔",
@@ -51,7 +52,11 @@ const extra = {
   },
 
   admin: {
-    nav: { reviews: "ریویوز" },
+    viewStore: "اسٹور دیکھیں",
+    groups: { sales: "فروخت", catalog: "کیٹلاگ", people: "کسٹمرز" },
+    nav: { reviews: "ریویوز", notifications: "اطلاعات" },
+    notifications: { text: "جن چیزوں پر آپ کی توجہ درکار ہے، تازہ ترین پہلے۔ نمٹائی گئی چیزیں خود ہٹ جاتی ہیں۔", empty: "سب کچھ نمٹ چکا ہے۔", needsAction: "کارروائی درکار", newOrder: "{name} کی جانب سے نیا آرڈر {number} · {total}", message: "{name} کا نہ پڑھا گیا پیغام", outOfStock: "{name} کا اسٹاک ختم ہو گیا ہے", lowStock: "{name} کا اسٹاک کم ہے: {count} باقی", review: "{name} نے {product} کو {rating}/5 ریٹنگ دی", customer: "{name} نے اکاؤنٹ بنایا" },
+    users: { text: "وہ خریدار جنہوں نے اکاؤنٹ بنایا ہے۔", admins: "ایڈمنز", adminsText: { one: "{count} شخص اسٹور سنبھال سکتا ہے۔", other: "{count} افراد اسٹور سنبھال سکتے ہیں۔" }, you: "آپ", adminNote: "یہ ایڈمن اکاؤنٹ ہے۔ ایڈمن اسٹور سنبھالتے ہیں، اس لیے دکھانے کے لیے کوئی بیگ، وِش لسٹ یا آرڈر نہیں۔" },
     orders: { cancelledFinal: "یہ آرڈر منسوخ ہو چکا ہے۔ منسوخ شدہ آرڈرز حتمی ہیں۔" },
     products: { stock: "اسٹاک", stockPlaceholder: "ٹریک نہیں", stockHint: "دستیاب یونٹس۔ اگر آپ اسٹاک ٹریک نہیں کرتے تو خالی چھوڑ دیں۔", description: "تفصیل", descriptionHint: "پروڈکٹ صفحے پر دکھائی جاتی ہے۔ صرف وہی لکھیں جو اس پروڈکٹ کے لیے درست ہو (مٹیریل، فٹ، دیکھ بھال)۔", noCategory: "بغیر کیٹیگری" },
     reviews: { text: "صارفین کیا کہہ رہے ہیں۔ نامناسب مواد ہٹا دیں۔", all: { one: "{count} ریویو", other: "{count} ریویوز" }, empty: "ابھی کوئی ریویو نہیں" },

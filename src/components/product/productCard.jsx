@@ -23,7 +23,7 @@ import { categoryName, primaryCategory } from "@/lib/site";
 export default function ProductCard({ product, priority = false, onRemove, className }) {
   const { t } = useI18n();
   const [quickView, setQuickView] = useState(null); // null = never opened (modal not mounted yet)
-  const { inCart, inWishlist, soldOut, addToCart, toggleWishlist } = useProductActions(product);
+  const { inCart, inWishlist, isAdmin, soldOut, addToCart, toggleWishlist } = useProductActions(product);
 
   const name = displayName(product.name);
   const href = `/product/${product.id}`;
@@ -54,7 +54,7 @@ export default function ProductCard({ product, priority = false, onRemove, class
             <CardAction label={t("product.removeFromWishlist")} onClick={onRemove} className="hover:text-sale">
               <LuTrash2 />
             </CardAction>
-          ) : (
+          ) : isAdmin ? null : (
             <CardAction label={t(inWishlist ? "product.removeFromWishlist" : "product.addToWishlist")} aria-pressed={inWishlist} onClick={toggleWishlist} className="hover:text-sale">
               {inWishlist ? <FaHeart key="on" className="animate-pop text-sale" /> : <LuHeart key="off" />}
             </CardAction>
@@ -68,7 +68,7 @@ export default function ProductCard({ product, priority = false, onRemove, class
           </CardAction>
         </div>
 
-        <CartButton inCart={inCart} soldOut={soldOut} onAdd={() => addToCart()} label={t(inCart ? "product.inCart" : soldOut ? "product.outOfStock" : "product.addToCart")} />
+        {!isAdmin && <CartButton inCart={inCart} soldOut={soldOut} onAdd={() => addToCart()} label={t(inCart ? "product.inCart" : soldOut ? "product.outOfStock" : "product.addToCart")} />}
       </div>
 
       <div className="mt-3 flex flex-col gap-1 px-0.5 sm:mt-4 sm:px-1">

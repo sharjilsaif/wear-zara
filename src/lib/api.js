@@ -25,6 +25,13 @@ export async function requireUser() {
   return { user: session.user };
 }
 
+/** `{ user }` for a signed-in shopper. Admins run the store and can't shop, review or keep a bag. */
+export async function requireCustomer() {
+  const result = await requireUser();
+  if (result.user?.isAdmin) return { response: fail("adminCannotShop", 403) };
+  return result;
+}
+
 /** `{ user }` for an admin, otherwise `{ response }` with a 401 / 403. */
 export async function requireAdmin() {
   const session = await auth();

@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { FaHeart } from "react-icons/fa6";
-import { LuArrowRight, LuHeart, LuRotateCcw, LuTruck } from "react-icons/lu";
+import { LuArrowRight, LuHeart, LuPencil, LuRotateCcw, LuTruck } from "react-icons/lu";
 
 import ProductImage from "@/components/product/productImage";
 import StockStatus from "@/components/product/stockStatus";
@@ -22,7 +22,7 @@ import { FREE_SHIPPING_THRESHOLD, RETURN_DAYS, categoryName, primaryCategory } f
 export default function QuickViewModal({ product, open, onClose }) {
   const { t, format } = useI18n();
   const [qty, setQty] = useState(1);
-  const { inWishlist, soldOut, maxQty, addToCart, toggleWishlist } = useProductActions(product);
+  const { inWishlist, isAdmin, soldOut, maxQty, addToCart, toggleWishlist } = useProductActions(product);
   const name = displayName(product.name);
   const category = primaryCategory(product);
   const discount = getDiscountPercent(product);
@@ -65,6 +65,11 @@ export default function QuickViewModal({ product, open, onClose }) {
           </ul>
 
           <div className="mt-auto flex flex-col gap-4 border-t border-line pt-5">
+            {isAdmin ? (
+              <Button href={`/admin/products/${product.id}`} size="lg" onClick={onClose}>
+                <LuPencil aria-hidden /> {t("product.editProduct")}
+              </Button>
+            ) : (
             <div className="flex items-center gap-3">
               {!soldOut && <QuantityStepper value={Math.min(qty, maxQty)} onChange={setQty} max={maxQty} />}
               <Button size="lg" className="flex-1" disabled={soldOut} onClick={() => (addToCart(qty), onClose())}>
@@ -74,6 +79,7 @@ export default function QuickViewModal({ product, open, onClose }) {
                 {inWishlist ? <FaHeart className="animate-pop text-sale" /> : <LuHeart />}
               </IconButton>
             </div>
+            )}
             <Link href={`/product/${product.id}`} onClick={onClose} className="group inline-flex w-fit items-center gap-1.5 text-sm font-medium text-link">
               {t("product.viewDetails")}
               <LuArrowRight className="transition-transform group-hover:translate-x-0.5 rtl:-scale-x-100 rtl:group-hover:-translate-x-0.5" />

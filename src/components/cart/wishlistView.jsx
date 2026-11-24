@@ -9,14 +9,16 @@ import { useToast } from "@/components/ui/toast";
 import { useI18n } from "@/i18n/client";
 import { addToCart, clearWishlist, toggleWishlist, useWishlist } from "@/lib/store";
 import useMounted from "@/lib/useMounted";
+import useRedirectAdmin from "@/lib/useRedirectAdmin";
 
 export default function WishlistView() {
   const { t } = useI18n();
   const mounted = useMounted();
   const wishlist = useWishlist();
   const toast = useToast();
+  const redirecting = useRedirectAdmin();
 
-  if (!mounted) return <ProductGridSkeleton count={4} />;
+  if (!mounted || redirecting) return <ProductGridSkeleton count={4} />;
 
   if (wishlist.length === 0) {
     return (

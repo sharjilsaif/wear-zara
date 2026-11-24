@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { signIn } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 
 import Button from "@/components/ui/button";
 import FormField, { PasswordField } from "@/components/ui/formField";
@@ -19,6 +19,7 @@ export default function SignupForm() {
   const { send } = useRequest();
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
+  const { update } = useSession();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -42,6 +43,7 @@ export default function SignupForm() {
 
     // Sign the new user straight in.
     await signIn("credentials", { email: values.email, password: values.password, redirect: false });
+    await update(); // refresh the header's session right away
     toast({ title: t("auth.created"), description: t("auth.welcome", { name: result.user.name.split(" ")[0] }) });
     router.replace("/");
     router.refresh();

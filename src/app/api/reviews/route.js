@@ -1,11 +1,11 @@
-import { fail, readJson, requireUser, revalidateStore } from "@/lib/api";
+import { fail, readJson, requireCustomer, revalidateStore } from "@/lib/api";
 import { refreshRating } from "@/lib/catalog";
 import { prisma } from "@/lib/prisma";
 import { rateLimit } from "@/lib/rateLimit";
 
 /** POST { productId, rating, title?, body } — one review per customer per product. */
 export async function POST(request) {
-  const { user, response } = await requireUser();
+  const { user, response } = await requireCustomer();
   if (response) return response;
   const limited = await rateLimit("review", { limit: 5, windowMs: 10 * 60_000 });
   if (limited) return limited;

@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { getSession, signIn } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 
 import Button from "@/components/ui/button";
 import FormField, { FormAlert, PasswordField } from "@/components/ui/formField";
@@ -18,6 +18,7 @@ export default function LoginForm({ redirectTo = "/" }) {
   const [errors, setErrors] = useState({});
   const [formError, setFormError] = useState("");
   const [loading, setLoading] = useState(false);
+  const { update } = useSession();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -36,7 +37,8 @@ export default function LoginForm({ redirectTo = "/" }) {
     try {
       const result = await signIn("credentials", { email, password, redirect: false });
       if (!result?.ok || result.error) throw new Error("invalid");
-      const user = (await getSession())?.user;
+      // update() (not getSession) also refreshes the header's session, so it switches to the signed-in view at once.
+      const user = (await update())?.user;
       const firstName = user?.name?.trim().split(/\s+/)[0];
       toast({ title: user?.isAdmin ? t("auth.welcomeAdmin") : firstName ? t("auth.welcomeBackName", { name: firstName }) : t("auth.welcomeBack") });
       router.replace(redirectTo);

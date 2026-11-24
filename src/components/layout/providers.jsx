@@ -10,7 +10,8 @@ import { syncWithAccount } from "@/lib/store";
 /** Mirrors the browser cart/wishlist with the signed-in user's account. */
 function AccountSync() {
   const { data: session } = useSession();
-  const userId = session?.user?.id;
+  // Admins don't shop, so they have no bag or wishlist to sync.
+  const userId = session?.user?.isAdmin ? null : session?.user?.id;
 
   useEffect(() => {
     if (userId) syncWithAccount(userId).catch(() => {});

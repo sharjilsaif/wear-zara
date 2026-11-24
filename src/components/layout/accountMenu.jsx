@@ -48,12 +48,16 @@ export default function AccountMenu() {
   }
 
   const { name, email, image, isAdmin } = session.user;
-  const links = [
-    { href: "/account", icon: LuUser, label: t("account.profile") },
-    { href: "/account/orders", icon: LuPackage, label: t("account.orders") },
-    { href: "/wishlist", icon: LuHeart, label: t("nav.wishlist") },
-    ...(isAdmin ? [{ href: "/admin", icon: LuLayoutDashboard, label: t("admin.title") }] : []),
-  ];
+  const links = isAdmin
+    ? [
+        { href: "/admin", icon: LuLayoutDashboard, label: t("admin.title") },
+        { href: "/account", icon: LuUser, label: t("account.profile") },
+      ]
+    : [
+        { href: "/account", icon: LuUser, label: t("account.profile") },
+        { href: "/account/orders", icon: LuPackage, label: t("account.orders") },
+        { href: "/wishlist", icon: LuHeart, label: t("nav.wishlist") },
+      ];
 
   return (
     <>

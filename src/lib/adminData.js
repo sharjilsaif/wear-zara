@@ -18,5 +18,5 @@ export async function getAdminContext(params) {
   /** Adds the profile-picture URL and admin flag to a user record. */
   const person = (record) => ({ ...record, image: avatarUrl(record.id, record.avatar), isAdmin: isAdminEmail(record.email) });
 
-  return { ...i18n, person };
+  return { ...i18n, person, me: session.user };
 }

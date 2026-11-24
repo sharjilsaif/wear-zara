@@ -49,7 +49,7 @@ export default async function RootLayout({ children, params }) {
   const { dict, dir } = await getI18n(lang);
 
   return (
-    <html lang={lang} dir={dir} data-scroll-behavior="smooth" className={`${inter.variable} ${urdu.variable}`} suppressHydrationWarning>
+    <html lang={lang} dir={dir} className={`${inter.variable} ${urdu.variable}`} suppressHydrationWarning>
       <body className="flex min-h-screen flex-col font-sans">
         <I18nProvider lang={lang} dict={dict}>
           <Providers>

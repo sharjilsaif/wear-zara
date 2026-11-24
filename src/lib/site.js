@@ -23,6 +23,8 @@ export const FREE_SHIPPING_THRESHOLD = 140;
 export const SHIPPING_FEE = 9.99;
 export const MAX_QTY = 10;
 export const RETURN_DAYS = 30;
+/** At or below this many units a product shows "Only N left" and raises an admin notification. */
+export const LOW_STOCK = 5;
 
 /** Main navigation — labels come from the dictionary (`nav.*`). */
 export const NAV_LINKS = [

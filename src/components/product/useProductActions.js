@@ -1,5 +1,7 @@
 "use client";
 
+import { useSession } from "next-auth/react";
+
 import { useToast } from "@/components/ui/toast";
 import { useI18n } from "@/i18n/client";
 import { displayName } from "@/lib/format";
@@ -12,12 +14,14 @@ export default function useProductActions(product) {
   const cartItem = useCart().find((item) => item.id === product.id);
   const inCart = Boolean(cartItem);
   const soldOut = product.stock === 0;
+  const isAdmin = Boolean(useSession().data?.user?.isAdmin); // admins manage products; they don't buy them
   const inWishlist = useWishlist().some((item) => item.id === product.id);
   const name = displayName(product.name);
 
   return {
     inCart,
     inWishlist,
+    isAdmin,
     soldOut,
     maxQty: maxQty(product),
     addToCart(qty = 1) {

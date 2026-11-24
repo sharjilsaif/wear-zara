@@ -1,9 +1,9 @@
-import { fail, readJson, requireUser } from "@/lib/api";
+import { fail, readJson, requireCustomer } from "@/lib/api";
 import { prisma } from "@/lib/prisma";
 
 /** POST { productId } — save a product. */
 export async function POST(request) {
-  const { user, response } = await requireUser();
+  const { user, response } = await requireCustomer();
   if (response) return response;
 
   const body = await readJson(request);
@@ -22,7 +22,7 @@ export async function POST(request) {
 
 /** DELETE ?productId=… removes one product; without it, clears the wishlist. */
 export async function DELETE(request) {
-  const { user, response } = await requireUser();
+  const { user, response } = await requireCustomer();
   if (response) return response;
 
   const productId = new URL(request.url).searchParams.get("productId");

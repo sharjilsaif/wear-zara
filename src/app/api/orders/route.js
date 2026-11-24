@@ -1,4 +1,4 @@
-import { fail, readJson, requireUser, revalidateProducts } from "@/lib/api";
+import { fail, readJson, requireCustomer, revalidateProducts } from "@/lib/api";
 import { findCoupon, normalizeCode } from "@/lib/coupons";
 import { generateOrderNumber } from "@/lib/orders";
 import { couponProblem, getCartTotals } from "@/lib/pricing";
@@ -19,7 +19,7 @@ class CheckoutError extends Error {
 
 /** Places an order: prices and the coupon are re-checked on the server, never trusted from the browser. */
 export async function POST(request) {
-  const { user, response } = await requireUser();
+  const { user, response } = await requireCustomer();
   if (response) return response;
   const limited = await rateLimit("order", { limit: 10, windowMs: 10 * 60_000 });
   if (limited) return limited;

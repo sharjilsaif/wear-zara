@@ -1,6 +1,6 @@
 // Políticas, páginas de ayuda, cookies y reseñas (se combinan con es.js).
 const extra = {
-  meta: { adminReviews: { title: "Reseñas · Admin" } },
+  meta: { adminReviews: { title: "Reseñas · Admin" }, adminNotifications: { title: "Notificaciones · Admin" } },
 
   auth: { welcomeBackName: "¡Hola de nuevo, {name}!", welcomeAdmin: "¡Bienvenido de nuevo, admin!" },
 
@@ -41,9 +41,10 @@ const extra = {
 
   validation: { stock: "El stock debe ser un número entero, 0 o más.", descriptionLong: "La descripción debe tener 2000 caracteres o menos.", rating: "Elige una valoración.", reviewLong: "La opinión debe tener 1000 caracteres como máximo." },
 
-  product: { outOfStock: "Agotado", lowStock: "Solo quedan {count}", limitReached: "Puedes añadir hasta {count} unidades de este artículo." },
+  product: { editProduct: "Editar producto", outOfStock: "Agotado", lowStock: "Solo quedan {count}", limitReached: "Puedes añadir hasta {count} unidades de este artículo." },
 
   errors: {
+    adminCannotShop: "Las cuentas de administrador gestionan la tienda y no pueden comprar. Usa una cuenta de cliente para hacer pedidos.",
     outOfStock: "Algunos artículos no tienen suficiente stock. Hemos actualizado tu bolsa: revísala, por favor.", openOrders: "Tienes pedidos en camino. Podrás eliminar tu cuenta cuando se entreguen o se cancelen.", cannotReopen: "Un pedido cancelado no se puede reabrir.", orderChanged: "Este pedido acaba de cambiar. Actualiza la página e inténtalo de nuevo.",
     tooManyRequests: "Demasiados intentos. Espera un momento y vuelve a intentarlo.",
     alreadyReviewed: "Ya has opinado sobre este producto.",
@@ -51,7 +52,11 @@ const extra = {
   },
 
   admin: {
-    nav: { reviews: "Opiniones" },
+    viewStore: "Ver tienda",
+    groups: { sales: "Ventas", catalog: "Catálogo", people: "Clientes" },
+    nav: { reviews: "Opiniones", notifications: "Notificaciones" },
+    notifications: { text: "Lo que necesita tu atención, lo más reciente primero. Lo resuelto desaparece solo.", empty: "Estás al día.", needsAction: "Requiere acción", newOrder: "Nuevo pedido {number} de {name} · {total}", message: "Mensaje sin leer de {name}", outOfStock: "{name} está agotado", lowStock: "Quedan pocas unidades de {name}: {count}", review: "{name} valoró {product} con {rating}/5", customer: "{name} ha creado una cuenta" },
+    users: { text: "Clientes que han creado una cuenta.", admins: "Administradores", adminsText: { one: "{count} persona puede gestionar la tienda.", other: "{count} personas pueden gestionar la tienda." }, you: "Tú", adminNote: "Esta es una cuenta de administrador. Los administradores gestionan la tienda, así que no hay bolsa, lista de deseos ni pedidos que mostrar." },
     orders: { cancelledFinal: "Este pedido se canceló. Los pedidos cancelados son definitivos." },
     products: { stock: "Stock", stockPlaceholder: "Sin control", stockHint: "Unidades disponibles. Déjalo vacío si no controlas el stock.", description: "Descripción", descriptionHint: "Se muestra en la página del producto. Describe solo lo que sea cierto (materiales, corte, cuidados).", noCategory: "Sin categoría" },
     reviews: { text: "Lo que dicen los clientes. Elimina cualquier contenido inapropiado.", all: { one: "{count} opinión", other: "{count} opiniones" }, empty: "Aún no hay opiniones" },
